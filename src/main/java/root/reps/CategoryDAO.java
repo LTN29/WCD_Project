@@ -59,7 +59,7 @@ public class CategoryDAO {
 	}
 	
 	public static int update(Category c) throws SQLException {
-	    String sql = "UPDATE tbl_category SET _name = ?, active = ? WHERE id = ?";
+	    String sql = "UPDATE tbl_category SET _name = ?, _active = ? WHERE id = ?";
 	    try (
 	        Connection conn = DBUtil.getInstance().getConnect();
 	        PreparedStatement stmt = conn.prepareStatement(sql)
