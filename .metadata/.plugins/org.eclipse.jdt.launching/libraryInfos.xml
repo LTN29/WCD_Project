@@ -3,6 +3,7 @@
     <libraryInfo home="C:\Program Files\Java\jdk-17" version="17.0.12"/>
     <libraryInfo home="C:\Users\ADMIN\Desktop\Java_work\sts\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_21.0.6.v20250130-0529\jre" version="21.0.6"/>
     <libraryInfo home="C:\Users\ADMIN\Desktop\Java_work\jdk-21.0.7" version="21.0.7"/>
+    <libraryInfo home="D:\sem 4\jdk-21.0.7" version="21.0.7"/>
     <libraryInfo home="C:\Users\ADMIN\Desktop\Java_work\sts\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_21.0.6.v20250130-0529" version="21.0.6">
         <bootpath>
             <entry path="null"/>
@@ -14,4 +15,16 @@
             <entry path="null"/>
         </endorsedDirs>
     </libraryInfo>
+    <libraryInfo home="D:\sem 4\sts\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_21.0.6.v20250130-0529" version="21.0.6">
+        <bootpath>
+            <entry path="null"/>
+        </bootpath>
+        <extensionDirs>
+            <entry path="null"/>
+        </extensionDirs>
+        <endorsedDirs>
+            <entry path="null"/>
+        </endorsedDirs>
+    </libraryInfo>
+    <libraryInfo home="D:\sem 4\sts\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_21.0.6.v20250130-0529\jre" version="21.0.6"/>
 </libraryInfos>
