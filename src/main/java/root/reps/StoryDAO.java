@@ -86,7 +86,12 @@ public class StoryDAO {
     }
 
     public static Story getById(int id) throws SQLException {
-        String sql = "SELECT * FROM tbl_story WHERE _id=?";
+        String sql = "SELECT s.*, a._name AS authorName, c._name AS categoryName, st._title AS statusName " +
+                "FROM tbl_story s " +
+                "LEFT JOIN tbl_author a ON s._author_id = a._id " +
+                "LEFT JOIN tbl_category c ON s._category_id = c._id " +
+                "LEFT JOIN tbl_status st ON s._status_id = st._id " +
+                "WHERE s._id = ?";
         try (Connection conn = DBUtil.getInstance().getConnect();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);

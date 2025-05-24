@@ -1,63 +1,37 @@
 package root.entities;
 
+import java.sql.Date;
+
 public class Chapter {
-	private int id;
-	private int storyId;
-	private int number;
-	private String title;
-	private String content;
+    private int id;
+    private String title;
+    private String content;
+    private Date dayCreate;
+    private int storyId;
 
-	public int getId() {
-		return id;
-	}
+    public Chapter() {}
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public Chapter(int id, String title, String content, Date dayCreate, int storyId) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.dayCreate = dayCreate;
+        this.storyId = storyId;
+    }
 
-	public String getTitle() {
-		return title;
-	}
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
-	public String getContent() {
-		return content;
-	}
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    public String getContent() { return content; }
+    public void setContent(String content) { this.content = content; }
 
-	public String getDayCreate() {
-		return dayCreate;
-	}
+    public Date getDayCreate() { return dayCreate; }
+    public void setDayCreate(Date dayCreate) { this.dayCreate = dayCreate; }
 
-	public void setDayCreate(String dayCreate) {
-		this.dayCreate = dayCreate;
-	}
-
-	public int getStoryId() {
-		return storyId;
-	}
-
-	public void setStoryId(int storyId) {
-		this.storyId = storyId;
-	}
-
-	public Chapter(int id, int i, int j, String dayCreate, String string) {
-		super();
-		this.id = id;
-		this.title = i;
-		this.content = j;
-		this.dayCreate = dayCreate;
-		this.storyId = string;
-	}
-
-	public Chapter() {
-
-	}
-
+    public int getStoryId() { return storyId; }
+    public void setStoryId(int storyId) { this.storyId = storyId; }
 }

@@ -41,12 +41,12 @@ public class StoryDetail extends HttpServlet {
         }
         try {
             int id = Integer.parseInt(idStr);
-            Story story = StoryDAO.getAllWithNames(id); 
+            Story story = StoryDAO.getById(id); 
             List<Chapter> chapters = ChapterDAO.getByStoryId(id); 
 
             req.setAttribute("story", story);
             req.setAttribute("chapters", chapters);
-            req.getRequestDispatcher("/client/storyDetail.jsp").forward(req, resp);
+            req.getRequestDispatcher("/client/story/StoryDetail.jsp").forward(req, resp);
         } catch (Exception e) {
             resp.getWriter().println("Lỗi: " + e.getMessage());
         }

@@ -61,35 +61,40 @@ public class AdminStoryServlet extends HttpServlet {
         String action = req.getParameter("action");
         try {
             if ("add".equals(action)) {
-                Story s = new Story(0,
-                    req.getParameter("title"),
-                    Integer.parseInt(req.getParameter("chapterNumber")),
-                    req.getParameter("introduction"),
-                    req.getParameter("image"),
-                    Integer.parseInt(req.getParameter("likeNumber")),
-                    Integer.parseInt(req.getParameter("followNumber")),
-                    Integer.parseInt(req.getParameter("viewNumber")),
-                    Integer.parseInt(req.getParameter("authorId")),
-                    Integer.parseInt(req.getParameter("statusId")),
-                    Integer.parseInt(req.getParameter("categoryId"))
-                );
+                Story s = new Story();
+                s.setTitle(req.getParameter("title"));
+                s.setChapterNumber(Integer.parseInt(req.getParameter("chapterNumber")));
+                s.setIntroduction(req.getParameter("introduction"));
+                s.setImage(req.getParameter("image"));
+                s.setAuthorId(Integer.parseInt(req.getParameter("authorId")));
+                s.setStatusId(Integer.parseInt(req.getParameter("statusId")));
+                s.setCategoryId(Integer.parseInt(req.getParameter("categoryId")));
+
+                s.setLikeNumber(0);
+                s.setFollowNumber(0);
+                s.setViewNumber(0);
                 StoryDAO.insert(s);
                 resp.sendRedirect(req.getContextPath() + "/admin/story");
 
             } else if ("update".equals(action)) {
-                Story s = new Story(
-                    Integer.parseInt(req.getParameter("id")),
-                    req.getParameter("title"),
-                    Integer.parseInt(req.getParameter("chapterNumber")),
-                    req.getParameter("introduction"),
-                    req.getParameter("image"),
-                    Integer.parseInt(req.getParameter("likeNumber")),
-                    Integer.parseInt(req.getParameter("followNumber")),
-                    Integer.parseInt(req.getParameter("viewNumber")),
-                    Integer.parseInt(req.getParameter("authorId")),
-                    Integer.parseInt(req.getParameter("statusId")),
-                    Integer.parseInt(req.getParameter("categoryId"))
-                );
+                int id = Integer.parseInt(req.getParameter("id"));
+             
+                Story old = StoryDAO.getById(id);
+
+                Story s = new Story();
+                s.setId(id);
+                s.setTitle(req.getParameter("title"));
+                s.setChapterNumber(Integer.parseInt(req.getParameter("chapterNumber")));
+                s.setIntroduction(req.getParameter("introduction"));
+                s.setImage(req.getParameter("image"));
+                s.setAuthorId(Integer.parseInt(req.getParameter("authorId")));
+                s.setStatusId(Integer.parseInt(req.getParameter("statusId")));
+                s.setCategoryId(Integer.parseInt(req.getParameter("categoryId")));
+
+                s.setLikeNumber(old != null ? old.getLikeNumber() : 0);
+                s.setFollowNumber(old != null ? old.getFollowNumber() : 0);
+                s.setViewNumber(old != null ? old.getViewNumber() : 0);
+
                 StoryDAO.update(s);
                 resp.sendRedirect(req.getContextPath() + "/admin/story");
 
@@ -106,4 +111,5 @@ public class AdminStoryServlet extends HttpServlet {
             resp.getWriter().println("ERROR: " + e.getMessage());
         }
     }
+
 }
