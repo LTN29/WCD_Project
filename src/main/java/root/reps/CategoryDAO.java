@@ -39,8 +39,8 @@ public class CategoryDAO {
 				Connection conn=DBUtil.getInstance().getConnect();
 				PreparedStatement stmt=conn.prepareStatement(sql);
 				){
-			stmt.setString(1, c.get_name());
-			stmt.setBoolean(2,c.is_active());
+			stmt.setString(1, c.getName());
+			stmt.setBoolean(2,c.isActive());
 			int affectedRows = stmt.executeUpdate();
 			
 			if(affectedRows == 0) {
@@ -64,9 +64,9 @@ public class CategoryDAO {
 	        Connection conn = DBUtil.getInstance().getConnect();
 	        PreparedStatement stmt = conn.prepareStatement(sql)
 	    ) {
-	        stmt.setString(1, c.get_name());
-	        stmt.setBoolean(2, c.is_active());
-	        stmt.setInt(3, c.get_id());
+	        stmt.setString(1, c.getName());
+	        stmt.setBoolean(2, c.isActive());
+	        stmt.setInt(3, c.getId());
 	        return stmt.executeUpdate() ; 
 	    }
 	}

@@ -1,4 +1,4 @@
-package root.client;
+package root.client.story;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

@@ -1,37 +1,35 @@
 package root.entities;
 
 public class Category {
-	private int _id;
-	private String _name;
-	private boolean _active;
-	
-	public int get_id() {
-		return _id;
+	private int id;
+	private String name;
+	private boolean active;
+	public int getId() {
+		return id;
 	}
-	public void set_id(int _id) {
-		this._id = _id;
+	public void setId(int id) {
+		this.id = id;
 	}
-	public String get_name() {
-		return _name;
+	public String getName() {
+		return name;
 	}
-	public void set_name(String _name) {
-		this._name = _name;
+	public void setName(String name) {
+		this.name = name;
 	}
-	public boolean is_active() {
-		return _active;
+	public boolean isActive() {
+		return active;
 	}
-	public void set_active(boolean _active) {
-		this._active = _active;
+	public void setActive(boolean active) {
+		this.active = active;
 	}
-	public Category(int _id, String _name, boolean _active) {
+	public Category(int id, String name, boolean active) {
 		super();
-		this._id = _id;
-		this._name = _name;
-		this._active = _active;
-	}
-	public Category() {
+		this.id = id;
+		this.name = name;
+		this.active = active;
 	}
 	
+    public Category() {}
 	
 	
 }

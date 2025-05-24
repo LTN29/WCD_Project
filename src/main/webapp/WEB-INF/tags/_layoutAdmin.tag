@@ -9,7 +9,6 @@
 <title>Admin - Dashboard</title>
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css?family=Roboto:400,700">
-<
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/admin/css/fontawesome.min.css">
 <link rel="stylesheet"
@@ -22,7 +21,7 @@
 	<div class="" id="home">
 		<nav class="navbar navbar-expand-xl">
 			<div class="container h-100">
-				<a class="navbar-brand" href="index.html">
+				<a class="navbar-brand" href="/WCD1_Test1/Admin">
 					<h1 class="tm-site-title mb-0">Product Admin</h1>
 				</a>
 				<button class="navbar-toggler ml-auto mr-0" type="button"
@@ -35,7 +34,7 @@
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul class="navbar-nav mx-auto h-100">
 						<li class="nav-item"><a class="nav-link active"
-							href="./admin/story"> <i class="fas fa-tachometer-alt"></i>
+							href="${pageContext.request.contextPath}/admin/story"> <i class="fas fa-tachometer-alt"></i>
 								Stories <span class="sr-only">(current)</span>
 						</a></li>
 						<li class="nav-item dropdown"><a

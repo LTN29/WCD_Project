@@ -5,12 +5,14 @@
     <h2 class="section-title">MỚI CẬP NHẬT</h2>
     <div class="comics-list">
         <c:forEach var="s" items="${stories}">
+        <a href="storyDetail?id=${s.id}" class="comic-card-link">
             <div class="comic-card">
-                <img src="./client/img/${s.image != null ? s.image : 'default.png'}" alt="${s.title}" class="comic-cover" />
+                <img src="${pageContext.request.contextPath}/client/img/${s.image != null ? s.image : 'default.png'}" alt="${s.title}" class="comic-cover" />
                 <div class="comic-title">${s.title}</div>
                 <div class="comic-chapter">Số chương: ${s.chapterNumber}</div>
                 <div class="comic-intro">${s.introduction}</div>
             </div>
+            </a>
         </c:forEach>
     </div>
 </client:_layoutClient>
