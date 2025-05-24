@@ -6,7 +6,7 @@
     <div class="comics-list">
         <c:forEach var="s" items="${stories}">
             <div class="comic-card">
-                <img src="${pageContext.request.contextPath}/client/img/${s.image}" alt="${s.title}" class="comic-cover" />
+                <img src="./client/img/${s.image != null ? s.image : 'default.png'}" alt="${s.title}" class="comic-cover" />
                 <div class="comic-title">${s.title}</div>
                 <div class="comic-chapter">Số chương: ${s.chapterNumber}</div>
                 <div class="comic-intro">${s.introduction}</div>

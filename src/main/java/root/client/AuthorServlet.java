@@ -1,4 +1,4 @@
-package root.controller;
+package root.client;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -10,7 +10,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import root.entities.Author;
-import root.reps.AuthorDao;
+import root.reps.AuthorDAO;
 
 @WebServlet("/authorServlet")
 public class AuthorServlet extends HttpServlet {
@@ -32,7 +32,7 @@ public class AuthorServlet extends HttpServlet {
                     return;
                 }
                 Author author = new Author(0, name, information, image);
-                int id = AuthorDao.insert(author);
+                int id = AuthorDAO.insert(author);
                 out.write("Add OK. New ID: " + id);
             } else if ("update".equalsIgnoreCase(action)) {
                 String idStr = request.getParameter("id");
@@ -45,7 +45,7 @@ public class AuthorServlet extends HttpServlet {
                 }
                 int id = Integer.parseInt(idStr);
                 Author author = new Author(id, name, information, image);
-                int affected = AuthorDao.update(author);
+                int affected = AuthorDAO.update(author);
                 out.write(affected > 0 ? "Update OK" : "Update FAIL");
             } else if ("delete".equalsIgnoreCase(action)) {
                 String idStr = request.getParameter("id");
@@ -54,7 +54,7 @@ public class AuthorServlet extends HttpServlet {
                     return;
                 }
                 int id = Integer.parseInt(idStr);
-                int affected = AuthorDao.deleteById(id);
+                int affected = AuthorDAO.deleteById(id);
                 out.write(affected > 0 ? "Delete OK" : "Delete FAIL");
             } else {
                 out.write("Invalid or missing action param in POST");
@@ -73,7 +73,7 @@ public class AuthorServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         try {
             if ("list".equalsIgnoreCase(action)) {
-                List<Author> authors = AuthorDao.getAll();
+                List<Author> authors = AuthorDAO.getAll();
                 for (Author a : authors) {
                     out.println("ID: " + a.getId() + ", Name: " + a.getName() + ", Info: " + a.getInformation() + ", Image: " + a.getImage());
                 }
@@ -84,7 +84,7 @@ public class AuthorServlet extends HttpServlet {
                     return;
                 }
                 int id = Integer.parseInt(idStr);
-                Author a = AuthorDao.getById(id);
+                Author a = AuthorDAO.getById(id);
                 if (a != null)
                     out.println("ID: " + a.getId() + ", Name: " + a.getName() + ", Info: " + a.getInformation() + ", Image: " + a.getImage());
                 else

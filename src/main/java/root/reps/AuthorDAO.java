@@ -10,7 +10,7 @@ import java.util.List;
 import root.entities.Author;
 import root.myutils.DBUtil;
 
-public class AuthorDao {
+public class AuthorDAO {
 
 	    public static List<Author> getAll() throws SQLException {
 	        List<Author> list = new ArrayList<>();

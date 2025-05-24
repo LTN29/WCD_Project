@@ -6,7 +6,7 @@
     <div class="client-header__container">
         <div class="client-header__logo">
             <a href="${pageContext.request.contextPath}/Home">
-                <img src="${pageContext.request.contextPath}/resources/img/logo.png" alt="Logo" />
+                <img src="./client/img/logo.jpg" alt="Logo" />
             </a>
         </div>
         <nav class="client-header__nav">
@@ -18,7 +18,7 @@
         <div class="client-header__tools">
             <input class="client-header__search" placeholder="Tìm kiếm..." />
             <button class="client-header__icon">
-                <img src="${pageContext.request.contextPath}/resources/img/user.svg" alt="User" />
+                <img src="./client/img/User_Icon.png" alt="User" />
             </button>
         </div>
     </div>
