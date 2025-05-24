@@ -18,7 +18,7 @@ public class StatusDAO {
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
-                Status st = new Status(rs.getInt("_id"), rs.getString("_title"));
+                Status st = new Status(rs.getInt("_id"), rs.getString("_title"), rs.getInt("_active"),rs.getInt("_group_status_id"));
                 list.add(st);
             }
         }

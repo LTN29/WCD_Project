@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Servlet implementation class StoryDetail
  */
-@WebServlet("/StoryDetail")
+@WebServlet("/storyDetail")
 public class StoryDetail extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -46,7 +46,7 @@ public class StoryDetail extends HttpServlet {
 
             req.setAttribute("story", story);
             req.setAttribute("chapters", chapters);
-            req.getRequestDispatcher("/client/story/StoryDetail.jsp").forward(req, resp);
+            req.getRequestDispatcher("/client/story/storyDetail.jsp").forward(req, resp);
         } catch (Exception e) {
             resp.getWriter().println("Lỗi: " + e.getMessage());
         }

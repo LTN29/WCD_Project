@@ -1,0 +1,124 @@
+@charset "UTF-8";
+.detail-container {
+    margin-top: 32px;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px 0 rgba(0,0,0,0.07);
+    padding: 32px 28px 32px 28px;
+    max-width: 950px;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.detail-container .row {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+}
+
+.detail-container img.img-fluid {
+    display: block;
+    width: 210px;        
+    height: 300px;       
+    object-fit: cover;   
+    border-radius: 12px;
+    box-shadow: 0 2px 18px rgba(0,0,0,0.13);
+    margin-bottom: 18px;
+    background: #f8f9fa;
+}
+
+
+.detail-container h2 {
+    margin-bottom: 12px;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2d2d2d;
+}
+
+.detail-container p {
+    margin-bottom: 8px;
+    font-size: 1rem;
+    color: #444;
+}
+
+.detail-container strong {
+    color: #23527c;
+}
+
+.detail-container .fa {
+    margin-right: 6px;
+    color: #d63031;
+    font-size: 1.2em;
+}
+.detail-container .fa-star {
+    color: #f1c40f;
+}
+.detail-container .fa-eye {
+    color: #0984e3;
+}
+
+.detail-container hr {
+    margin: 32px 0 18px 0;
+    border-top: 1px solid #e9ecef;
+}
+
+.detail-container h4 {
+    font-size: 1.3rem;
+    color: #007bff;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.detail-container ul.list-group {
+    padding-left: 0;
+    list-style: none;
+    margin-bottom: 0;
+}
+
+.detail-container .list-group-item {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    background: #f8fafb;
+    transition: background 0.18s;
+    padding: 12px 18px;
+    font-size: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.detail-container .list-group-item a {
+    color: #34495e;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.16s;
+}
+
+.detail-container .list-group-item a:hover {
+    color: #007bff;
+    text-decoration: underline;
+}
+
+.detail-container .badge-info {
+    background: #0097e6;
+    color: #fff;
+    padding: 6px 13px;
+    border-radius: 20px;
+    font-size: 0.97em;
+}
+
+@media (max-width: 900px) {
+    .detail-container {
+        padding: 18px 5vw 24px 5vw;
+    }
+    .detail-container .row {
+        flex-direction: column;
+        gap: 18px;
+    }
+    .detail-container img.img-fluid {
+        margin: 0 auto 18px auto;
+        display: block;
+    }
+}

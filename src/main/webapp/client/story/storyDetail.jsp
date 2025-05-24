@@ -2,6 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="client" tagdir="/WEB-INF/tags" %>
 <client:_layoutClient>
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/client/css/storyDetail.css">
 <div class="container detail-container">
     <div class="row">
         <div class="col-md-4">
@@ -14,7 +16,6 @@
             <p><strong>Status:</strong> ${story.statusTitle}</p>
             <p><strong>Chapters:</strong> ${story.chapterNumber}</p>
             <p><strong>Introduction:</strong> ${story.introduction}</p>
-            <!-- Optional: Like, Follow, View -->
             <p>
                 <span title="Like"><i class="fa fa-heart"></i> ${story.likeNumber}</span>
                 <span title="Follow"><i class="fa fa-star"></i> ${story.followNumber}</span>
@@ -28,7 +29,7 @@
         <c:forEach var="c" items="${chapters}">
             <li class="list-group-item d-flex justify-content-between align-items-center">
                 <a href="chapterRead?id=${c.id}">${c.title}</a>
-                <span class="badge badge-info">${c.createDate}</span>
+                <span class="badge badge-info">${c.dayCreate}</span>
             </li>
         </c:forEach>
     </ul>
