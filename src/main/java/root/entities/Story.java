@@ -13,14 +13,13 @@ public class Story {
     private int statusId;
     private int categoryId;
 
-    // Thêm các trường mở rộng để hiển thị
+
     private String authorName;
     private String statusName;
     private String categoryName;
     private String statusTitle; 
 
    
-    // --- Getter & Setter ---
     public String getStatusTitle() {return statusTitle;}
     public void setStatusTitle(String statusTitle) {this.statusTitle = statusTitle;}
     public int getId() { return id; }
@@ -56,7 +55,6 @@ public class Story {
     public int getCategoryId() { return categoryId; }
     public void setCategoryId(int categoryId) { this.categoryId = categoryId; }
 
-    // Các trường mở rộng 
     public String getAuthorName() { return authorName; }
     public void setAuthorName(String authorName) { this.authorName = authorName; }
 

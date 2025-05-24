@@ -44,7 +44,7 @@ public class AdminStoryServlet extends HttpServlet {
                 setDropdowns(req);
                 req.getRequestDispatcher("/admin/story/storyForm.jsp").forward(req, resp);
             } else { // Hiển thị list
-                List<Story> stories = StoryDAO.getAll();
+                List<Story> stories = StoryDAO.getAllWithNames();
                 req.setAttribute("stories", stories);
                 req.getRequestDispatcher("/admin/story/storyList.jsp").forward(req, resp);
             }

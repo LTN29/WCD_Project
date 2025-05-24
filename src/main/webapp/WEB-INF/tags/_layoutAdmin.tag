@@ -9,14 +9,13 @@
 <title>Admin - Dashboard</title>
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css?family=Roboto:400,700">
-<!-- https://fonts.google.com/specimen/Roboto -->
-<link rel="stylesheet" href="./admin/css/fontawesome.min.css">
-<!-- https://fontawesome.com/ -->
-<link rel="stylesheet" href="./admin/css/bootstrap.min.css">
-<!-- https://getbootstrap.com/ -->
-<link rel="stylesheet" href="./admin/css/templatemo-style.css">
-<!--
-	-->
+<
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/admin/css/fontawesome.min.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/admin/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/admin/css/templatemo-style.css">
 </head>
 
 <body id="reportsPage">
@@ -35,9 +34,9 @@
 
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul class="navbar-nav mx-auto h-100">
-						<li class="nav-item"><a class="nav-link active" href="./admin/story">
-								<i class="fas fa-tachometer-alt"></i> Stories <span
-								class="sr-only">(current)</span>
+						<li class="nav-item"><a class="nav-link active"
+							href="./admin/story"> <i class="fas fa-tachometer-alt"></i>
+								Stories <span class="sr-only">(current)</span>
 						</a></li>
 						<li class="nav-item dropdown"><a
 							class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
@@ -105,15 +104,15 @@
 			</footer>
 		</div>
 
-		<script src="./admin/js/jquery-3.3.1.min.js"></script>
-		<!-- https://jquery.com/download/ -->
-		<script src="./admin/js/moment.min.js"></script>
-		<!-- https://momentjs.com/ -->
-		<script src="./admin/js/Chart.min.js"></script>
-		<!-- http://www.chartjs.org/docs/latest/ -->
-		<script src="./admin/js/bootstrap.min.js"></script>
-		<!-- https://getbootstrap.com/ -->
-		<script src="./admin/js/tooplate-scripts.js"></script>
+		<script
+			src="${pageContext.request.contextPath}/admin/js/jquery-3.3.1.min.js"></script>
+		<script
+			src="${pageContext.request.contextPath}/admin/js/moment.min.js"></script>
+		<script src="${pageContext.request.contextPath}/admin/js/Chart.min.js"></script>
+		<script
+			src="${pageContext.request.contextPath}/admin/js/bootstrap.min.js"></script>
+		<script
+			src="${pageContext.request.contextPath}/admin/js/tooplate-scripts.js"></script>
 		<script>
 			Chart.defaults.global.defaultFontColor = 'white';
 			let ctxLine, ctxBar, ctxPie, optionsLine, optionsBar, optionsPie, configLine, configBar, configPie, lineChart;
