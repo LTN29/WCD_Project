@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
-<title>Admin - Dashboard</title>
+<title>Admin - DashboaRd</title>
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css?family=Roboto:400,700">
 <link rel="stylesheet"
@@ -36,6 +36,10 @@
 						<li class="nav-item"><a class="nav-link active"
 							href="${pageContext.request.contextPath}/admin/story"> <i class="fas fa-tachometer-alt"></i>
 								Stories <span class="sr-only">(current)</span>
+						</a></li>
+						<li class="nav-item"><a class="nav-link active"
+							href="${pageContext.request.contextPath}/admin/author"> <i class="fas fa-tachometer-alt"></i>
+								Authors <span class="sr-only">(current)</span>
 						</a></li>
 						<li class="nav-item dropdown"><a
 							class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
