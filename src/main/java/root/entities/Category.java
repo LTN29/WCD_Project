@@ -1,5 +1,6 @@
 package root.entities;
-
+//POJO PLAIN OLD JAVA OBJECT
+// + KIEN THUC
 public class Category {
 	private int id;
 	private String name;

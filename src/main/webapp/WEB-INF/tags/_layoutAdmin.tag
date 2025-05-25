@@ -37,6 +37,10 @@
 							href="${pageContext.request.contextPath}/admin/story"> <i class="fas fa-tachometer-alt"></i>
 								Stories <span class="sr-only">(current)</span>
 						</a></li>
+						<li class="nav-item"><a class="nav-link active"
+							href="${pageContext.request.contextPath}/admin/author"> <i class="fas fa-tachometer-alt"></i>
+								Authors <span class="sr-only">(current)</span>
+						</a></li>
 						<li class="nav-item dropdown"><a
 							class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
 							role="button" data-toggle="dropdown" aria-haspopup="true"

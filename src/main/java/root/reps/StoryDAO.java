@@ -148,6 +148,33 @@ public class StoryDAO {
         }
         return list;
     }
+    public static List<Story> getByAuthorId(int authorId) throws SQLException {
+        List<Story> list = new ArrayList<>();
+        String sql = "SELECT * FROM tbl_story WHERE _author_id = ?";
+        try (Connection conn = DBUtil.getInstance().getConnect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, authorId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+            	Story s = new Story(
+            		    rs.getInt("_id"),
+            		    rs.getString("_title"),
+            		    rs.getInt("_chapter_number"),
+            		    rs.getString("_introduction"),
+            		    rs.getString("_image"),
+            		    rs.getInt("_like_number"),
+            		    rs.getInt("_follow_number"),
+            		    rs.getInt("_view_number"),
+            		    rs.getInt("_author_id"),
+            		    rs.getInt("_status_id"),
+            		    rs.getInt("_category_id")
+            		);
+
+                list.add(s);
+            }
+        }
+        return list;
+    }
 
 	
 }

@@ -81,4 +81,15 @@ public class Story {
 
 
     public Story() {}
+    public Story(int id, String title, String introduction, String image,
+            int authorId, int categoryId, int statusId) {
+   this.id = id;
+   this.title = title;
+   this.introduction = introduction;
+   this.image = image;
+   this.authorId = authorId;
+   this.categoryId = categoryId;
+   this.statusId = statusId;
+}
+
 }
