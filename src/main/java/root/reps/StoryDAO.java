@@ -85,36 +85,44 @@ public class StoryDAO {
         }
     }
 
-    public static Story getById(int id) throws SQLException {
-        String sql = "SELECT s.*, a._name AS authorName, c._name AS categoryName, st._title AS statusName " +
-                "FROM tbl_story s " +
-                "LEFT JOIN tbl_author a ON s._author_id = a._id " +
-                "LEFT JOIN tbl_category c ON s._category_id = c._id " +
-                "LEFT JOIN tbl_status st ON s._status_id = st._id " +
-                "WHERE s._id = ?";
-        try (Connection conn = DBUtil.getInstance().getConnect();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    return new Story(
-                        rs.getInt("_id"),
-                        rs.getString("_title"),
-                        rs.getInt("_chapter_number"),
-                        rs.getString("_introduction"),
-                        rs.getString("_image"),
-                        rs.getInt("_like_number"),
-                        rs.getInt("_follow_number"),
-                        rs.getInt("_view_number"),
-                        rs.getInt("_author_id"),
-                        rs.getInt("_status_id"),
-                        rs.getInt("_category_id")
-                    );
-                }
-            }
-        }
-        return null;
-    }
+	public static Story getById(int id) throws SQLException {
+	    String sql = "SELECT s.*, " +
+	                 "a._name AS authorName, " +
+	                 "c._name AS categoryName, " +
+	                 "st._title AS statusTitle " +
+	                 "FROM tbl_story s " +
+	                 "LEFT JOIN tbl_author a ON s._author_id = a._id " +
+	                 "LEFT JOIN tbl_category c ON s._category_id = c._id " +
+	                 "LEFT JOIN tbl_status st ON s._status_id = st._id " +
+	                 "WHERE s._id = ?";
+	    try (Connection conn = DBUtil.getInstance().getConnect();
+	         PreparedStatement stmt = conn.prepareStatement(sql)) {
+	        stmt.setInt(1, id);
+	        try (ResultSet rs = stmt.executeQuery()) {
+	            if (rs.next()) {
+	                Story s = new Story(
+	                    rs.getInt("_id"),
+	                    rs.getString("_title"),
+	                    rs.getInt("_chapter_number"),
+	                    rs.getString("_introduction"),
+	                    rs.getString("_image"),
+	                    rs.getInt("_like_number"),
+	                    rs.getInt("_follow_number"),
+	                    rs.getInt("_view_number"),
+	                    rs.getInt("_author_id"),
+	                    rs.getInt("_status_id"),
+	                    rs.getInt("_category_id")
+	                );
+	                s.setAuthorName(rs.getString("authorName"));
+	                s.setCategoryName(rs.getString("categoryName"));
+	                s.setStatusName(rs.getString("statusTitle"));
+	                return s;
+	            }
+	        }
+	    }
+	    return null;
+	}
+
     public static List<Story> getAllWithNames() throws SQLException {
         List<Story> list = new ArrayList<>();
         String sql = "SELECT s.*, a._name AS authorName, c._name AS categoryName, st._title AS statusName " +
