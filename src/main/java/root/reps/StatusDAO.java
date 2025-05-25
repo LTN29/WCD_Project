@@ -13,7 +13,7 @@ import root.myutils.DBUtil;
 public class StatusDAO {
 	public static List<Status> getAll() throws SQLException {
         List<Status> list = new ArrayList<>();
-        String sql = "SELECT _id, _title FROM tbl_status";
+        String sql = "SELECT * FROM tbl_status";
         try (Connection conn = DBUtil.getInstance().getConnect();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {

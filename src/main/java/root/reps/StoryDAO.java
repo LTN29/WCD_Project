@@ -115,7 +115,7 @@ public class StoryDAO {
 	                );
 	                s.setAuthorName(rs.getString("authorName"));
 	                s.setCategoryName(rs.getString("categoryName"));
-	                s.setStatusName(rs.getString("statusTitle"));
+	                s.setStatusTitle(rs.getString("statusTitle"));
 	                return s;
 	            }
 	        }
@@ -125,7 +125,7 @@ public class StoryDAO {
 
     public static List<Story> getAllWithNames() throws SQLException {
         List<Story> list = new ArrayList<>();
-        String sql = "SELECT s.*, a._name AS authorName, c._name AS categoryName, st._title AS statusName " +
+        String sql = "SELECT s.*, a._name AS authorName, c._name AS categoryName, st._title AS statusTitle " +
                      "FROM tbl_story s " +
                      "LEFT JOIN tbl_author a ON s._author_id = a._id " +
                      "LEFT JOIN tbl_category c ON s._category_id = c._id " +
@@ -150,7 +150,7 @@ public class StoryDAO {
                 );
                 s.setAuthorName(rs.getString("authorName"));
                 s.setCategoryName(rs.getString("categoryName"));
-                s.setStatusName(rs.getString("statusName"));
+                s.setStatusTitle(rs.getString("statusTitle"));
                 list.add(s);
             }
         }
@@ -184,5 +184,74 @@ public class StoryDAO {
         return list;
     }
 
-	
+    public List<Story> getTopStories(String criteria) throws Exception {
+        List<Story> stories = new ArrayList<>();
+        String query = "";
+        switch (criteria) {
+            case "newest":
+                query = "SELECT _id, _title, _like_number, _follow_number, _view_number FROM tbl_story ORDER BY _id DESC LIMIT 10";
+                break;
+            case "most_viewed":
+                query = "SELECT _id, _title, _like_number, _follow_number, _view_number FROM tbl_story ORDER BY _view_number DESC LIMIT 10";
+                break;
+            case "highest_score":
+                query = "SELECT _id, _title, _like_number, _follow_number, _view_number, (_like_number * 0.6 + _follow_number * 0.4) AS score " +
+                        "FROM tbl_story ORDER BY score DESC LIMIT 10";
+                break;
+        }
+        try (Connection conn = DBUtil.getInstance().getConnect();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                Story story = new Story();
+                story.setId(rs.getInt("_id"));
+                story.setTitle(rs.getString("_title"));
+                story.setLikeNumber(rs.getInt("_like_number"));
+                story.setFollowNumber(rs.getInt("_follow_number"));
+                story.setViewNumber(rs.getInt("_view_number"));
+                stories.add(story);
+            }
+        }
+        return stories;
+    }
+    
+    public static List<Story> getByCategoryId(int categoryId) throws SQLException {
+        List<Story> list = new ArrayList<>();
+        String sql = "SELECT s.*, a._name AS authorName, c._name AS categoryName, st._title AS statusTitle " +
+                     "FROM tbl_story s " +
+                     "LEFT JOIN tbl_author a ON s._author_id = a._id " +
+                     "LEFT JOIN tbl_category c ON s._category_id = c._id " +
+                     "LEFT JOIN tbl_status st ON s._status_id = st._id " +
+                     "WHERE s._category_id = ? ORDER BY s._id DESC";
+        try (Connection conn = DBUtil.getInstance().getConnect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, categoryId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Story s = new Story(
+                        rs.getInt("_id"),
+                        rs.getString("_title"),
+                        rs.getInt("_chapter_number"),
+                        rs.getString("_introduction"),
+                        rs.getString("_image"),
+                        rs.getInt("_like_number"),
+                        rs.getInt("_follow_number"),
+                        rs.getInt("_view_number"),
+                        rs.getInt("_author_id"),
+                        rs.getInt("_status_id"),
+                        rs.getInt("_category_id")
+                    );
+                 
+                    s.setAuthorName(rs.getString("authorName"));
+                    s.setCategoryName(rs.getString("categoryName"));
+                    s.setStatusTitle(rs.getString("statusTitle"));
+                    list.add(s);
+                }
+            }
+        }
+        return list;
+    }
+
+
 }
+

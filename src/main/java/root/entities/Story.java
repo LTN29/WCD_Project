@@ -15,13 +15,13 @@ public class Story {
 
 
     private String authorName;
-    private String statusName;
     private String categoryName;
     private String statusTitle; 
 
    
     public String getStatusTitle() {return statusTitle;}
     public void setStatusTitle(String statusTitle) {this.statusTitle = statusTitle;}
+    
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
@@ -57,9 +57,6 @@ public class Story {
 
     public String getAuthorName() { return authorName; }
     public void setAuthorName(String authorName) { this.authorName = authorName; }
-
-    public String getStatusName() { return statusName; }
-    public void setStatusName(String statusName) { this.statusName = statusName; }
 
     public String getCategoryName() { return categoryName; }
     public void setCategoryName(String categoryName) { this.categoryName = categoryName; }

@@ -100,4 +100,23 @@ public class ChapterDAO {
             return stmt.executeUpdate() > 0;
         }
     }
+    
+    public List<Chapter> getChaptersByStoryId(int storyId) throws Exception {
+        List<Chapter> chapters = new ArrayList<>();
+        String query = "SELECT _id, _title FROM tbl_chapter WHERE _story_id = ? ORDER BY _id";
+        try (Connection conn = DBUtil.getInstance().getConnect();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, storyId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Chapter chapter = new Chapter();
+                    chapter.setId(rs.getInt("_id"));
+                    chapter.setTitle(rs.getString("_title"));
+                    chapters.add(chapter);
+                }
+            }
+        }
+        return chapters;
+    }
+
 }
