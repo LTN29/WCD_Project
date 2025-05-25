@@ -29,11 +29,17 @@ public class CategoryStoryServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+    @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int categoryId = Integer.parseInt(req.getParameter("categoryId"));
-        List<Story> stories = StoryDAO.getByCategoryId(categoryId);
-        req.setAttribute("stories", stories);
-        req.getRequestDispatcher("/client/categoryStoryList.jsp").forward(req, resp);
+        try {
+            int categoryId = Integer.parseInt(req.getParameter("categoryId"));
+            List<Story> stories = StoryDAO.getByCategoryId(categoryId);
+            req.setAttribute("stories", stories);
+            req.setAttribute("categoryName", stories.isEmpty() ? "" : stories.get(0).getCategoryName());
+            req.getRequestDispatcher("/client/categoryStoryList.jsp").forward(req, resp);
+        } catch (Exception e) {
+            resp.getWriter().println("Lỗi: " + e.getMessage());
+        }
     }
 
 
