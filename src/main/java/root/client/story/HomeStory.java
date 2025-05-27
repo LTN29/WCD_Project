@@ -35,11 +35,11 @@ public class HomeStory extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             List<Category> categories = CategoryDAO.getAll();
-            List<Story> newestStories = StoryDAO.getTopStories("newest");
+            List<Story> stories = StoryDAO.getTopStories("newest");
             List<Story> mostViewedStories = StoryDAO.getTopStories("most_viewed");
             List<Story> topRatedStories = StoryDAO.getTopStories("highest_score");
             request.setAttribute("categories", categories);
-          request.setAttribute("newestStories", newestStories);
+          request.setAttribute("stories", stories);
             request.setAttribute("mostViewedStories", mostViewedStories);
             request.setAttribute("topRatedStories", topRatedStories);
             request.getRequestDispatcher("/client/story/listStory.jsp").forward(request, response);
