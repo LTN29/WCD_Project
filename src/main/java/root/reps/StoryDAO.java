@@ -184,37 +184,54 @@ public class StoryDAO {
         return list;
     }
 
-    public List<Story> getTopStories(String criteria) throws Exception {
-        List<Story> stories = new ArrayList<>();
-        String query = "";
+
+    public static List<Story> getTopStories(String criteria) throws SQLException {
+        List<Story> list = new ArrayList<>();
+        String orderBy = "_id DESC";
         switch (criteria) {
-            case "newest":
-                query = "SELECT _id, _title, _like_number, _follow_number, _view_number FROM tbl_story ORDER BY _id DESC LIMIT 10";
-                break;
             case "most_viewed":
-                query = "SELECT _id, _title, _like_number, _follow_number, _view_number FROM tbl_story ORDER BY _view_number DESC LIMIT 10";
+                orderBy = "_view_number DESC";
                 break;
             case "highest_score":
-                query = "SELECT _id, _title, _like_number, _follow_number, _view_number, (_like_number * 0.6 + _follow_number * 0.4) AS score " +
-                        "FROM tbl_story ORDER BY score DESC LIMIT 10";
+                orderBy = "(_like_number * 0.6 + _follow_number * 0.4) DESC";
                 break;
         }
+        String sql = "SELECT TOP 10 s.*, a._name AS authorName, c._name AS categoryName, st._title AS statusTitle " +
+                "FROM tbl_story s " +
+                "LEFT JOIN tbl_author a ON s._author_id = a._id " +
+                "LEFT JOIN tbl_category c ON s._category_id = c._id " +
+                "LEFT JOIN tbl_status st ON s._status_id = st._id " +
+                "ORDER BY s._view_number DESC";
+
         try (Connection conn = DBUtil.getInstance().getConnect();
-             PreparedStatement stmt = conn.prepareStatement(query);
+             PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
-                Story story = new Story();
-                story.setId(rs.getInt("_id"));
-                story.setTitle(rs.getString("_title"));
-                story.setLikeNumber(rs.getInt("_like_number"));
-                story.setFollowNumber(rs.getInt("_follow_number"));
-                story.setViewNumber(rs.getInt("_view_number"));
-                stories.add(story);
+                Story s = new Story(
+                    rs.getInt("_id"),
+                    rs.getString("_title"),
+                    rs.getInt("_chapter_number"),
+                    rs.getString("_introduction"),
+                    rs.getString("_image"),
+                    rs.getInt("_like_number"),
+                    rs.getInt("_follow_number"),
+                    rs.getInt("_view_number"),
+                    rs.getInt("_author_id"),
+                    rs.getInt("_status_id"),
+                    rs.getInt("_category_id")
+                );
+                s.setAuthorName(rs.getString("authorName"));
+                s.setCategoryName(rs.getString("categoryName"));
+                s.setStatusTitle(rs.getString("statusTitle"));
+                list.add(s);
             }
         }
-        return stories;
+        return list;
     }
+
+
     
+
     public static List<Story> getByCategoryId(int categoryId) throws SQLException {
         List<Story> list = new ArrayList<>();
         String sql = "SELECT s.*, a._name AS authorName, c._name AS categoryName, st._title AS statusTitle " +
@@ -241,7 +258,6 @@ public class StoryDAO {
                         rs.getInt("_status_id"),
                         rs.getInt("_category_id")
                     );
-                 
                     s.setAuthorName(rs.getString("authorName"));
                     s.setCategoryName(rs.getString("categoryName"));
                     s.setStatusTitle(rs.getString("statusTitle"));

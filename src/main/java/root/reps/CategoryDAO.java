@@ -83,5 +83,20 @@ public class CategoryDAO {
 		}
 		
 	}
+	public static String getNameById(int id) throws SQLException {
+	    String sql = "SELECT _name FROM tbl_category WHERE _id = ?";
+	    try (
+	        Connection conn = DBUtil.getInstance().getConnect();
+	        PreparedStatement stmt = conn.prepareStatement(sql)
+	    ) {
+	        stmt.setInt(1, id);
+	        ResultSet rs = stmt.executeQuery();
+	        if (rs.next()) {
+	            return rs.getString("_name");
+	        }
+	    }
+	    return "FAIL";
+	}
+
 
 }

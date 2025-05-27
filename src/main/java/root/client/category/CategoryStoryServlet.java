@@ -5,7 +5,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import root.entities.Category;
 import root.entities.Story;
+import root.reps.CategoryDAO;
 import root.reps.StoryDAO;
 
 import java.io.IOException;
@@ -29,11 +31,29 @@ public class CategoryStoryServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+    @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int categoryId = Integer.parseInt(req.getParameter("categoryId"));
-        List<Story> stories = StoryDAO.getByCategoryId(categoryId);
-        req.setAttribute("stories", stories);
-        req.getRequestDispatcher("/client/categoryStoryList.jsp").forward(req, resp);
+        try {
+            int categoryId = Integer.parseInt(req.getParameter("categoryId"));
+
+            List<Story> stories = StoryDAO.getByCategoryId(categoryId);
+            req.setAttribute("stories", stories);
+
+         
+            String categoryName = CategoryDAO.getNameById(categoryId);
+            req.setAttribute("listTitle", "Thể loại: " + categoryName);
+
+            
+            List<Category> categories = CategoryDAO.getAll(); 
+            req.setAttribute("categories", categories);
+
+        
+            req.getRequestDispatcher("/client/story/listStory.jsp").forward(req, resp);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            resp.getWriter().println("Lỗi: " + e.getMessage());
+        }
     }
 
 

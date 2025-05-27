@@ -1,3 +1,5 @@
 eclipse.preferences.version=1
-encoding//src/main/webapp/client/home.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/tags/_layoutClient.tag=UTF-8
+encoding//src/main/webapp/client/story/comicCard.jsp=UTF-8
+encoding//src/main/webapp/client/story/listStory.jsp=UTF-8
 encoding/<project>=UTF-8
