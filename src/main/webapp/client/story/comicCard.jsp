@@ -2,7 +2,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="comic-card">
-    <img src="${pageContext.request.contextPath}/client/img/${param.image != null ? param.image : 'default.png'}" alt="${param.title}" class="comic-cover" />
+    <img src="${pageContext.request.contextPath}/client/img/imgStory/${param.image != null ? param.image : 'default.png'}" alt="${param.title}" class="comic-cover" />
     <div class="comic-title">
         <a href="storyDetail?id=${param.id}">${param.title}</a>
     </div>
