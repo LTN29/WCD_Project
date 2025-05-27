@@ -56,8 +56,11 @@
                         </td>
                         <td class="text-center">
                             <c:if test="${not empty a.image}">
-                                <img src="${a.image}" alt="${a.name}" width="60" height="60"
-                                     class="rounded shadow-sm" style="object-fit: cover;">
+                               <img src="${pageContext.request.contextPath}/admin/img/imgAuthor/${a.image}"
+     alt="${a.name}" width="60" height="60"
+     class="rounded shadow-sm" style="object-fit: cover;">
+
+
                             </c:if>
                         </td>
                         <td class="text-center">
