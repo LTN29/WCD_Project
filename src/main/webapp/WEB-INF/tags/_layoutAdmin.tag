@@ -53,8 +53,9 @@
 									class="dropdown-item" href="#">Weekly Report</a> <a
 									class="dropdown-item" href="#">Yearly Report</a>
 							</div></li>
-						<li class="nav-item"><a class="nav-link" href="products.html">
-								<i class="fas fa-shopping-cart"></i> Products
+						<li class="nav-item"><a class="nav-link active"
+							href="${pageContext.request.contextPath}/admin/chapter"> <i class="fas fa-tachometer-alt"></i>
+								Chapter <span class="sr-only">(current)</span>
 						</a></li>
 
 						<li class="nav-item"><a class="nav-link" href="accounts.html">

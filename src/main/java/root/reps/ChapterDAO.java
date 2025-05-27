@@ -118,5 +118,25 @@ public class ChapterDAO {
         }
         return chapters;
     }
+    public static List<Chapter> getAll() throws SQLException {
+        List<Chapter> list = new ArrayList<>();
+        String sql = "SELECT TOP 1000 * FROM tbl_chapter ORDER BY _id DESC";
+        try (Connection conn = DBUtil.getInstance().getConnect();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                list.add(new Chapter(
+                    rs.getInt("_id"),
+                    rs.getString("_title"),
+                    rs.getString("_content"),
+                    rs.getDate("_day_create"),
+                    rs.getInt("_story_id")
+                ));
+            }
+        }
+        return list;
+    }
+
 
 }
