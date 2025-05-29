@@ -6,11 +6,15 @@
 		import jakarta.servlet.http.HttpServletRequest;
 		import jakarta.servlet.http.HttpServletResponse;
 		import root.entities.Story;
-		import root.entities.Author;
+import root.entities.StorySchedule;
+import root.entities.StoryType;
+import root.entities.Author;
 		import root.entities.Category;
 		import root.entities.Status;
 		import root.reps.StoryDAO;
-		import root.reps.AuthorDAO;
+import root.reps.StoryScheduleDAO;
+import root.reps.StoryTypeDAO;
+import root.reps.AuthorDAO;
 		import root.reps.CategoryDAO;
 		import root.reps.StatusDAO;
 		
@@ -25,10 +29,16 @@
 		        List<Author> authors = AuthorDAO.getAll();
 		        List<Category> categories = CategoryDAO.getAll();
 		        List<Status> statusList = StatusDAO.getAll();
+		        List<StoryType> storyTypes = StoryTypeDAO.getAll();
+		        List<StorySchedule> schedules = StoryScheduleDAO.getAll();
+
 		        req.setAttribute("authors", authors);
 		        req.setAttribute("categories", categories);
 		        req.setAttribute("statusList", statusList);
+		        req.setAttribute("storyTypes", storyTypes);
+		        req.setAttribute("schedules", schedules);
 		    }
+
 		
 		    @Override
 		    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

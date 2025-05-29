@@ -5,6 +5,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import root.entities.Chapter;
+import root.entities.ChapterImage;
+import root.reps.ChapterDAO;
+import root.reps.ChapterImageDAO;
+
 import java.io.IOException;
 
 /**
@@ -27,7 +32,15 @@ public class ChapterListServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		int chapterId= Integer.parseInt(request.getParameter("id"));
+		
+//		 Chapter chapter = ChapterDAO.getByStoryId(chapterId);
+//		 ChapterImage chapterImg = ChapterImageDAO.getByChapterId(chapterId);
+//		 request.setAttribute("chapter", chapter);
+//		 request.setAttribute("chapterImg", chapterImg);
+//		 
+		 request.getRequestDispatcher("/client/chapter/chapterDetail.jsp").forward(request, response);
+		
 	}
 
 	/**

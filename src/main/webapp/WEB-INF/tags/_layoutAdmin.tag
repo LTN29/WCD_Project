@@ -85,7 +85,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col">
-					<p class="text-white mt-5 mb-5">
+					<p class="text-black mt-5 mb-5">
 						Welcome back, <b>Admin</b>
 					</p>
 				</div>
@@ -98,7 +98,7 @@
 			<!-- ====== FOOTER ====== -->
 			<footer class="tm-footer row tm-mt-small">
 				<div class="col-12 font-weight-light">
-					<p class="text-center text-white mb-0 px-4 small">
+					<p class="text-center text-black mb-0 px-4 small">
 						Copyright &copy; <b>2018</b> All rights reserved. Design: <a
 							rel="nofollow noopener" href="https://templatemo.com"
 							class="tm-footer-link">Template Mo</a>

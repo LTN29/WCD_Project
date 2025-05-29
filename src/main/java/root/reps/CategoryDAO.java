@@ -59,7 +59,7 @@ public class CategoryDAO {
 	}
 	
 	public static int update(Category c) throws SQLException {
-	    String sql = "UPDATE tbl_category SET _name = ?, _active = ? WHERE id = ?";
+	    String sql = "UPDATE tbl_category SET _name = ?, _active = ? WHERE _id = ?";
 	    try (
 	        Connection conn = DBUtil.getInstance().getConnect();
 	        PreparedStatement stmt = conn.prepareStatement(sql)
@@ -73,16 +73,37 @@ public class CategoryDAO {
 	
 
 	public static int deleteById(int id) throws SQLException {
-		String sql= "DELETE From tbl_category WHERE id = ?";
+		String sql= "DELETE From tbl_category WHERE _id = ?";
 		try(
 				Connection conn = DBUtil.getInstance().getConnect();
 				PreparedStatement stmt = conn.prepareStatement(sql);
 				){
-			stmt.setInt(id, 1);
+			stmt.setInt(1, id);
 			return stmt.executeUpdate();
 		}
 		
 	}
+	
+	public static Category getById(int id) throws SQLException {
+	    String sql = "SELECT * FROM tbl_category WHERE _id = ?";
+	    try (
+	        Connection conn = DBUtil.getInstance().getConnect();
+	        PreparedStatement stmt = conn.prepareStatement(sql)
+	    ) {
+	        stmt.setInt(1, id);
+	        ResultSet rs = stmt.executeQuery();
+	        if (rs.next()) {
+	            return new Category(
+	                rs.getInt("_id"),
+	                rs.getString("_name"),
+	                rs.getBoolean("_active")
+	            );
+	        }
+	    }
+	    return null;
+	}
+
+	
 	public static String getNameById(int id) throws SQLException {
 	    String sql = "SELECT _name FROM tbl_category WHERE _id = ?";
 	    try (
