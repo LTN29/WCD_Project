@@ -33,6 +33,8 @@
 		    @Override
 		    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		        String action = req.getParameter("action");
+		        String keyword = req.getParameter("keyword");
+
 		        try {
 		            if ("edit".equals(action)) {
 		                int id = Integer.parseInt(req.getParameter("id"));
@@ -43,8 +45,16 @@
 		            } else if ("add".equals(action)) {
 		                setDropdowns(req);
 		                req.getRequestDispatcher("/admin/story/storyForm.jsp").forward(req, resp);
-		            } else { 
-		                List<Story> stories = StoryDAO.getAllWithNames();
+		            } else {
+		                List<Story> stories;
+
+		                if (keyword != null && !keyword.trim().isEmpty()) {
+		                    stories = StoryDAO.searchByTitle(keyword.trim());
+		                    req.setAttribute("keyword", keyword);
+		                } else {
+		                    stories = StoryDAO.getAllWithNames();
+		                }
+
 		                req.setAttribute("stories", stories);
 		                req.getRequestDispatcher("/admin/story/storyList.jsp").forward(req, resp);
 		            }
@@ -53,6 +63,7 @@
 		            resp.getWriter().println("ERROR: " + e.getMessage());
 		        }
 		    }
+
 		
 		    @Override
 		    protected void doPost(HttpServletRequest req, HttpServletResponse resp)

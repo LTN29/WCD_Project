@@ -245,4 +245,29 @@ public class StoryDAO {
         stmt.setInt(9, s.getStatusId());
         stmt.setInt(10, s.getCategoryId());
     }
+    public static List<Story> searchByTitle(String keyword) throws SQLException {
+        List<Story> list = new ArrayList<>();
+        String sql = "SELECT s.*, a._name AS authorName, c._name AS categoryName, st._title AS statusTitle " +
+                     "FROM tbl_story s " +
+                     "LEFT JOIN tbl_author a ON s._author_id = a._id " +
+                     "LEFT JOIN tbl_category c ON s._category_id = c._id " +
+                     "LEFT JOIN tbl_status st ON s._status_id = st._id " +
+                     "WHERE s._title LIKE ? " +
+                     "ORDER BY s._id DESC";
+        try (Connection conn = DBUtil.getInstance().getConnect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, "%" + keyword + "%");
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Story s = mapResultSetToStory(rs);
+                    s.setAuthorName(rs.getString("authorName"));
+                    s.setCategoryName(rs.getString("categoryName"));
+                    s.setStatusTitle(rs.getString("statusTitle"));
+                    list.add(s);
+                }
+            }
+        }
+        return list;
+    }
+
 }
