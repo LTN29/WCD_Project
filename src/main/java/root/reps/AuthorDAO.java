@@ -9,7 +9,7 @@ import root.myutils.DBUtil;
 
 public class AuthorDAO {
 
-    // ✅ Lấy danh sách tất cả tác giả
+    // Lấy danh sách tất cả tác giả
     public static List<Author> getAll() throws SQLException {
         List<Author> list = new ArrayList<>();
         String sql = "SELECT * FROM tbl_author ORDER BY _id ASC";
@@ -31,7 +31,7 @@ public class AuthorDAO {
         return list;
     }
 
-    // ✅ Thêm tác giả mới (trả về ID tự động sinh)
+    // Thêm tác giả mới (trả về ID tự động sinh)
     public static int insert(Author a) throws SQLException {
         String sql = "INSERT INTO tbl_author (_name, _information, _image) VALUES (?, ?, ?)";
 
@@ -58,7 +58,7 @@ public class AuthorDAO {
         }
     }
 
-    // ✅ Cập nhật thông tin tác giả
+    // Cập nhật thông tin tác giả
     public static int update(Author a) throws SQLException {
         String sql = "UPDATE tbl_author SET _name = ?, _information = ?, _image = ? WHERE _id = ?";
 
@@ -74,7 +74,7 @@ public class AuthorDAO {
         }
     }
 
-    // ✅ Xoá tác giả theo ID
+    // Xoá tác giả theo ID
     public static int deleteById(int id) throws SQLException {
         String sql = "DELETE FROM tbl_author WHERE _id = ?";
 
@@ -86,7 +86,7 @@ public class AuthorDAO {
         }
     }
 
-    // ✅ Lấy thông tin tác giả theo ID
+    // Lấy thông tin tác giả theo ID
     public static Author getById(int id) throws SQLException {
         String sql = "SELECT * FROM tbl_author WHERE _id = ?";
 
@@ -108,7 +108,31 @@ public class AuthorDAO {
         return null;
     }
 
-    // ✅ (Tuỳ chọn) Kiểm tra tác giả có tồn tại theo ID
+    // Tìm kiếm tác giả theo tên (LIKE %keyword%)
+    public static List<Author> searchByName(String keyword) throws SQLException {
+        List<Author> list = new ArrayList<>();
+        String sql = "SELECT * FROM tbl_author WHERE _name LIKE ? ORDER BY _id ASC";
+
+        try (Connection conn = DBUtil.getInstance().getConnect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, "%" + keyword + "%");
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Author a = new Author(
+                        rs.getInt("_id"),
+                        rs.getString("_name"),
+                        rs.getString("_information"),
+                        rs.getString("_image")
+                    );
+                    list.add(a);
+                }
+            }
+        }
+        return list;
+    }
+
+    // Kiểm tra tác giả tồn tại theo ID (tuỳ chọn)
     public static boolean exists(int id) throws SQLException {
         String sql = "SELECT 1 FROM tbl_author WHERE _id = ?";
 
@@ -117,12 +141,12 @@ public class AuthorDAO {
 
             stmt.setInt(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
-                return rs.next(); // Có dữ liệu là tồn tại
+                return rs.next();
             }
         }
     }
 
-    // ✅ (Tuỳ chọn) Kiểm tra tác giả trùng tên (tránh thêm trùng)
+    // Kiểm tra trùng tên tác giả (tuỳ chọn)
     public static boolean isDuplicateName(String name) throws SQLException {
         String sql = "SELECT 1 FROM tbl_author WHERE _name = ?";
 
