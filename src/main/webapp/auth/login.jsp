@@ -55,7 +55,7 @@
 
 			<div class="footer-note">
 				<p>
-					Bạn chưa có tài khoản? <a href="register.jsp"
+					Bạn chưa có tài khoản? <a href="register"
 						style="color: lightgreen">Đăng ký</a>
 				</p>
 			</div>

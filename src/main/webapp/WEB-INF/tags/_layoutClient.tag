@@ -49,7 +49,7 @@
 			<c:choose>
 				<c:when test="${not empty sessionScope.user}">
 					<span style="margin-right: 10px; font-weight: bold;"> Xin
-						chào, <a href="${pageContext.request.contextPath}/user_info.jsp">${sessionScope.user.name}</a>
+						chào, <a href="${pageContext.request.contextPath}/auth/user_info.jsp">${sessionScope.user.name}</a>
 					</span>
 					<a href="${pageContext.request.contextPath}/logout">Đăng xuất</a>
 				</c:when>
