@@ -283,4 +283,51 @@ body {
         height: 110px;
         margin-bottom: 7px;
     }
+    
+  .chapter-container {
+    max-width: 780px;
+    margin: 40px auto;
+    padding: 16px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.chapter-title {
+    text-align: center;
+    margin-bottom: 24px;
+    font-size: 28px;
+    color: #222;
+}
+
+.chapter-images img.chapter-image {
+    width: 100%;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.back-link {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.header-login-btn {
+    padding: 6px 14px;
+    background-color: transparent;
+    border: 1px solid #007bff;
+    border-radius: 4px;
+    color: #007bff;
+    font-weight: 500;
+    font-size: 14px;
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.header-login-btn:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+  
 }

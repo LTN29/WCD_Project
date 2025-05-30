@@ -9,6 +9,20 @@ import java.util.List;
 
 public class StoryTypeDAO {
 
+    // ✅ Lấy tất cả thể loại
+    public static List<StoryType> getAll() throws SQLException {
+        List<StoryType> list = new ArrayList<>();
+        String sql = "SELECT * FROM tbl_story_type";
+        try (Connection conn = DBUtil.getInstance().getConnect();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                list.add(new StoryType(rs.getInt("_id"), rs.getString("_title"), rs.getInt("_active")));
+            }
+        }
+        return list;
+    }
+
     // 📌 Lấy tất cả thể loại đang hoạt động
     public static List<StoryType> getActiveTypes() throws SQLException {
         List<StoryType> list = new ArrayList<>();
