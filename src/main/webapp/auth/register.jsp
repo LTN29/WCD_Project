@@ -37,8 +37,9 @@
 <body class="login-page">
 	<div class="login-container">
 		<h1>TRANG ĐĂNG KÝ</h1>
-		<form action="login" method="post" onsubmit="return validateForm()">
-			<input type="hidden" name="action" value="register" />
+		<form method="post" action="${pageContext.request.contextPath}/register">
+			<input type="hidden" name="action" value="register" /> <input
+				type="hidden" name="action" value="register" />
 			<h3>Vui lòng điền thông tin</h3>
 
 			<div class="input-box">

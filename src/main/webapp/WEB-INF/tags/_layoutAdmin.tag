@@ -1,4 +1,5 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -34,12 +35,12 @@
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul class="navbar-nav mx-auto h-100">
 						<li class="nav-item"><a class="nav-link active"
-							href="${pageContext.request.contextPath}/admin/story"> <i class="fas fa-tachometer-alt"></i>
-								Stories <span class="sr-only">(current)</span>
+							href="${pageContext.request.contextPath}/admin/story"> <i
+								class="fas fa-tachometer-alt"></i> Stories <span class="sr-only">(current)</span>
 						</a></li>
 						<li class="nav-item"><a class="nav-link active"
-							href="${pageContext.request.contextPath}/admin/author"> <i class="fas fa-tachometer-alt"></i>
-								Authors <span class="sr-only">(current)</span>
+							href="${pageContext.request.contextPath}/admin/author"> <i
+								class="fas fa-tachometer-alt"></i> Authors <span class="sr-only">(current)</span>
 						</a></li>
 						<li class="nav-item dropdown"><a
 							class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
@@ -74,9 +75,20 @@
 							</div></li>
 					</ul>
 					<ul class="navbar-nav">
-						<li class="nav-item"><a class="nav-link d-block"
-							href="login.html"> Admin, <b>Logout</b>
-						</a></li>
+						<c:choose>
+							<c:when test="${not empty sessionScope.user}">
+								<li class="nav-item"><a class="nav-link d-block"
+									href="${pageContext.request.contextPath}/logout">
+										${sessionScope.user.name}, <b>Logout</b>
+								</a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="nav-item"><a class="nav-link d-block"
+									href="${pageContext.request.contextPath}/login"> Đăng nhập
+								</a></li>
+							</c:otherwise>
+						</c:choose>
+
 					</ul>
 				</div>
 			</div>
@@ -86,8 +98,9 @@
 			<div class="row">
 				<div class="col">
 					<p class="text-black mt-5 mb-5">
-						Welcome back, <b>Admin</b>
+						Welcome back, <b>${sessionScope.user.name}</b>
 					</p>
+
 				</div>
 			</div>
 			<!-- ====== MAIN ====== -->

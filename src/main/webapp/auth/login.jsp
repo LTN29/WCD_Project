@@ -22,8 +22,9 @@
 <body class="login-page">
 	<div class="login-container">
 		<h1>TRANG ĐĂNG NHẬP</h1>
-		<form action="auth" method="post">
-			<input type="hidden" name="action" value="login" />
+		<form method="post" action="${pageContext.request.contextPath}/login">
+			<input type="hidden" name="action" value="login"> <input
+				type="hidden" name="action" value="login" />
 			<h3>Vui lòng đăng nhập</h3>
 
 			<div class="input-box">
