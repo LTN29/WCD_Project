@@ -17,9 +17,6 @@ public class AdminAuthorServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-        String keyword = request.getParameter("keyword");
-        if (keyword == null) keyword = "";
-
         try {
             if ("edit".equals(action)) {
                 int id = Integer.parseInt(request.getParameter("id"));
@@ -33,9 +30,8 @@ public class AdminAuthorServlet extends HttpServlet {
                 AuthorDAO.deleteById(id);
                 response.sendRedirect(request.getContextPath() + "/admin/author");
             } else {
-                List<Author> authors = AuthorDAO.searchByName(keyword);
+                List<Author> authors = AuthorDAO.getAll();
                 request.setAttribute("authors", authors);
-                request.setAttribute("keyword", keyword);
                 request.getRequestDispatcher("/admin/author/authorList.jsp").forward(request, response);
             }
         } catch (Exception e) {
@@ -55,10 +51,10 @@ public class AdminAuthorServlet extends HttpServlet {
                 author.setName(request.getParameter("name"));
                 author.setInformation(request.getParameter("information"));
                 author.setImage(request.getParameter("image"));
-
+                
                 AuthorDAO.insert(author);
                 response.sendRedirect(request.getContextPath() + "/admin/author");
-
+                
             } else if ("update".equals(action)) {
                 int id = Integer.parseInt(request.getParameter("id"));
                 Author author = new Author();
@@ -66,10 +62,10 @@ public class AdminAuthorServlet extends HttpServlet {
                 author.setName(request.getParameter("name"));
                 author.setInformation(request.getParameter("information"));
                 author.setImage(request.getParameter("image"));
-
+                
                 AuthorDAO.update(author);
                 response.sendRedirect(request.getContextPath() + "/admin/author");
-
+                
             } else {
                 response.getWriter().println("Unknown action!");
             }

@@ -11,7 +11,7 @@ import root.reps.StoryDAO;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/authorDetail")
+@WebServlet("/AuthorDetail")
 public class AuthorDetail extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -24,7 +24,7 @@ public class AuthorDetail extends HttpServlet {
 
 			request.setAttribute("author", author);
 			request.setAttribute("stories", stories);
-			request.getRequestDispatcher("/client/author/authorDetail.jsp").forward(request, response);
+			request.getRequestDispatcher("/client/author/author-detail.jsp").forward(request, response);
 		} catch (Exception e) {
 			response.getWriter().println("Lỗi: " + e.getMessage());
 		}
