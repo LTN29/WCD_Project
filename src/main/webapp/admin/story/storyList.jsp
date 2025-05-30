@@ -1,7 +1,7 @@
 <%@ taglib prefix="admin" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <admin:_layoutAdmin>
   <style>
@@ -9,21 +9,48 @@
       display: flex;
       gap: 1rem;
       margin-bottom: 1.5rem;
+      flex-wrap: wrap;
     }
+
     .search-form input[type="text"] {
       flex: 1;
+      background-color: #1e1e2f;
+      border: 1px solid #444;
+      color: #fff;
     }
+
     .table-container {
-      background: white;
+      background: #2c2f48;
       border-radius: 1rem;
       padding: 2rem;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
     }
-    table th, table td {
-      vertical-align: middle;
+
+    .table {
+      color: #fff;
     }
+
+    .table th {
+      background-color: #3a3f63;
+      color: #fff;
+      text-align: center;
+    }
+
+    .table td {
+      background-color: #2c2f48;
+      color: #f0f0f0;
+    }
+
+    .table-hover tbody tr:hover {
+      background-color: #383c59;
+    }
+
     .btn-sm .bi {
       margin-right: 0.25rem;
+    }
+
+    .text-muted {
+      color: #aaa !important;
     }
   </style>
 
@@ -33,13 +60,14 @@
     <!-- Tìm kiếm và thêm mới -->
     <form method="get" action="story" class="search-form">
       <input type="text" name="keyword" value="${fn:escapeXml(param.keyword)}" class="form-control" placeholder="🔍 Tìm theo tiêu đề truyện...">
-      <button type="submit" class="btn btn-outline-primary"><i class="bi bi-search"></i> Tìm</button>
+      <button type="submit" class="btn btn-outline-info"><i class="bi bi-search"></i> Tìm</button>
       <a href="story?action=add" class="btn btn-success"><i class="bi bi-plus-circle"></i> Thêm truyện</a>
     </form>
 
+    <!-- Bảng danh sách truyện -->
     <div class="table-container">
       <table class="table table-hover table-bordered align-middle">
-        <thead class="table-primary text-center">
+        <thead>
           <tr>
             <th>ID</th>
             <th>Tiêu đề</th>

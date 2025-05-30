@@ -4,43 +4,60 @@
 
 <admin:_layoutAdmin>
   <style>
-    /* CSS riêng của trang nếu cần (khuyến nghị để trong layout hoặc file CSS ngoài) */
+  <style>
     .search-form {
       display: flex;
       gap: 1rem;
       margin-bottom: 1.5rem;
+      flex-wrap: wrap;
     }
+
     .search-form input[type="text"] {
       flex: 1;
+      background-color: #1e1e2f;
+      border: 1px solid #444;
+      color: #fff;
     }
+
     .table-container {
-      background: white;
+      background: #2c2f48;
       border-radius: 1rem;
       padding: 2rem;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
     }
-    table th, table td {
-      vertical-align: middle;
+
+    .table {
+      color: #fff;
     }
+
+    /* Giống story: header màu nền đậm */
+    .table th {
+      background-color: #3a3f63;
+      color: #fff;
+      text-align: center;
+    }
+
+    /* Nội dung ô trong bảng */
+    .table td {
+      background-color: #2c2f48;
+      color: #f0f0f0;
+      vertical-align: middle;  /* Thêm cho căn giữa chiều dọc */
+      text-align: center;      /* Căn giữa ngang giống story */
+    }
+
+    .table-hover tbody tr:hover {
+      background-color: #383c59;
+    }
+
     .btn-sm .bi {
       margin-right: 0.25rem;
     }
-    .btn-danger {
-      background-color: #dc3545;
-      border-color: #dc3545;
+
+    .text-muted {
+      color: #aaa !important;
     }
-    .btn-danger:hover {
-      background-color: #c82333;
-      border-color: #bd2130;
-    }
-    .btn-primary {
-      background-color: #3c6ef5;
-      border-color: #3c6ef5;
-    }
-    .btn-primary:hover {
-      background-color: #315de0;
-      border-color: #2f58cc;
-    }
+  </style>
+
   </style>
 
   <div class="container">

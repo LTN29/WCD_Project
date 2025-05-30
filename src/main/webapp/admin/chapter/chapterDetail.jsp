@@ -6,21 +6,31 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 <style>
-  .detail-card {
-    border:none;border-radius:1rem;
-    box-shadow:0 8px 18px rgba(0,0,0,.06);
-  }
-  .detail-header {
-    background:rgb(60,110,245,.08);
-    border-radius:1rem 1rem 0 0;
-    padding:1.5rem 2rem;
-  }
-  .detail-header h3{margin:0;font-weight:600;}
-  .detail-body{padding:2rem;}
-  pre.content{
-    white-space:pre-wrap;word-break:break-word;
-    background:rgb(248,249,250);border-radius:.75rem;padding:1rem;
-  }
+  body {
+  background-color: #121212;
+  color: #f1f1f1;
+}
+.detail-card {
+  background-color: #1e1e1e;
+  border-radius: 1rem;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
+}
+.detail-header {
+  background-color: rgba(60, 110, 245, 0.12);
+}
+.badge.bg-primary {
+  background-color: #3c6ef5;
+}
+pre.content {
+  background-color: #2a2a2a;
+  color: #eee;
+  border-radius: 0.75rem;
+}
+.btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
 </style>
 
 <admin:_layoutAdmin>

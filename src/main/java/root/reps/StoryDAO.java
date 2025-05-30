@@ -269,5 +269,54 @@ public class StoryDAO {
         }
         return list;
     }
+    public static List<Story> searchStories(String keyword, String orderBy) throws SQLException {
+        List<Story> list = new ArrayList<>();
+        String sql = "SELECT s.*, a._name AS authorName, c._name AS categoryName, st._title AS statusTitle " +
+                     "FROM tbl_story s " +
+                     "LEFT JOIN tbl_author a ON s._author_id = a._id " +
+                     "LEFT JOIN tbl_category c ON s._category_id = c._id " +
+                     "LEFT JOIN tbl_status st ON s._status_id = st._id " +
+                     "WHERE s._title LIKE ? " +
+                     "ORDER BY " + orderBy + " DESC";
+
+        try (Connection conn = DBUtil.getInstance().getConnect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, "%" + keyword + "%");
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Story s = mapResultSetToStory(rs);
+                    s.setAuthorName(rs.getString("authorName"));
+                    s.setCategoryName(rs.getString("categoryName"));
+                    s.setStatusTitle(rs.getString("statusTitle"));
+                    list.add(s);
+                }
+            }
+        }
+        return list;
+    }
+
+    public static List<Story> getAllWithNamesSorted(String orderBy) throws SQLException {
+        List<Story> list = new ArrayList<>();
+        String sql = "SELECT s.*, a._name AS authorName, c._name AS categoryName, st._title AS statusTitle " +
+                     "FROM tbl_story s " +
+                     "LEFT JOIN tbl_author a ON s._author_id = a._id " +
+                     "LEFT JOIN tbl_category c ON s._category_id = c._id " +
+                     "LEFT JOIN tbl_status st ON s._status_id = st._id " +
+                     "ORDER BY s." + orderBy + " DESC";
+
+        try (Connection conn = DBUtil.getInstance().getConnect();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                Story s = mapResultSetToStory(rs);
+                s.setAuthorName(rs.getString("authorName"));
+                s.setCategoryName(rs.getString("categoryName"));
+                s.setStatusTitle(rs.getString("statusTitle"));
+                list.add(s);
+            }
+        }
+        return list;
+    }
+
 
 }
