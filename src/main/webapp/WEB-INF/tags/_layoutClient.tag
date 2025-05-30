@@ -44,6 +44,7 @@
             <button class="client-header__icon">
                 <img src="${pageContext.request.contextPath}/client/img/User_Icon.png" alt="User" />
             </button>
+            <button><a href="${pageContext.request.contextPath}/auth/login.jsp">Đăng nhập</a></button>
         </div>
     </div>
 </header>

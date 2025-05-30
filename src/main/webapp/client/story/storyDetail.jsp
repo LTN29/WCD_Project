@@ -8,7 +8,7 @@
 		<div class="row">
 			<div class="col-md-4">
 				<img
-					src="${pageContext.request.contextPath}/client/img/${story.image}"
+					src="${pageContext.request.contextPath}/client/img/imgStory/${param.image != null ? param.image : 'default.png'}"
 					alt="${story.title}" class="img-fluid rounded shadow"
 					style="max-width: 100%">
 			</div>
