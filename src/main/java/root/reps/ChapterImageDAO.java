@@ -10,7 +10,7 @@ import java.util.List;
 public class ChapterImageDAO {
 
     // Lấy danh sách ảnh theo chapter ID
-    public static List<ChapterImage> getByChapterId(int chapterId) throws SQLException {
+    public static List<ChapterImage> getImagesByChapterId(int chapterId) throws SQLException {
         List<ChapterImage> list = new ArrayList<>();
         String sql = "SELECT * FROM tbl_chapter_image WHERE _chapter_id = ? ORDER BY _index ASC";
         try (
