@@ -16,8 +16,8 @@
   <div class="sidebar">
     <div class="logo">Admin Panel</div>
     <a href="${pageContext.request.contextPath}/admin">Dashboard</a>
-    <a href="${pageContext.request.contextPath}/admin/story/storyList.jsp">Truyện</a>
-    <a href="${pageContext.request.contextPath}/admin/author/authorList.jsp">Tác giả</a>
+    <a href="${pageContext.request.contextPath}/admin/story">Truyện</a>
+    <a href="${pageContext.request.contextPath}/admin/author">Tác giả</a>
     <a href="${pageContext.request.contextPath}/admin/category">Thể loại</a>
     <a href="${pageContext.request.contextPath}/admin/user">Người dùng</a>
     <a href="${pageContext.request.contextPath}/admin/report">Báo cáo</a>

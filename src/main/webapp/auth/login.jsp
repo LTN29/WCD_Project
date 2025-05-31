@@ -4,7 +4,7 @@
 <head>
 <title>Đăng nhập</title>
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/auth/css/auth.css" />
+	href="${pageContext.request.contextPath}/auth/css/login.css" />
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script>

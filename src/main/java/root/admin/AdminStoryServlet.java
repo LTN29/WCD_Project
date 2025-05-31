@@ -24,22 +24,15 @@ import root.reps.AuthorDAO;
 		@WebServlet("/admin/story")
 		public class AdminStoryServlet extends HttpServlet {
 		    private static final long serialVersionUID = 1L;
-		
-		    private void setDropdowns(HttpServletRequest req) throws Exception {
-		        List<Author> authors = AuthorDAO.getAll();
-		        List<Category> categories = CategoryDAO.getAll();
-		        List<Status> statusList = StatusDAO.getAll();
-		        List<StoryType> storyTypes = StoryTypeDAO.getAll();
-		        List<StorySchedule> schedules = StoryScheduleDAO.getAll();
 
-		        req.setAttribute("authors", authors);
-		        req.setAttribute("categories", categories);
-		        req.setAttribute("statusList", statusList);
-		        req.setAttribute("storyTypes", storyTypes);
-		        req.setAttribute("schedules", schedules);
+		    private void setDropdowns(HttpServletRequest req) throws Exception {
+		        req.setAttribute("authors", AuthorDAO.getAll());
+		        req.setAttribute("categories", CategoryDAO.getAll());
+		        req.setAttribute("statusList", StatusDAO.getAll());
+		        req.setAttribute("storyTypes", StoryTypeDAO.getAll());
+		        req.setAttribute("schedules", StoryScheduleDAO.getAll());
 		    }
 
-		
 		    @Override
 		    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		        String action = req.getParameter("action");
@@ -53,7 +46,7 @@ import root.reps.AuthorDAO;
 		            } else if ("add".equals(action)) {
 		                setDropdowns(req);
 		                req.getRequestDispatcher("/admin/story/storyForm.jsp").forward(req, resp);
-		            } else { 
+		            } else {
 		                List<Story> stories = StoryDAO.getAllWithNames();
 		                req.setAttribute("stories", stories);
 		                req.getRequestDispatcher("/admin/story/storyList.jsp").forward(req, resp);
@@ -63,10 +56,9 @@ import root.reps.AuthorDAO;
 		            resp.getWriter().println("ERROR: " + e.getMessage());
 		        }
 		    }
-		
+
 		    @Override
-		    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-		            throws ServletException, IOException {
+		    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		        req.setCharacterEncoding("UTF-8");
 		        String action = req.getParameter("action");
 		        try {
@@ -79,18 +71,16 @@ import root.reps.AuthorDAO;
 		                s.setAuthorId(Integer.parseInt(req.getParameter("authorId")));
 		                s.setStatusId(Integer.parseInt(req.getParameter("statusId")));
 		                s.setCategoryId(Integer.parseInt(req.getParameter("categoryId")));
-		
+		                s.setStoryTypeId(Integer.parseInt(req.getParameter("storyTypeId")));
+		                s.setScheduleId(Integer.parseInt(req.getParameter("scheduleId")));
 		                s.setLikeNumber(0);
 		                s.setFollowNumber(0);
 		                s.setViewNumber(0);
 		                StoryDAO.insert(s);
 		                resp.sendRedirect(req.getContextPath() + "/admin/story");
-		
 		            } else if ("update".equals(action)) {
 		                int id = Integer.parseInt(req.getParameter("id"));
-		             
 		                Story old = StoryDAO.getById(id);
-		
 		                Story s = new Story();
 		                s.setId(id);
 		                s.setTitle(req.getParameter("title"));
@@ -100,19 +90,17 @@ import root.reps.AuthorDAO;
 		                s.setAuthorId(Integer.parseInt(req.getParameter("authorId")));
 		                s.setStatusId(Integer.parseInt(req.getParameter("statusId")));
 		                s.setCategoryId(Integer.parseInt(req.getParameter("categoryId")));
-		
+		                s.setStoryTypeId(Integer.parseInt(req.getParameter("storyTypeId")));
+		                s.setScheduleId(Integer.parseInt(req.getParameter("scheduleId")));
 		                s.setLikeNumber(old != null ? old.getLikeNumber() : 0);
 		                s.setFollowNumber(old != null ? old.getFollowNumber() : 0);
 		                s.setViewNumber(old != null ? old.getViewNumber() : 0);
-		
 		                StoryDAO.update(s);
 		                resp.sendRedirect(req.getContextPath() + "/admin/story");
-		
 		            } else if ("delete".equals(action)) {
 		                int id = Integer.parseInt(req.getParameter("id"));
 		                StoryDAO.deleteById(id);
 		                resp.sendRedirect(req.getContextPath() + "/admin/story");
-		
 		            } else {
 		                resp.getWriter().println("Unknown action!");
 		            }
@@ -121,5 +109,5 @@ import root.reps.AuthorDAO;
 		            resp.getWriter().println("ERROR: " + e.getMessage());
 		        }
 		    }
-		
 		}
+
