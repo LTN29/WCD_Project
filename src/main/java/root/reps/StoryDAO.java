@@ -1,177 +1,288 @@
 package root.reps;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import root.entities.Story;
 import root.myutils.DBUtil;
-
 public class StoryDAO {
+	public static List<Story> getAllWithNames() throws SQLException {
+	    List<Story> list = new ArrayList<>();
+	    String sql = "SELECT s.*, " +
+	                 "a._name AS authorName, " +
+	                 "c._name AS categoryName, " +
+	                 "st._title AS statusTitle, " +
+	                 "ty._title AS storyTypeTitle, " +
+	                 "sch._day AS scheduleDay " +
+	                 "FROM tbl_story s " +
+	                 "LEFT JOIN tbl_author a ON s._author_id = a._id " +
+	                 "LEFT JOIN tbl_category c ON s._category_id = c._id " +
+	                 "LEFT JOIN tbl_status st ON s._status_id = st._id " +
+	                 "LEFT JOIN tbl_story_type ty ON s._story_type_id = ty._id " +
+	                 "LEFT JOIN tbl_story_schedule sch ON s._schedule_id = sch._id " +
+	                 "ORDER BY s._id DESC";
+	    try (Connection conn = DBUtil.getInstance().getConnect();
+	         PreparedStatement stmt = conn.prepareStatement(sql);
+	         ResultSet rs = stmt.executeQuery()) {
+	        while (rs.next()) {
+	            Story s = new Story(
+	                rs.getInt("_id"),
+	                rs.getString("_title"),
+	                rs.getInt("_chapter_number"),
+	                rs.getString("_introduction"),
+	                rs.getString("_image"),
+	                rs.getInt("_like_number"),
+	                rs.getInt("_follow_number"),
+	                rs.getInt("_view_number"),
+	                rs.getInt("_author_id"),
+	                rs.getInt("_status_id"),
+	                rs.getInt("_category_id"),
+	                rs.getInt("_story_type_id"),
+	                rs.getInt("_schedule_id")
+	            );
+	            s.setAuthorName(rs.getString("authorName"));
+	            s.setCategoryName(rs.getString("categoryName"));
+	            s.setStatusTitle(rs.getString("statusTitle"));
+	            s.setStoryTypeTitle(rs.getString("storyTypeTitle"));
+	            s.setScheduleDay(rs.getString("scheduleDay"));
+	            list.add(s);
+	        }
+	    }
+	    return list;
+	}
 
-    // Thêm truyện mới
-    public boolean insertStory(Story story) throws SQLException {
-        String sql = "INSERT INTO [dbo].[tbl_story] ([_title], [_chapter_number], [_introduction], [_image], [_like_number], [_follow_number], [_view_number], [_author_id], [_status_id], [_category_id], [_story_type_id], [_schedule_id]) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	public static int insert(Story s) throws SQLException {
+		String sql = "INSERT INTO tbl_story(_title, _chapter_number, _introduction, _image, _like_number, _follow_number, _view_number, _author_id, _status_id, _category_id, _story_type_id, _schedule_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = DBUtil.getInstance().getConnect();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, story.getTitle());
-            ps.setInt(2, story.getChapterNumber());
-            ps.setString(3, story.getIntroduction());
-            ps.setString(4, story.getImage());
-            ps.setInt(5, story.getLikeNumber());
-            ps.setInt(6, story.getFollowNumber());
-            ps.setInt(7, story.getViewNumber());
-            ps.setInt(8, story.getAuthorId());
-            ps.setInt(9, story.getStatusId());
-            ps.setInt(10, story.getCategoryId());
-            ps.setInt(11, story.getStoryTypeId());
-            ps.setInt(12, story.getScheduleId());
-            return ps.executeUpdate() > 0;
-        }
-    }
-
-    // Lấy truyện theo id
-    public Story getStoryById(int id) throws SQLException {
-        String sql = "SELECT * FROM [dbo].[tbl_story] WHERE [_id] = ?";
-        try (Connection conn = DBUtil.getInstance().getConnect();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return mapResultSetToStory(rs);
-                }
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setString(1, s.getTitle());
+            stmt.setInt(2, s.getChapterNumber());
+            stmt.setString(3, s.getIntroduction());
+            stmt.setString(4, s.getImage());
+            stmt.setInt(5, s.getLikeNumber());
+            stmt.setInt(6, s.getFollowNumber());
+            stmt.setInt(7, s.getViewNumber());
+            stmt.setInt(8, s.getAuthorId());
+            stmt.setInt(9, s.getStatusId());
+            stmt.setInt(10, s.getCategoryId());
+            stmt.setInt(11, s.getStoryTypeId());
+            stmt.setInt(12, s.getScheduleId());
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows == 0) throw new SQLException("Insert failed, no rows affected.");
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) return generatedKeys.getInt(1);
+                else throw new SQLException("Insert failed, no ID obtained.");
             }
         }
-        return null;
     }
-
-    // Cập nhật truyện
-    public boolean updateStory(Story story) throws SQLException {
-        String sql = "UPDATE [dbo].[tbl_story] SET [_title]=?, [_chapter_number]=?, [_introduction]=?, [_image]=?, [_like_number]=?, [_follow_number]=?, [_view_number]=?, [_author_id]=?, [_status_id]=?, [_category_id]=?, [_story_type_id]=?, [_schedule_id]=? WHERE [_id]=?";
+	
+	public static int update(Story s) throws SQLException {
+		String sql = "UPDATE tbl_story SET _title=?, _chapter_number=?, _introduction=?, _image=?, _like_number=?, _follow_number=?, _view_number=?, _author_id=?, _status_id=?, _category_id=?, _story_type_id=?, _schedule_id=? WHERE _id=?";
         try (Connection conn = DBUtil.getInstance().getConnect();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, story.getTitle());
-            ps.setInt(2, story.getChapterNumber());
-            ps.setString(3, story.getIntroduction());
-            ps.setString(4, story.getImage());
-            ps.setInt(5, story.getLikeNumber());
-            ps.setInt(6, story.getFollowNumber());
-            ps.setInt(7, story.getViewNumber());
-            ps.setInt(8, story.getAuthorId());
-            ps.setInt(9, story.getStatusId());
-            ps.setInt(10, story.getCategoryId());
-            ps.setInt(11, story.getStoryTypeId());
-            ps.setInt(12, story.getScheduleId());
-            ps.setInt(13, story.getId());
-            return ps.executeUpdate() > 0;
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, s.getTitle());
+            stmt.setInt(2, s.getChapterNumber());
+            stmt.setString(3, s.getIntroduction());
+            stmt.setString(4, s.getImage());
+            stmt.setInt(5, s.getLikeNumber());
+            stmt.setInt(6, s.getFollowNumber());
+            stmt.setInt(7, s.getViewNumber());
+            stmt.setInt(8, s.getAuthorId());
+            stmt.setInt(9, s.getStatusId());
+            stmt.setInt(10, s.getCategoryId());
+            stmt.setInt(11, s.getStoryTypeId());
+            stmt.setInt(12, s.getScheduleId());
+            stmt.setInt(13, s.getId());
+            return stmt.executeUpdate();
         }
     }
-
-    // Xóa truyện theo id
-    public boolean deleteStory(int id) throws SQLException {
-        String sql = "DELETE FROM [dbo].[tbl_story] WHERE [_id]=?";
+	public static int deleteById(int id) throws SQLException {
+        String sql = "DELETE FROM tbl_story WHERE _id=?";
         try (Connection conn = DBUtil.getInstance().getConnect();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            return ps.executeUpdate() > 0;
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            return stmt.executeUpdate();
         }
     }
 
-    // Lấy danh sách truyện với phân trang và tìm kiếm (SQL Server syntax)
-    public List<Story> getFilteredStories(int offset, int limit, String searchKey) throws SQLException {
-        List<Story> list = new ArrayList<>();
-        StringBuilder sql = new StringBuilder();
-        sql.append("SELECT s.[_id], s.[_title], s.[_chapter_number], s.[_introduction], s.[_image], ")
-           .append("s.[_like_number], s.[_follow_number], s.[_view_number], ")
-           .append("s.[_author_id], s.[_status_id], s.[_category_id], s.[_story_type_id], s.[_schedule_id], ")
-           .append("a.[_name] AS authorName, c.[_name] AS categoryName, st.[_title] AS statusTitle, sch.[_day] AS scheduleDay ")
-           .append("FROM [dbo].[tbl_story] s ")
-           .append("LEFT JOIN [dbo].[tbl_author] a ON s.[_author_id] = a.[_id] ")
-           .append("LEFT JOIN [dbo].[tbl_category] c ON s.[_category_id] = c.[_id] ")
-           .append("LEFT JOIN [dbo].[tbl_status] st ON s.[_status_id] = st.[_id] ")
-           .append("LEFT JOIN [dbo].[tbl_schedule] sch ON s.[_schedule_id] = sch.[_id] ");
-
-        if (searchKey != null && !searchKey.trim().isEmpty()) {
-            sql.append("WHERE s.[_title] LIKE ? ");
-        }
-
-        sql.append("ORDER BY s.[_id] DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
-
-        try (Connection conn = DBUtil.getInstance().getConnect();
-             PreparedStatement ps = conn.prepareStatement(sql.toString())) {
-
-            int paramIndex = 1;
-            if (searchKey != null && !searchKey.trim().isEmpty()) {
-                ps.setString(paramIndex++, "%" + searchKey + "%");
-            }
-            ps.setInt(paramIndex++, offset);
-            ps.setInt(paramIndex, limit);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    Story s = new Story();
-                    s.setId(rs.getInt("_id"));
-                    s.setTitle(rs.getString("_title"));
-                    s.setChapterNumber(rs.getInt("_chapter_number"));
-                    s.setIntroduction(rs.getString("_introduction"));
-                    s.setImage(rs.getString("_image"));
-                    s.setLikeNumber(rs.getInt("_like_number"));
-                    s.setFollowNumber(rs.getInt("_follow_number"));
-                    s.setViewNumber(rs.getInt("_view_number"));
-                    s.setAuthorId(rs.getInt("_author_id"));
-                    s.setStatusId(rs.getInt("_status_id"));
-                    s.setCategoryId(rs.getInt("_category_id"));
-                    s.setStoryTypeId(rs.getInt("_story_type_id"));
-                    s.setScheduleId(rs.getInt("_schedule_id"));
-                    s.setAuthorName(rs.getString("authorName"));
-                    s.setCategoryName(rs.getString("categoryName"));
-                    s.setStatusTitle(rs.getString("statusTitle"));
-                    s.setScheduleDay(rs.getString("scheduleDay"));
-                    list.add(s);
-                }
-            }
-        }
-        return list;
-    }
+	public static Story getById(int id) throws SQLException {
+	    String sql = "SELECT s.*, " +
+	                 "a._name AS authorName, " +
+	                 "c._name AS categoryName, " +
+	                 "st._title AS statusTitle, " +
+	                 "ty._title AS storyTypeTitle, " +
+	                 "sch._day AS scheduleDay " +
+	                 "FROM tbl_story s " +
+	                 "LEFT JOIN tbl_author a ON s._author_id = a._id " +
+	                 "LEFT JOIN tbl_category c ON s._category_id = c._id " +
+	                 "LEFT JOIN tbl_status st ON s._status_id = st._id " +
+	                 "LEFT JOIN tbl_story_type ty ON s._story_type_id = ty._id " +
+	                 "LEFT JOIN tbl_story_schedule sch ON s._schedule_id = sch._id " +
+	                 "WHERE s._id = ?";
+	    
+	    try (Connection conn = DBUtil.getInstance().getConnect();
+	         PreparedStatement stmt = conn.prepareStatement(sql)) {
+	        stmt.setInt(1, id);
+	        try (ResultSet rs = stmt.executeQuery()) {
+	            if (rs.next()) {
+	                Story s = new Story(
+	                    rs.getInt("_id"),
+	                    rs.getString("_title"),
+	                    rs.getInt("_chapter_number"),
+	                    rs.getString("_introduction"),
+	                    rs.getString("_image"),
+	                    rs.getInt("_like_number"),
+	                    rs.getInt("_follow_number"),
+	                    rs.getInt("_view_number"),
+	                    rs.getInt("_author_id"),
+	                    rs.getInt("_status_id"),
+	                    rs.getInt("_category_id"),
+	                    rs.getInt("_story_type_id"),
+	                    rs.getInt("_schedule_id")
+	                );
+	                s.setAuthorName(rs.getString("authorName"));
+	                s.setCategoryName(rs.getString("categoryName"));
+	                s.setStatusTitle(rs.getString("statusTitle"));
+	                s.setStoryTypeTitle(rs.getString("storyTypeTitle"));
+	                s.setScheduleDay(rs.getString("scheduleDay"));
+	                return s;
+	            }
+	        }
+	    }
+	    return null;
+	}
 
 
-    // Đếm tổng số truyện (có tìm kiếm)
-    public int countStories(String searchKey) throws SQLException {
-        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM [dbo].[tbl_story] ");
-        if (searchKey != null && !searchKey.trim().isEmpty()) {
-            sql.append("WHERE [_title] LIKE ?");
-        }
-        try (Connection conn = DBUtil.getInstance().getConnect();
-             PreparedStatement ps = conn.prepareStatement(sql.toString())) {
-            if (searchKey != null && !searchKey.trim().isEmpty()) {
-                ps.setString(1, "%" + searchKey + "%");
-            }
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt(1);
-                }
-            }
-        }
-        return 0;
-    }
+	public static List<Story> getByAuthorId(int authorId) throws SQLException {
+	    List<Story> list = new ArrayList<>();
+	    String sql = "SELECT * FROM tbl_story WHERE _author_id = ?";
+	    try (Connection conn = DBUtil.getInstance().getConnect();
+	         PreparedStatement stmt = conn.prepareStatement(sql)) {
+	        stmt.setInt(1, authorId);
+	        ResultSet rs = stmt.executeQuery();
+	        while (rs.next()) {
+	            Story s = new Story(
+	                rs.getInt("_id"),
+	                rs.getString("_title"),
+	                rs.getInt("_chapter_number"),
+	                rs.getString("_introduction"),
+	                rs.getString("_image"),
+	                rs.getInt("_like_number"),
+	                rs.getInt("_follow_number"),
+	                rs.getInt("_view_number"),
+	                rs.getInt("_author_id"),
+	                rs.getInt("_status_id"),
+	                rs.getInt("_category_id"),
+	                rs.getInt("_story_type_id"),
+	                rs.getInt("_schedule_id")
+	            );
+	            list.add(s);
+	        }
+	    }
+	    return list;
+	}
 
-    // Map ResultSet thành object Story
-    private Story mapResultSetToStory(ResultSet rs) throws SQLException {
-        Story s = new Story();
-        s.setId(rs.getInt("_id"));
-        s.setTitle(rs.getString("_title"));
-        s.setChapterNumber(rs.getInt("_chapter_number"));
-        s.setIntroduction(rs.getString("_introduction"));
-        s.setImage(rs.getString("_image"));
-        s.setLikeNumber(rs.getInt("_like_number"));
-        s.setFollowNumber(rs.getInt("_follow_number"));
-        s.setViewNumber(rs.getInt("_view_number"));
-        s.setAuthorId(rs.getInt("_author_id"));
-        s.setStatusId(rs.getInt("_status_id"));
-        s.setCategoryId(rs.getInt("_category_id"));
-        s.setStoryTypeId(rs.getInt("_story_type_id"));
-        s.setScheduleId(rs.getInt("_schedule_id"));
-        return s;
-    }
+
+
+	public static List<Story> getTopStories(String criteria) throws SQLException {
+	    List<Story> list = new ArrayList<>();
+	    String orderBy = "_view_number DESC"; // Default
+	    if ("highest_score".equals(criteria)) {
+	        orderBy = "(_like_number * 0.6 + _follow_number * 0.4) DESC";
+	    }
+
+	    String sql = "SELECT TOP 10 s.*, " +
+	                 "a._name AS authorName, c._name AS categoryName, " +
+	                 "st._title AS statusTitle, ty._title AS storyTypeTitle, sch._day AS scheduleDay " +
+	                 "FROM tbl_story s " +
+	                 "LEFT JOIN tbl_author a ON s._author_id = a._id " +
+	                 "LEFT JOIN tbl_category c ON s._category_id = c._id " +
+	                 "LEFT JOIN tbl_status st ON s._status_id = st._id " +
+	                 "LEFT JOIN tbl_story_type ty ON s._story_type_id = ty._id " +
+	                 "LEFT JOIN tbl_story_schedule sch ON s._schedule_id = sch._id " +
+	                 "ORDER BY " + orderBy;
+
+	    try (Connection conn = DBUtil.getInstance().getConnect();
+	         PreparedStatement stmt = conn.prepareStatement(sql);
+	         ResultSet rs = stmt.executeQuery()) {
+	        while (rs.next()) {
+	            Story s = new Story(
+	                rs.getInt("_id"),
+	                rs.getString("_title"),
+	                rs.getInt("_chapter_number"),
+	                rs.getString("_introduction"),
+	                rs.getString("_image"),
+	                rs.getInt("_like_number"),
+	                rs.getInt("_follow_number"),
+	                rs.getInt("_view_number"),
+	                rs.getInt("_author_id"),
+	                rs.getInt("_status_id"),
+	                rs.getInt("_category_id"),
+	                rs.getInt("_story_type_id"),
+	                rs.getInt("_schedule_id")
+	            );
+	            s.setAuthorName(rs.getString("authorName"));
+	            s.setCategoryName(rs.getString("categoryName"));
+	            s.setStatusTitle(rs.getString("statusTitle"));
+	            s.setStoryTypeTitle(rs.getString("storyTypeTitle"));
+	            s.setScheduleDay(rs.getString("scheduleDay"));
+	            list.add(s);
+	        }
+	    }
+	    return list;
+	}
+
+
+
+    
+
+	public static List<Story> getByCategoryId(int categoryId) throws SQLException {
+	    List<Story> list = new ArrayList<>();
+	    String sql = "SELECT s.*, a._name AS authorName, c._name AS categoryName, st._title AS statusTitle, " +
+	                 "ty._title AS storyTypeTitle, sch._day AS scheduleDay " +
+	                 "FROM tbl_story s " +
+	                 "LEFT JOIN tbl_author a ON s._author_id = a._id " +
+	                 "LEFT JOIN tbl_category c ON s._category_id = c._id " +
+	                 "LEFT JOIN tbl_status st ON s._status_id = st._id " +
+	                 "LEFT JOIN tbl_story_type ty ON s._story_type_id = ty._id " +
+	                 "LEFT JOIN tbl_story_schedule sch ON s._schedule_id = sch._id " +
+	                 "WHERE s._category_id = ? ORDER BY s._id DESC";
+	    try (Connection conn = DBUtil.getInstance().getConnect();
+	         PreparedStatement stmt = conn.prepareStatement(sql)) {
+	        stmt.setInt(1, categoryId);
+	        try (ResultSet rs = stmt.executeQuery()) {
+	            while (rs.next()) {
+	                Story s = new Story(
+	                    rs.getInt("_id"),
+	                    rs.getString("_title"),
+	                    rs.getInt("_chapter_number"),
+	                    rs.getString("_introduction"),
+	                    rs.getString("_image"),
+	                    rs.getInt("_like_number"),
+	                    rs.getInt("_follow_number"),
+	                    rs.getInt("_view_number"),
+	                    rs.getInt("_author_id"),
+	                    rs.getInt("_status_id"),
+	                    rs.getInt("_category_id"),
+	                    rs.getInt("_story_type_id"),
+	                    rs.getInt("_schedule_id")
+	                );
+	                s.setAuthorName(rs.getString("authorName"));
+	                s.setCategoryName(rs.getString("categoryName"));
+	                s.setStatusTitle(rs.getString("statusTitle"));
+	                s.setStoryTypeTitle(rs.getString("storyTypeTitle"));
+	                s.setScheduleDay(rs.getString("scheduleDay"));
+	                list.add(s);
+	            }
+	        }
+	    }
+	    return list;
+	}
+
+
 }
+
