@@ -7,48 +7,44 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import root.entities.Chapter;
 import root.entities.ChapterImage;
+import root.entities.Story;
+import root.entities.ChapterComment;
 import root.reps.ChapterDAO;
 import root.reps.ChapterImageDAO;
+import root.reps.StoryDAO;
+import root.reps.ChapterCommentDAO;
 
 import java.io.IOException;
+import java.util.List;
 
-/**
- * Servlet implementation class ChapterListServlet
- */
-@WebServlet("/ChapterListServlet")
+@WebServlet("/ChapterList")
 public class ChapterListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+
     public ChapterListServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		int chapterId= Integer.parseInt(request.getParameter("id"));
-		
-//		 Chapter chapter = ChapterDAO.getByStoryId(chapterId);
-//		 ChapterImage chapterImg = ChapterImageDAO.getByChapterId(chapterId);
-//		 request.setAttribute("chapter", chapter);
-//		 request.setAttribute("chapterImg", chapterImg);
-//		 
-		 request.getRequestDispatcher("/client/chapter/chapterDetail.jsp").forward(request, response);
-		
-	}
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int chapterId = Integer.parseInt(req.getParameter("chapterId"));
+        Chapter chapter = ChapterDAO.getById(chapterId);
+        Story story = StoryDAO.getById(chapter.getStoryId());
+        req.setAttribute("chapter", chapter);
+        req.setAttribute("story", story);
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
+        // Nếu là truyện tranh, lấy list ảnh theo chương
+        if (story.getStoryTypeId() == 2) {
+            List<ChapterImage> images = ChapterImageDAO.getImagesByChapterId(chapterId);
+            req.setAttribute("images", images);
+        }
+        // Lấy danh sách comment theo chương
+        List<ChapterComment> commentList = ChapterCommentDAO.getChapterComments(chapterId);
+        req.setAttribute("commentList", commentList);
 
+        req.getRequestDispatcher("chapter_detail.jsp").forward(req, resp);
+    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doGet(request, response);
+    }
 }

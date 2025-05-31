@@ -5,8 +5,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import root.entities.Category;
 import root.entities.Chapter;
 import root.entities.Story;
+import root.reps.CategoryDAO;
 import root.reps.ChapterDAO;
 import root.reps.StoryDAO;
 
@@ -32,25 +34,25 @@ public class StoryDetail extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        String idStr = req.getParameter("id");
-        if (idStr == null) {
-            resp.sendRedirect(req.getContextPath() + "/client/home.jsp");
-            return;
-        }
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            int id = Integer.parseInt(idStr);
-            Story story = StoryDAO.getById(id); 
-            List<Chapter> chapters = ChapterDAO.getByStoryId(id); 
+            int storyId = Integer.parseInt(req.getParameter("id"));
+            Story story = StoryDAO.getById(storyId);
+            List<Chapter> chapters = ChapterDAO.getByStoryId(storyId);
+
+            List<Category> categories = CategoryDAO.getAll();
+            req.setAttribute("categories", categories);
 
             req.setAttribute("story", story);
             req.setAttribute("chapters", chapters);
             req.getRequestDispatcher("/client/story/storyDetail.jsp").forward(req, resp);
         } catch (Exception e) {
-            resp.getWriter().println("Lỗi: " + e.getMessage());
+            e.printStackTrace();
+            resp.getWriter().println("Lỗi khi load chi tiết truyện: " + e.getMessage());
         }
     }
+
+    
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
