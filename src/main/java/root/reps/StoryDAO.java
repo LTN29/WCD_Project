@@ -282,6 +282,56 @@ public class StoryDAO {
 	    }
 	    return list;
 	}
+	public static List<Story> search(String keyword) throws SQLException {
+	    List<Story> list = new ArrayList<>();
+
+	    // Dùng LOWER() để tìm không phân biệt hoa-thường
+	    String sql = """
+	        SELECT s.*, a._name  AS authorName, c._name  AS categoryName,
+	               st._title AS statusTitle, ty._title AS storyTypeTitle,
+	               sch._day  AS scheduleDay
+	        FROM   tbl_story s
+	        LEFT JOIN tbl_author        a   ON s._author_id      = a._id
+	        LEFT JOIN tbl_category      c   ON s._category_id    = c._id
+	        LEFT JOIN tbl_status        st  ON s._status_id      = st._id
+	        LEFT JOIN tbl_story_type    ty  ON s._story_type_id  = ty._id
+	        LEFT JOIN tbl_story_schedule sch ON s._schedule_id   = sch._id
+	        WHERE  LOWER(s._title)   LIKE ?
+	           OR  LOWER(a._name)    LIKE ?
+	           OR  LOWER(c._name)    LIKE ?
+	        ORDER BY s._id DESC
+	        """;
+
+	    String like = "%" + (keyword == null ? "" : keyword.trim().toLowerCase()) + "%";
+
+	    try (Connection conn = DBUtil.getInstance().getConnect();
+	         PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+	        // Gán 3 lần cùng 1 từ khoá
+	        for (int i = 1; i <= 3; i++) stmt.setString(i, like);
+
+	        try (ResultSet rs = stmt.executeQuery()) {
+	            while (rs.next()) {
+	                Story s = new Story(
+	                    rs.getInt("_id"), rs.getString("_title"),
+	                    rs.getInt("_chapter_number"), rs.getString("_introduction"),
+	                    rs.getString("_image"), rs.getInt("_like_number"),
+	                    rs.getInt("_follow_number"), rs.getInt("_view_number"),
+	                    rs.getInt("_author_id"), rs.getInt("_status_id"),
+	                    rs.getInt("_category_id"), rs.getInt("_story_type_id"),
+	                    rs.getInt("_schedule_id")
+	                );
+	                s.setAuthorName   (rs.getString("authorName"));
+	                s.setCategoryName (rs.getString("categoryName"));
+	                s.setStatusTitle  (rs.getString("statusTitle"));
+	                s.setStoryTypeTitle(rs.getString("storyTypeTitle"));
+	                s.setScheduleDay  (rs.getString("scheduleDay"));
+	                list.add(s);
+	            }
+	        }
+	    }
+	    return list;
+	}
 
 
 }

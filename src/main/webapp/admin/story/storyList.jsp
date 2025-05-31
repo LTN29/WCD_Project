@@ -1,165 +1,90 @@
-<<<<<<< HEAD
 <%@ taglib prefix="admin" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8" %>
 
 <admin:_layoutAdmin>
-  <style>
-    .search-form {
-      display: flex;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-      flex-wrap: wrap;
-    }
+  <!-- Bootstrap Icons + custom CSS -->
+  <link rel="stylesheet" href="/admin/author/authorCSS/style.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
 
-    .search-form input[type="text"] {
-      flex: 1;
-      background-color: #1e1e2f;
-      border: 1px solid #444;
-      color: #fff;
-    }
+  <!-- ======= Thanh công cụ ======= -->
+    <!-- ======= Tiêu đề trang ======= -->
+  <h2 class="page-title mb-3">
+    <i class="bi bi-journal-bookmark-fill me-2"></i>Danh sách truyện
+  </h2>
 
-    .table-container {
-      background: #2c2f48;
-      border-radius: 1rem;
-      padding: 2rem;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-    }
+  <!-- ======= Thanh công cụ ======= -->
+  <form class="toolbar d-flex flex-wrap align-items-center gap-2" action="story" method="get">
+      <input type="text" name="keyword" value="${keyword}"
+             class="form-control shadow-sm flex-grow-1 search-input"
+             placeholder="Tìm theo tiêu đề, tác giả, thể loại…" />
 
-    .table {
-      color: #fff;
-    }
+      <input type="hidden" name="action" value="search"/>
 
-    .table th {
-      background-color: #3a3f63;
-      color: #fff;
-      text-align: center;
-    }
+      <button class="btn btn-search d-flex align-items-center gap-1">
+        <i class="bi bi-search"></i><span>Tìm kiếm</span>
+      </button>
 
-    .table td {
-      background-color: #2c2f48;
-      color: #f0f0f0;
-    }
+      <a href="story?action=add"
+         class="btn btn-add d-flex align-items-center gap-1">
+        <i class="bi bi-plus-circle"></i><span>Thêm truyện mới</span>
+      </a>
+  </form>
 
-    .table-hover tbody tr:hover {
-      background-color: #383c59;
-    }
-
-    .btn-sm .bi {
-      margin-right: 0.25rem;
-    }
-
-    .text-muted {
-      color: #aaa !important;
-    }
-  </style>
-
-  <div class="container mt-4">
-    <h1><i class="bi bi-book"></i> Danh sách truyện</h1>
-
-    <!-- Tìm kiếm và thêm mới -->
-    <form method="get" action="story" class="search-form">
-      <input type="text" name="keyword" value="${fn:escapeXml(param.keyword)}" class="form-control" placeholder="🔍 Tìm theo tiêu đề truyện...">
-      <button type="submit" class="btn btn-outline-info"><i class="bi bi-search"></i> Tìm</button>
-      <a href="story?action=add" class="btn btn-success"><i class="bi bi-plus-circle"></i> Thêm truyện</a>
-    </form>
-
-    <!-- Bảng danh sách truyện -->
-    <div class="table-container">
-      <table class="table table-hover table-bordered align-middle">
-        <thead>
+  <!-- ======= Bảng danh sách ======= -->
+  <div class="table-responsive mt-3">
+    <table class="table table-bordered table-hover align-middle shadow-sm rounded text-center story-table">
+      <thead class="table-dark sticky-top">
+        <tr>
+          <th>ID</th>
+          <th>Tiêu đề</th>
+          <th>Chương</th>
+          <th>Tác giả</th>
+          <th>Thể loại</th>
+          <th>Trạng thái</th>
+          <th>Loại</th>
+          <th>Lịch phát hành</th>
+          <th>Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        <c:forEach var="s" items="${stories}">
           <tr>
-            <th>ID</th>
-            <th>Tiêu đề</th>
-            <th>Số chương</th>
-            <th>Tác giả</th>
-            <th>Thể loại</th>
-            <th>Trạng thái</th>
-            <th>Hành động</th>
-          </tr>
-        </thead>
-        <tbody>
-          <c:forEach var="s" items="${stories}">
-            <tr>
-              <td class="text-center">${s.id}</td>
-              <td>${s.title}</td>
-              <td class="text-center">${s.chapterNumber}</td>
-              <td>${s.authorName}</td>
-              <td>${s.categoryName}</td>
-              <td>${s.statusTitle}</td>
-              <td class="text-center">
-                <a href="story?action=edit&id=${s.id}" class="btn btn-sm btn-primary"><i class="bi bi-pencil"></i> Sửa</a>
-                <form method="post" action="story" style="display:inline;">
-                  <input type="hidden" name="action" value="delete">
-                  <input type="hidden" name="id" value="${s.id}">
-                  <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa truyện này?')">
-                    <i class="bi bi-trash"></i> Xóa
+            <td>${s.id}</td>
+            <td class="text-start px-3 fw-semibold">${s.title}</td>
+            <td>${s.chapterNumber}</td>
+            <td>${s.authorName}</td>
+            <td>${s.categoryName}</td>
+            <td>
+              <span class="badge ${s.statusTitle == 'Hoàn tất' ? 'bg-success' : 'bg-warning'}">
+                ${s.statusTitle}
+              </span>
+            </td>
+            <td>
+              <span class="badge ${s.storyTypeTitle == 'Truyện tranh' ? 'bg-primary' : 'bg-secondary'}">
+                ${s.storyTypeTitle}
+              </span>
+            </td>
+            <td>${s.scheduleDay}</td>
+            <td>
+              <div class="d-flex justify-content-center gap-2">
+                <a href="story?action=edit&id=${s.id}" class="btn btn-edit btn-sm">
+                  <i class="bi bi-pencil-square me-1"></i>Sửa
+                </a>
+                <form method="post" action="story" 
+                      onsubmit="return confirm('Bạn có chắc muốn xóa truyện này?')">
+                  <input type="hidden" name="action" value="delete" />
+                  <input type="hidden" name="id" value="${s.id}" />
+                  <button type="submit" class="btn btn-delete btn-sm">
+                    <i class="bi bi-trash me-1"></i>Xoá
                   </button>
                 </form>
-              </td>
-            </tr>
-          </c:forEach>
-
-          <c:if test="${empty stories}">
-            <tr>
-              <td colspan="7" class="text-center text-muted">Không có truyện nào được tìm thấy.</td>
-            </tr>
-          </c:if>
-        </tbody>
-      </table>
-    </div>
+              </div>
+            </td>
+          </tr>
+        </c:forEach>
+      </tbody>
+    </table>
   </div>
-=======
-<%@ taglib prefix="admin" tagdir="/WEB-INF/tags"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<admin:_layoutAdmin>
-	<div class="container mt-4">
-		<div class="d-flex justify-content-between align-items-center mb-3">
-			<h3>Danh sách truyện</h3>
-			<a href="story?action=add" class="btn btn-success">+ Thêm truyện</a>
-		</div>
-
-		<table class="table">
-			<thead>
-				<tr>
-					<th>ID</th>
-					<th>Tiêu đề</th>
-					<th>Chương</th>
-					<th>Tác giả</th>
-					<th>Thể loại</th>
-					<th>Trạng thái</th>
-					<th>Loại</th>
-					<th>Lịch phát hành</th>
-					<th>Thao tác</th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:forEach var="s" items="${stories}">
-					<tr>
-						<td>${s.id}</td>
-						<td>${s.title}</td>
-						<td>${s.chapterNumber}</td>
-						<td>${s.authorName}</td>
-						<td>${s.categoryName}</td>
-						<td>${s.statusTitle}</td>
-						<td>${s.storyTypeTitle}</td>
-						<td>${s.scheduleDay}</td>
-						<td><a href="story?action=edit&id=${s.id}"
-							class="btn btn-primary btn-sm">Sửa</a>
-							<form method="post" action="story" style="display: inline;">
-								<input type="hidden" name="action" value="delete" /> <input
-									type="hidden" name="id" value="${s.id}" />
-								<button type="submit" class="btn btn-danger btn-sm"
-									onclick="return confirm('Bạn có chắc muốn xóa?')">Xóa</button>
-							</form></td>
-					</tr>
-				</c:forEach>
-			</tbody>
-		</table>
-	</div>
->>>>>>> f82619dedddb6e3fa10a9198be826925d9e9e31a
 </admin:_layoutAdmin>
-
