@@ -8,31 +8,31 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <title>Quản trị hệ thống</title>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/admin/css/layoutadmin.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/admin/css/layoutAdmin.css">
+
 </head>
 
 <body>
-  <nav class="admin-navbar">
-    <div class="admin-container">
-      <a class="admin-logo" href="${pageContext.request.contextPath}/admin">Admin Panel</a>
-      <ul class="admin-nav">
-        <li><a href="${pageContext.request.contextPath}/admin/story/storyList.jsp">Truyện</a></li>
-        <li><a href="${pageContext.request.contextPath}/admin/author/authorList.jsp">Tác giả</a></li>
-        <li><a href="${pageContext.request.contextPath}/admin/user">Người dùng</a></li>
-      </ul>
-      <ul class="admin-user-nav">
-        <c:choose>
-          <c:when test="${not empty sessionScope.user}">
-            <li><span>Xin chào, ${sessionScope.user.name}</span></li>
-            <li><a href="${pageContext.request.contextPath}/logout">Đăng xuất</a></li>
-          </c:when>
-          <c:otherwise>
-            <li><a href="${pageContext.request.contextPath}/login">Đăng nhập</a></li>
-          </c:otherwise>
-        </c:choose>
-      </ul>
-    </div>
-  </nav>
+  <div class="sidebar">
+    <div class="logo">Admin Panel</div>
+    <a href="${pageContext.request.contextPath}/admin">Dashboard</a>
+    <a href="${pageContext.request.contextPath}/admin/story/storyList.jsp">Truyện</a>
+    <a href="${pageContext.request.contextPath}/admin/author/authorList.jsp">Tác giả</a>
+    <a href="${pageContext.request.contextPath}/admin/category">Thể loại</a>
+    <a href="${pageContext.request.contextPath}/admin/user">Người dùng</a>
+    <a href="${pageContext.request.contextPath}/admin/report">Báo cáo</a>
+    <a href="${pageContext.request.contextPath}/admin/settings">Cài đặt</a>
+    <hr style="border-color: #444">
+    <c:choose>
+      <c:when test="${not empty sessionScope.user}">
+        <span style="padding: 12px 20px; display: block;">👤 ${sessionScope.user.name}</span>
+        <a href="${pageContext.request.contextPath}/logout">Đăng xuất</a>
+      </c:when>
+      <c:otherwise>
+        <a href="${pageContext.request.contextPath}/login">Đăng nhập</a>
+      </c:otherwise>
+    </c:choose>
+  </div>
 
   <main class="admin-main">
     <jsp:doBody />

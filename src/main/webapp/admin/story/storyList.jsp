@@ -5,22 +5,22 @@
 <admin:_layoutAdmin>
 	<div class="container mt-4">
 		<div class="d-flex justify-content-between align-items-center mb-3">
-			<h3>Stories List</h3>
-			<a href="story?action=add" class="btn btn-success">+ Add New
-				Story</a>
+			<h3>Danh sách truyện</h3>
+			<a href="story?action=add" class="btn btn-success">+ Thêm truyện</a>
 		</div>
-		<table class="table table-striped table-hover table-bordered">
+
+		<table class="table">
 			<thead>
 				<tr>
 					<th>ID</th>
-					<th>Title</th>
-					<th>Chapters</th>
-					<th>Author</th>
-					<th>Category</th>
-					<th>Status</th>
-					<th>Type</th>
-					<th>Schedule</th>
-					<th>Actions</th>
+					<th>Tiêu đề</th>
+					<th>Chương</th>
+					<th>Tác giả</th>
+					<th>Thể loại</th>
+					<th>Trạng thái</th>
+					<th>Loại</th>
+					<th>Lịch phát hành</th>
+					<th>Thao tác</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -35,17 +35,17 @@
 						<td>${s.storyTypeTitle}</td>
 						<td>${s.scheduleDay}</td>
 						<td><a href="story?action=edit&id=${s.id}"
-							class="btn btn-primary btn-sm">Edit</a>
+							class="btn btn-primary btn-sm">Sửa</a>
 							<form method="post" action="story" style="display: inline;">
-								<input type="hidden" name="action" value="delete"> <input
-									type="hidden" name="id" value="${s.id}">
+								<input type="hidden" name="action" value="delete" /> <input
+									type="hidden" name="id" value="${s.id}" />
 								<button type="submit" class="btn btn-danger btn-sm"
-									onclick="return confirm('Delete this story?')">Delete</button>
+									onclick="return confirm('Bạn có chắc muốn xóa?')">Xóa</button>
 							</form></td>
 					</tr>
 				</c:forEach>
 			</tbody>
-
 		</table>
 	</div>
 </admin:_layoutAdmin>
+
