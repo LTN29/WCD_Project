@@ -8,30 +8,30 @@ import java.sql.*;
 public class UserDAO {
 
 	// Kiểm tra đăng nhập
-	public static User checkLogin(String username, String password) throws SQLException {
-		String sql = "SELECT u.*, l._level AS levelName FROM tbl_user u "
-				+ "LEFT JOIN tbl_Level_user l ON u._level_id = l._id " + "WHERE u._username = ? AND u._password = ?";
-		try (Connection conn = DBUtil.getInstance().getConnect(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-			stmt.setString(1, username);
-			stmt.setString(2, password);
-			ResultSet rs = stmt.executeQuery();
-			if (rs.next()) {
-				User u = new User();
-				u.setId(rs.getLong("_id"));
-				u.setUserName(rs.getString("_username"));
-				u.setPassWord(rs.getString("_password"));
-				u.setRole(rs.getString("_role"));
-				u.setActive(rs.getInt("_active"));
-				u.setName(rs.getString("_name"));
-				u.setScore(rs.getInt("_score"));
-				u.setImage(rs.getString("_image"));
-				u.setLevelId(rs.getInt("_level_id"));
-				u.setLevel(rs.getString("levelName"));
-				return u;
-			}
-		}
-		return null;
+	public static User checkLogin(String username, String hashedPassword) throws SQLException {
+	    String sql = "SELECT * FROM tbl_user WHERE _username = ? AND _password = ?";
+	    try (Connection conn = DBUtil.getInstance().getConnect();
+	         PreparedStatement stmt = conn.prepareStatement(sql)) {
+	        stmt.setString(1, username);
+	        stmt.setString(2, hashedPassword);
+	        ResultSet rs = stmt.executeQuery();
+	        if (rs.next()) {
+	            User user = new User();
+	            user.setId(rs.getLong("_id"));
+	            user.setUserName(rs.getString("_username"));
+	            user.setPassWord(rs.getString("_password"));
+	            user.setRole(rs.getString("_role"));
+	            user.setActive(rs.getInt("_active"));
+	            user.setName(rs.getString("_name"));
+	            user.setImage(rs.getString("_image"));
+	            user.setScore(rs.getInt("_score"));
+	            user.setLevelId(rs.getInt("_level_id"));
+	            return user;
+	        }
+	    }
+	    return null;
 	}
+
 
 	// Kiểm tra username đã tồn tại chưa
 	public static boolean existsUsername(String username) throws SQLException {
