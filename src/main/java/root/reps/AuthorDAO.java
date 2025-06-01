@@ -12,7 +12,7 @@ public class AuthorDAO {
     // ✅ Lấy danh sách tất cả tác giả
     public static List<Author> getAll() throws SQLException {
         List<Author> list = new ArrayList<>();
-        String sql = "SELECT * FROM tbl_author ORDER BY _id ASC";
+        String sql = "SELECT * FROM tbl_author ORDER BY _id DESC";
 
         try (Connection conn = DBUtil.getInstance().getConnect();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -134,5 +134,29 @@ public class AuthorDAO {
                 return rs.next();
             }
         }
+    }
+    public static List<Author> searchByName(String keyword) throws SQLException {
+        List<Author> list = new ArrayList<>();
+        String sql = "SELECT * FROM tbl_author WHERE _name LIKE ? ORDER BY _id DESC";
+
+
+        try (Connection conn = DBUtil.getInstance().getConnect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, "%" + keyword + "%");
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Author a = new Author(
+                        rs.getInt("_id"),
+                        rs.getString("_name"),
+                        rs.getString("_information"),
+                        rs.getString("_image")
+                    );
+                    list.add(a);
+                }
+            }
+        }
+        return list;
     }
 }

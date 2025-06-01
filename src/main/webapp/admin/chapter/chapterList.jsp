@@ -1,65 +1,31 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
-<%@ page import="java.util.List" %>
-<%@ page import="root.entities.Chapter" %>
-<%
-    List<Chapter> chapters = (List<Chapter>) request.getAttribute("chapters");
-    int currentPage = (int) request.getAttribute("page");
-    int totalPage = (int) request.getAttribute("totalPage");
-    String keyword = (String) request.getAttribute("keyword");
-%>
-<html>
-<head>
-    <title>Quản lý Chương</title>
-    <style>
-        body { font-family: Arial; background: #f9f9f9; }
-        .container { width: 90%; margin: auto; }
-        h1 { color: #333; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ccc; padding: 10px; }
-        tr:nth-child(even) { background-color: #f2f2f2; }
-        a.btn { padding: 6px 10px; background: #007BFF; color: white; border-radius: 5px; text-decoration: none; }
-        a.btn:hover { background: #0056b3; }
-        .search-bar { margin-top: 20px; }
-    </style>
-</head>
-<body>
-<div class="container">
-    <h1>Quản lý Chương</h1>
+<%@ taglib prefix="admin" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8" %>
 
-    <div class="search-bar">
-        <form method="get">
-            <input type="text" name="keyword" placeholder="Tìm theo tiêu đề..." value="<%= keyword != null ? keyword : "" %>" />
-            <button type="submit">Tìm kiếm</button>
-            <a class="btn" href="chapter?action=add">Thêm chương</a>
-        </form>
-    </div>
+<admin:_layoutAdmin>
+    <h2 class="mb-3">Quản lý Chương</h2>
+   <a href="chapter?action=add" class="btn btn-success mb-3">➕ Thêm chương mới</a>
 
-    <table>
-        <tr>
-            <th>ID</th><th>Tiêu đề</th><th>Ngày tạo</th><th>Truyện</th><th>Hành động</th>
-        </tr>
-        <%
-            for (Chapter c : chapters) {
-        %>
-        <tr>
-            <td><%= c.getId() %></td>
-            <td><%= c.getTitle() %></td>
-            <td><%= c.getDayCreate() %></td>
-            <td><%= c.getStoryId() %></td>
-            <td>
-                <a class="btn" href="chapter?action=edit&id=<%= c.getId() %>">Sửa</a>
-                <a class="btn" style="background:red;" onclick="return confirm('Bạn chắc chắn xóa?')" href="chapter?action=delete&id=<%= c.getId() %>">Xóa</a>
-            </td>
-        </tr>
-        <% } %>
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>ID</th><th>Tiêu đề</th><th>Ngày tạo</th><th>Story ID</th><th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            <c:forEach var="c" items="${chapterList}">
+                <tr>
+                    <td>${c.id}</td>
+                    <td>${c.title}</td>
+                    <td>${c.dayCreate}</td>
+                    <td>${c.storyId}</td>
+                    <td>
+                        <a href="chapter?action=edit&id=${c.id}" class="btn btn-warning btn-sm">✏️ Sửa</a>
+                        <a href="chapter?action=delete&id=${c.id}" class="btn btn-danger btn-sm" onclick="return confirm('Xoá chương này?')">🗑️ Xoá</a>
+                    </td>
+                </tr>
+            </c:forEach>
+        </tbody>
     </table>
-
-    <div style="margin-top: 20px;">
-        Trang:
-        <% for (int i = 1; i <= totalPage; i++) { %>
-            <a href="?page=<%= i %>&keyword=<%= keyword != null ? keyword : "" %>"><%= (i == currentPage ? "<b>" + i + "</b>" : i) %></a>
-        <% } %>
-    </div>
-</div>
-</body>
-</html>
+</admin:_layoutAdmin>

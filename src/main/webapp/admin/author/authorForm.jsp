@@ -88,6 +88,12 @@
       padding: 0.75rem 1rem;
       margin-bottom: 1rem;
     }
+
+    img.author-preview {
+      max-height: 150px;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+    }
   </style>
 
   <div class="container mt-4">
@@ -117,9 +123,15 @@
 
         <div class="form-group mb-4">
           <label for="image">Ảnh đại diện</label>
-          <input id="image" class="form-control" name="image" value="${author.image}">
+          <input id="image" class="form-control" name="image" value="${author.image}" ${author == null ? 'required' : ''}>
           <small class="form-text text-muted">Nhập đường dẫn đến ảnh đại diện</small>
         </div>
+
+        <c:if test="${author != null && author.image != null && not empty author.image}">
+          <div class="text-center">
+            <img src="${author.image}" alt="Ảnh đại diện" class="author-preview">
+          </div>
+        </c:if>
 
         <div class="d-flex justify-content-between">
           <button type="submit" class="btn btn-success"><i class="bi bi-save"></i> Lưu</button>
@@ -128,4 +140,10 @@
       </form>
     </div>
   </div>
+
+  <script>
+    window.onload = () => {
+      document.getElementById('name').focus();
+    };
+  </script>
 </admin:_layoutAdmin>
