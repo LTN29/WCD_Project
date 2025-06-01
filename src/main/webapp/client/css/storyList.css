@@ -1,0 +1,121 @@
+
+.story-list-container {
+    max-width: 1150px;
+    margin: 30px auto;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px 0 rgba(0,0,0,0.07);
+    padding: 32px 28px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+.story-search-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+}
+.story-search-form input, .story-search-form select {
+    padding: 7px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
+.story-search-form button {
+    background: #0097e6;
+    color: #fff;
+    border: none;
+    padding: 7px 16px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.story-search-form button:hover {
+    background: #0075be;
+}
+.story-list-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 25px;
+}
+.story-card {
+    background: #f8fafb;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 20px 16px;
+    text-align: center;
+    transition: box-shadow 0.2s;
+}
+.story-card img {
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    width: 100%;
+}
+.story-card h5 {
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #21335c;
+}
+.story-card .btn {
+    margin-top: 8px;
+    font-size: 0.98rem;
+}
+.comment-block {
+    background: #f9f9fa;
+    border-radius: 10px;
+    margin-top: 36px;
+    padding: 18px 18px 12px 18px;
+}
+.comment-block h5 {
+    font-size: 1.08rem;
+    margin-bottom: 9px;
+    color: #2657a5;
+}
+.comment-list {
+    margin-bottom: 12px;
+}
+.comment-item {
+    padding: 7px 0;
+    border-bottom: 1px solid #e2e2e2;
+    font-size: 0.98rem;
+}
+.comment-empty {
+    color: #777;
+    font-style: italic;
+}
+.comment-input-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+.comment-input-row input[type="text"] {
+    flex: 1;
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #b7b7b7;
+    font-size: 1rem;
+}
+.comment-input-row button {
+    padding: 6px 18px;
+    background: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.18s;
+}
+.comment-input-row button:hover {
+    background: #005bbd;
+}
+@media (max-width: 800px) {
+    .story-list-container {
+        padding: 10px 2vw;
+    }
+    .story-list-grid {
+        grid-template-columns: 1fr;
+    }
+}
