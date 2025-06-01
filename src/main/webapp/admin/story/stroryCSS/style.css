@@ -1,109 +1,92 @@
-/* ======= Giao diện thanh công cụ ======= */
+/* Tổng thể */
+.page-title {
+  font-size: 1.8rem;
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+/* Thanh công cụ */
 .toolbar {
-  background: #fff;
-  padding: 12px;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
 .search-input {
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  padding: 10px 15px;
-  transition: all 0.3s ease;
+  border-radius: 0.5rem;
+  border: 1px solid #ced4da;
 }
 
-.search-input:focus {
-  border-color: #7f56d9;
-  box-shadow: 0 0 0 2px rgba(127, 86, 217, 0.2);
-}
-
-.btn-search {
-  background-color: #7f56d9;
-  color: #fff;
-  border-radius: 10px;
-  padding: 8px 16px;
+.btn-search, .btn-add {
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  transition: all 0.3s ease-in-out;
 }
 
 .btn-search:hover {
-  background-color: #6c47c9;
-}
-
-.btn-add {
-  background-color: #ede9fe;
-  color: #7f56d9;
-  border: 1px solid #d8cfff;
-  border-radius: 10px;
-  padding: 8px 16px;
+  background-color: #198754;
+  color: white;
 }
 
 .btn-add:hover {
-  background-color: #dcd2fd;
-  color: #6c47c9;
+  background-color: #0d6efd;
+  color: white;
 }
 
-/* ======= Bảng truyện ======= */
+/* Bảng danh sách */
 .story-table {
-  border-collapse: separate;
-  border-spacing: 0;
-  border-radius: 16px;
+  border-radius: 0.75rem;
   overflow: hidden;
-  background-color: #fff;
 }
 
-.story-table thead th {
-  background-color: #2c2c54;
-  color: #fff;
-  border: none;
+.story-table thead {
+  background-color: #343a40;
+  color: white;
+  font-weight: 600;
 }
 
-.story-table tbody tr:nth-child(even) {
-  background-color: #f8f9fa;
-}
-
-.story-table tbody td {
+.story-table td, .story-table th {
+  padding: 0.75rem;
   vertical-align: middle;
 }
 
-/* ======= Badge ======= */
-.badge {
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 0.85rem;
+.story-table tr:hover {
+  background-color: #f1f1f1;
+  transition: 0.2s ease-in-out;
 }
 
-/* ======= Nút thao tác ======= */
+/* Nút thao tác */
+.btn-edit, .btn-delete {
+  border-radius: 0.4rem;
+  padding: 0.3rem 0.7rem;
+  transition: all 0.2s;
+}
+
 .btn-edit {
-  color: #7f56d9;
-  background-color: #f3e8ff;
-  border-radius: 10px;
-  padding: 4px 10px;
-  transition: 0.2s;
+  background-color: #ffc107;
+  color: #212529;
+  border: none;
 }
 
 .btn-edit:hover {
-  background-color: #e0d1fb;
-  color: #6c47c9;
+  background-color: #e0a800;
+  color: white;
 }
 
 .btn-delete {
-  background-color: #fef2f2;
-  color: #ef4444;
-  border-radius: 10px;
-  padding: 4px 10px;
-  transition: 0.2s;
+  background-color: #dc3545;
+  color: white;
   border: none;
 }
 
 .btn-delete:hover {
-  background-color: #fee2e2;
-  color: #dc2626;
+  background-color: #bb2d3b;
 }
 
-/* ======= Responsive table ======= */
-.table-responsive {
-  border-radius: 12px;
-  overflow-x: auto;
-  background: #fff;
-  padding: 12px;
+/* Badge trạng thái + loại */
+.badge {
+  font-size: 0.85rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 0.5rem;
 }
