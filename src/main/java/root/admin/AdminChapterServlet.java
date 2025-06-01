@@ -1,116 +1,116 @@
 package root.admin;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
+
+
 import root.entities.Chapter;
 import root.entities.Story;
 import root.reps.ChapterDAO;
 import root.reps.StoryDAO;
 
+import javax.servlet.*;
+
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+
 import java.io.IOException;
 import java.sql.Date;
-import java.util.ArrayList;
+import java.sql.SQLException;
 import java.util.List;
 
 @WebServlet("/admin/chapter")
 public class AdminChapterServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+    private static final int PAGE_SIZE = 10;
 
-	private void setStories(HttpServletRequest req) throws Exception {
-		List<Story> stories = StoryDAO.getAllWithNames();
-		req.setAttribute("stories", stories);
-	}
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String action = req.getParameter("action");
-		try {
-			if ("edit".equals(action)) {
-				int id = Integer.parseInt(req.getParameter("id"));
-				Chapter chapter = ChapterDAO.getById(id);
-				req.setAttribute("chapter", chapter);
-				setStories(req);
-				req.getRequestDispatcher("/admin/chapter/chapterForm.jsp").forward(req, resp);
-			} else if ("add".equals(action)) {
-				setStories(req);
-				req.getRequestDispatcher("/admin/chapter/chapterForm.jsp").forward(req, resp);
-			} else {
-				String keyword = req.getParameter("keyword");
-				if (keyword == null)
-					keyword = "";
-				List<Chapter> chapters = ChapterDAO.search(keyword, 0, 100);
-				req.setAttribute("chapters", chapters);
-				req.setAttribute("keyword", keyword);
-				req.getRequestDispatcher("/admin/chapter/chapterList.jsp").forward(req, resp);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			resp.getWriter().println("ERROR: " + e.getMessage());
-		}
-	}
+        String action = request.getParameter("action");
+        if (action == null) action = "list";
 
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.setCharacterEncoding("UTF-8");
-		String action = req.getParameter("action");
+        try {
+            switch (action) {
+                case "add":
+                    List<Story> storiesAdd = new StoryDAO().getAll();
+                    request.setAttribute("stories", storiesAdd);
+                    request.getRequestDispatcher("/admin/chapter/chapterForm.jsp").forward(request, response);
+                    break;
+                case "edit":
+                    int id = Integer.parseInt(request.getParameter("id"));
+                    Chapter chapter = ChapterDAO.getById(id).orElseThrow(() -> new ServletException("Chapter not found"));
+                    List<Story> storiesEdit = new StoryDAO().getAll();
+                    request.setAttribute("chapter", chapter);
+                    request.setAttribute("stories", storiesEdit);
+                    request.getRequestDispatcher("/admin/chapter/chapterForm.jsp").forward(request, response);
+                    break;
+                case "delete":
+                    int deleteId = Integer.parseInt(request.getParameter("id"));
+                    ChapterDAO.delete(deleteId);
+                    response.sendRedirect("chapter");
+                    break;
+                default:
+                    showChapterList(request, response);
+            }
+        } catch (Exception e) {
+            throw new ServletException(e);
+        }
+    }
 
-		try {
-			if ("delete".equals(action)) {
-				int id = Integer.parseInt(req.getParameter("id"));
-				ChapterDAO.delete(id);
-				resp.sendRedirect(req.getContextPath() + "/admin/chapter");
-				return; // Kết thúc sớm, không chạy code bên dưới
-			}
+    private void showChapterList(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, SQLException {
 
-			// Các xử lý cho add/update dưới đây, bao gồm validation
-			String title = req.getParameter("title");
-			String content = req.getParameter("content");
-			String dayCreateStr = req.getParameter("dayCreate");
-			String storyIdSelect = req.getParameter("storyIdSelect");
-			List<String> errors = new ArrayList<>();
+        String keyword = request.getParameter("keyword");
+        int page = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
+        int total = ChapterDAO.count(keyword);
+        int offset = (page - 1) * PAGE_SIZE;
 
-			// Validation dữ liệu (title, content, dayCreate, storyIdSelect) ...
+        List<Chapter> chapters = ChapterDAO.search(keyword, offset, PAGE_SIZE);
 
-			if (!errors.isEmpty()) {
-				// Hiển thị lại form với lỗi
-				Chapter c = new Chapter();
-				c.setTitle(title);
-				c.setContent(content);
-				if (dayCreateStr != null && !dayCreateStr.trim().isEmpty()) {
-					c.setDayCreate(Date.valueOf(dayCreateStr));
-				}
-				if (storyIdSelect != null && !storyIdSelect.trim().isEmpty()) {
-					c.setStoryId(Integer.parseInt(storyIdSelect));
-				}
+        request.setAttribute("keyword", keyword);
+        request.setAttribute("chapters", chapters);
+        request.setAttribute("page", page);
+        request.setAttribute("totalPage", (int) Math.ceil(total * 1.0 / PAGE_SIZE));
 
-				req.setAttribute("errors", errors);
-				req.setAttribute("chapter", c);
-				setStories(req);
-				req.getRequestDispatcher("/admin/chapter/chapterForm.jsp").forward(req, resp);
-				return;
-			}
+        request.getRequestDispatcher("/admin/chapter/chapterList.jsp").forward(request, response);
+    }
 
-			// Tạo hoặc cập nhật chapter
-			Chapter c = new Chapter();
-			c.setTitle(title);
-			c.setContent(content);
-			c.setDayCreate(Date.valueOf(dayCreateStr));
-			c.setStoryId(Integer.parseInt(storyIdSelect));
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-			if ("add".equals(action)) {
-				ChapterDAO.insert(c);
-			} else if ("update".equals(action)) {
-				c.setId(Integer.parseInt(req.getParameter("id")));
-				ChapterDAO.update(c);
-			}
+        request.setCharacterEncoding("UTF-8");
 
-			resp.sendRedirect(req.getContextPath() + "/admin/chapter");
+        String idRaw = request.getParameter("id");
+        String title = request.getParameter("title");
+        String content = request.getParameter("content");
+        String dayCreate = request.getParameter("dayCreate");
+        String storyIdRaw = request.getParameter("storyId");
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			resp.getWriter().println("ERROR: " + e.getMessage());
-		}
-	}
+        Chapter c = new Chapter();
+        c.setTitle(title);
+        c.setContent(content);
+        c.setDayCreate(Date.valueOf(dayCreate));
+        try {
+            c.setStoryId(Integer.parseInt(storyIdRaw));
+        } catch (NumberFormatException e) {
+            throw new ServletException("Invalid storyId");
+        }
 
+        try {
+            if (idRaw == null || idRaw.isEmpty()) {
+                ChapterDAO.insert(c);
+            } else {
+                c.setId(Integer.parseInt(idRaw));
+                ChapterDAO.update(c);
+            }
+            response.sendRedirect("chapter");
+        } catch (SQLException e) {
+            throw new ServletException(e);
+        }
+    }
 }

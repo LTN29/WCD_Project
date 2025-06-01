@@ -5,7 +5,11 @@
 
 <admin:_layoutAdmin>
   <!-- Bootstrap Icons + custom CSS -->
-  <link rel="stylesheet" href="/admin/author/authorCSS/style.css" />
+ <link rel="stylesheet" href="${pageContext.request.contextPath}/admin/story/storyCSS/style.css" />
+
+
+
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
 
   <!-- ======= Thanh công cụ ======= -->

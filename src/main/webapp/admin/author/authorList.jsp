@@ -4,62 +4,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <admin:_layoutAdmin>
-  <style>
-    .search-form {
-      display: flex;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-      flex-wrap: wrap;
-    }
+<link rel="stylesheet" href="${pageContext.request.contextPath}/admin/author/authorCSS/style.css" />
 
-    .search-form input[type="text"] {
-      flex: 1;
-      background-color: #1e1e2f;
-      border: 1px solid #444;
-      color: #fff;
-    }
+<style>
+  .avatar-img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #e2e8f0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  }
+</style>
 
-    .table-container {
-      background: #2c2f48;
-      border-radius: 1rem;
-      padding: 2rem;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-    }
-
-    .table {
-      color: #fff;
-    }
-
-    .table th {
-      background-color: #3a3f63;
-      color: #fff;
-      text-align: center;
-    }
-
-    .table td {
-      background-color: #2c2f48;
-      color: #f0f0f0;
-      vertical-align: middle;
-      text-align: center;
-    }
-
-    .table-hover tbody tr:hover {
-      background-color: #383c59;
-    }
-
-    .btn-sm .bi {
-      margin-right: 0.25rem;
-    }
-
-    .avatar-img {
-      max-height: 50px;
-      border-radius: 50%;
-    }
-
-    .text-muted {
-      color: #aaa !important;
-    }
-  </style>
 
   <div class="container mt-4">
     <h1><i class="bi bi-person-lines-fill"></i> Danh sách Tác giả</h1>
@@ -86,16 +43,13 @@
           <c:forEach var="author" items="${authors}" varStatus="status">
             <tr>
               <td>${status.index + 1}</td>
-              <!-- Sửa dùng thuộc tính image vì entity và DAO có trường _image -->
               <td>
                 <c:choose>
                   <c:when test="${not empty author.image}">
                     <img src="${pageContext.request.contextPath}/admin/img/imgAuthor/${author.image}" class="avatar-img" alt="avatar">
-
                   </c:when>
                   <c:otherwise>
-                    <img src="${pageContext.request.contextPath}/admin/img/imgAuthor/${author.image}">
-
+                    <img src="${pageContext.request.contextPath}/admin/img/imgAuthor/default.png" class="avatar-img" alt="default-avatar">
                   </c:otherwise>
                 </c:choose>
               </td>

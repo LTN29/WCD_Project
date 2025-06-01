@@ -1,6 +1,7 @@
 package root.reps;
 
 import root.entities.Chapter;
+import root.entities.Story;
 import root.myutils.DBUtil;
 
 import java.sql.*;
@@ -228,4 +229,76 @@ public class ChapterDAO {
         }
         return list;
     }
+    public List<Story> filterStories(String title, int authorId, int categoryId, int statusId, int typeId, String scheduleDay) throws SQLException {
+        List<Story> list = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT s.*, a.name as authorName, c.name as categoryName, st.title as statusTitle, ty.title as storyTypeTitle, ss.schedule_day " +
+                "FROM tbl_story s " +
+                "JOIN tbl_author a ON s.author_id = a.id " +
+                "JOIN tbl_category c ON s.category_id = c.id " +
+                "JOIN tbl_status st ON s.status_id = st.id " +
+                "JOIN tbl_story_type ty ON s.story_type_id = ty.id " +
+                "LEFT JOIN tbl_story_schedule ss ON s.id = ss.story_id " +
+                "WHERE 1=1 ");
+
+        // Tạo danh sách tham số
+        List<Object> params = new ArrayList<>();
+
+        if (title != null && !title.trim().isEmpty()) {
+            sql.append("AND s.title LIKE ? ");
+            params.add("%" + title + "%");
+        }
+        if (authorId > 0) {
+            sql.append("AND s.author_id = ? ");
+            params.add(authorId);
+        }
+        if (categoryId > 0) {
+            sql.append("AND s.category_id = ? ");
+            params.add(categoryId);
+        }
+        if (statusId > 0) {
+            sql.append("AND s.status_id = ? ");
+            params.add(statusId);
+        }
+        if (typeId > 0) {
+            sql.append("AND s.story_type_id = ? ");
+            params.add(typeId);
+        }
+        if (scheduleDay != null && !scheduleDay.trim().isEmpty()) {
+            sql.append("AND ss.schedule_day = ? ");
+            params.add(scheduleDay);
+        }
+
+        try (Connection conn = DBUtils.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+
+            for (int i = 0; i < params.size(); i++) {
+                ps.setObject(i + 1, params.get(i));
+            }
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Story s = new Story();
+                    s.setId(rs.getInt("id"));
+                    s.setTitle(rs.getString("title"));
+                    s.setImage(rs.getString("image"));
+                    s.setDescription(rs.getString("description"));
+                    s.setAuthorId(rs.getInt("author_id"));
+                    s.setCategoryId(rs.getInt("category_id"));
+                    s.setStatusId(rs.getInt("status_id"));
+                    s.setStoryTypeId(rs.getInt("story_type_id"));
+                    s.setPoint(rs.getDouble("point"));
+                    s.setCreatedAt(rs.getTimestamp("created_at"));
+                    s.setUpdatedAt(rs.getTimestamp("updated_at"));
+                    s.setAuthorName(rs.getString("authorName"));
+                    s.setCategoryName(rs.getString("categoryName"));
+                    s.setStatusTitle(rs.getString("statusTitle"));
+                    s.setStoryTypeTitle(rs.getString("storyTypeTitle"));
+                    s.setScheduleDay(rs.getString("schedule_day"));
+                    list.add(s);
+                }
+            }
+        }
+        return list;
+    }
+
 }

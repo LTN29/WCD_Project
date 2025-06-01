@@ -4,57 +4,89 @@
 
 <admin:_layoutAdmin>
   <style>
+    body {
+      background-color: #f4f6f9;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
     .form-container {
-      background-color: #2c2f48;
-      padding: 2rem;
-      border-radius: 1rem;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-      max-width: 800px;
+      background-color: #ffffff;
+      padding: 2rem 2.5rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      max-width: 720px;
       margin: auto;
     }
 
     .form-group label {
-      color: #ddd;
-      font-weight: 500;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 0.5rem;
+      display: block;
     }
 
     .form-control {
-      background-color: #1e1e2f;
-      border: 1px solid #444;
-      color: #fff;
+      background-color: #f9f9f9;
+      border: 1px solid #ccc;
+      color: #333;
+      border-radius: 8px;
+      padding: 0.5rem 0.75rem;
+      transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     }
 
     .form-control:focus {
-      border-color: #4fd1c5;
-      box-shadow: 0 0 0 0.2rem rgba(79, 209, 197, 0.25);
+      border-color: #007bff;
+      box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+      outline: none;
+    }
+
+    .btn {
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      font-size: 0.95rem;
+      font-weight: 500;
     }
 
     .btn-success {
       background-color: #28a745;
       border-color: #28a745;
+      color: #fff;
+    }
+
+    .btn-success:hover {
+      background-color: #218838;
+      border-color: #1e7e34;
     }
 
     .btn-secondary {
       background-color: #6c757d;
       border-color: #6c757d;
-    }
-
-    .btn-success:hover {
-      background-color: #218838;
+      color: #fff;
     }
 
     .btn-secondary:hover {
       background-color: #5a6268;
+      border-color: #545b62;
     }
 
     h3 {
       text-align: center;
       margin-bottom: 1.5rem;
-      color: #fff;
+      color: #007bff;
     }
 
     small.text-muted {
-      color: #bbb !important;
+      color: #6c757d !important;
+      font-size: 0.875rem;
+    }
+
+    .alert-danger {
+      background-color: #f8d7da;
+      border-color: #f5c6cb;
+      color: #721c24;
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      margin-bottom: 1rem;
     }
   </style>
 
@@ -74,18 +106,18 @@
         </c:if>
 
         <div class="form-group mb-3">
-          <label>Tên tác giả</label>
-          <input class="form-control" name="name" value="${author.name}" required>
+          <label for="name">Tên tác giả</label>
+          <input id="name" class="form-control" name="name" value="${author.name}" required>
         </div>
 
         <div class="form-group mb-3">
-          <label>Thông tin</label>
-          <textarea class="form-control" name="information" rows="5">${author.information}</textarea>
+          <label for="information">Thông tin</label>
+          <textarea id="information" class="form-control" name="information" rows="5">${author.information}</textarea>
         </div>
 
         <div class="form-group mb-4">
-          <label>Ảnh đại diện</label>
-          <input class="form-control" name="image" value="${author.image}">
+          <label for="image">Ảnh đại diện</label>
+          <input id="image" class="form-control" name="image" value="${author.image}">
           <small class="form-text text-muted">Nhập đường dẫn đến ảnh đại diện</small>
         </div>
 

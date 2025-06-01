@@ -20,7 +20,7 @@
     <a href="${pageContext.request.contextPath}/admin/author">Tác giả</a>
     <a href="${pageContext.request.contextPath}/admin/category">Thể loại</a>
     <a href="${pageContext.request.contextPath}/admin/user">Người dùng</a>
-    <a href="${pageContext.request.contextPath}/admin/report">Báo cáo</a>
+    <a href="${pageContext.request.contextPath}/admin/chapter">Chapter</a>
     <a href="${pageContext.request.contextPath}/admin/settings">Cài đặt</a>
     <hr style="border-color: #444">
     <c:choose>

@@ -1,0 +1,109 @@
+/* ======= Giao diện thanh công cụ ======= */
+.toolbar {
+  background: #fff;
+  padding: 12px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.search-input {
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  padding: 10px 15px;
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  border-color: #7f56d9;
+  box-shadow: 0 0 0 2px rgba(127, 86, 217, 0.2);
+}
+
+.btn-search {
+  background-color: #7f56d9;
+  color: #fff;
+  border-radius: 10px;
+  padding: 8px 16px;
+}
+
+.btn-search:hover {
+  background-color: #6c47c9;
+}
+
+.btn-add {
+  background-color: #ede9fe;
+  color: #7f56d9;
+  border: 1px solid #d8cfff;
+  border-radius: 10px;
+  padding: 8px 16px;
+}
+
+.btn-add:hover {
+  background-color: #dcd2fd;
+  color: #6c47c9;
+}
+
+/* ======= Bảng truyện ======= */
+.story-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.story-table thead th {
+  background-color: #2c2c54;
+  color: #fff;
+  border: none;
+}
+
+.story-table tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.story-table tbody td {
+  vertical-align: middle;
+}
+
+/* ======= Badge ======= */
+.badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+}
+
+/* ======= Nút thao tác ======= */
+.btn-edit {
+  color: #7f56d9;
+  background-color: #f3e8ff;
+  border-radius: 10px;
+  padding: 4px 10px;
+  transition: 0.2s;
+}
+
+.btn-edit:hover {
+  background-color: #e0d1fb;
+  color: #6c47c9;
+}
+
+.btn-delete {
+  background-color: #fef2f2;
+  color: #ef4444;
+  border-radius: 10px;
+  padding: 4px 10px;
+  transition: 0.2s;
+  border: none;
+}
+
+.btn-delete:hover {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+/* ======= Responsive table ======= */
+.table-responsive {
+  border-radius: 12px;
+  overflow-x: auto;
+  background: #fff;
+  padding: 12px;
+}

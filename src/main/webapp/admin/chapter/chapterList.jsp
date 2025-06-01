@@ -1,114 +1,65 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="admin" tagdir="/WEB-INF/tags" %>
+<%@ page import="java.util.List" %>
+<%@ page import="root.entities.Chapter" %>
+<%
+    List<Chapter> chapters = (List<Chapter>) request.getAttribute("chapters");
+    int currentPage = (int) request.getAttribute("page");
+    int totalPage = (int) request.getAttribute("totalPage");
+    String keyword = (String) request.getAttribute("keyword");
+%>
+<html>
+<head>
+    <title>Quản lý Chương</title>
+    <style>
+        body { font-family: Arial; background: #f9f9f9; }
+        .container { width: 90%; margin: auto; }
+        h1 { color: #333; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 10px; }
+        tr:nth-child(even) { background-color: #f2f2f2; }
+        a.btn { padding: 6px 10px; background: #007BFF; color: white; border-radius: 5px; text-decoration: none; }
+        a.btn:hover { background: #0056b3; }
+        .search-bar { margin-top: 20px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Quản lý Chương</h1>
 
-<admin:_layoutAdmin>
-  <style>
-  <style>
-    .search-form {
-      display: flex;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-      flex-wrap: wrap;
-    }
-
-    .search-form input[type="text"] {
-      flex: 1;
-      background-color: #1e1e2f;
-      border: 1px solid #444;
-      color: #fff;
-    }
-
-    .table-container {
-      background: #2c2f48;
-      border-radius: 1rem;
-      padding: 2rem;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-    }
-
-    .table {
-      color: #fff;
-    }
-
-    /* Giống story: header màu nền đậm */
-    .table th {
-      background-color: #3a3f63;
-      color: #fff;
-      text-align: center;
-    }
-
-    /* Nội dung ô trong bảng */
-    .table td {
-      background-color: #2c2f48;
-      color: #f0f0f0;
-      vertical-align: middle;  /* Thêm cho căn giữa chiều dọc */
-      text-align: center;      /* Căn giữa ngang giống story */
-    }
-
-    .table-hover tbody tr:hover {
-      background-color: #383c59;
-    }
-
-    .btn-sm .bi {
-      margin-right: 0.25rem;
-    }
-
-    .text-muted {
-      color: #aaa !important;
-    }
-  </style>
-
-  </style>
-
-  <div class="container">
-    <h1><i class="bi bi-journal-text"></i> Danh sách chương</h1>
-
-    <form method="get" action="" class="search-form mb-3">
-      <input type="text" name="keyword" value="${keyword}" class="form-control" placeholder="🔍 Tìm theo tiêu đề...">
-      <button type="submit" class="btn btn-outline-primary"><i class="bi bi-search"></i> Tìm</button>
-      <a href="?action=add" class="btn btn-success"><i class="bi bi-plus-circle"></i> Thêm chương</a>
-    </form>
-
-    <div class="table-container">
-      <table class="table table-hover table-bordered align-middle">
-        <thead class="table-primary text-center">
-          <tr>
-            <th>ID</th>
-            <th>Tiêu đề</th>
-            <th>Ngày tạo</th>
-            <th>Mã truyện</th>
-            <th>Hành động</th>
-          </tr>
-        </thead>
-        <tbody>
-          <c:forEach var="c" items="${chapters}">
-            <tr>
-              <td class="text-center">${c.id}</td>
-              <td>${c.title}</td>
-              <td class="text-center">${c.dayCreate}</td>
-              <td class="text-center">${c.storyId}</td>
-              <td class="text-center">
-                <a href="?action=edit&id=${c.id}" class="btn btn-sm btn-primary">
-                  <i class="bi bi-pencil"></i> Sửa
-                </a>
-                <form method="post" action="" style="display:inline;">
-                  <input type="hidden" name="action" value="delete">
-                  <input type="hidden" name="id" value="${c.id}">
-                  <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc muốn xóa chương này không?');">
-                    <i class="bi bi-trash"></i> Xóa
-                  </button>
-                </form>
-              </td>
-            </tr>
-          </c:forEach>
-
-          <c:if test="${empty chapters}">
-            <tr>
-              <td colspan="5" class="text-center text-muted">Không có chương nào được tìm thấy.</td>
-            </tr>
-          </c:if>
-        </tbody>
-      </table>
+    <div class="search-bar">
+        <form method="get">
+            <input type="text" name="keyword" placeholder="Tìm theo tiêu đề..." value="<%= keyword != null ? keyword : "" %>" />
+            <button type="submit">Tìm kiếm</button>
+            <a class="btn" href="chapter?action=add">Thêm chương</a>
+        </form>
     </div>
-  </div>
-</admin:_layoutAdmin>
+
+    <table>
+        <tr>
+            <th>ID</th><th>Tiêu đề</th><th>Ngày tạo</th><th>Truyện</th><th>Hành động</th>
+        </tr>
+        <%
+            for (Chapter c : chapters) {
+        %>
+        <tr>
+            <td><%= c.getId() %></td>
+            <td><%= c.getTitle() %></td>
+            <td><%= c.getDayCreate() %></td>
+            <td><%= c.getStoryId() %></td>
+            <td>
+                <a class="btn" href="chapter?action=edit&id=<%= c.getId() %>">Sửa</a>
+                <a class="btn" style="background:red;" onclick="return confirm('Bạn chắc chắn xóa?')" href="chapter?action=delete&id=<%= c.getId() %>">Xóa</a>
+            </td>
+        </tr>
+        <% } %>
+    </table>
+
+    <div style="margin-top: 20px;">
+        Trang:
+        <% for (int i = 1; i <= totalPage; i++) { %>
+            <a href="?page=<%= i %>&keyword=<%= keyword != null ? keyword : "" %>"><%= (i == currentPage ? "<b>" + i + "</b>" : i) %></a>
+        <% } %>
+    </div>
+</div>
+</body>
+</html>
