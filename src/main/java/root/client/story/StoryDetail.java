@@ -21,42 +21,54 @@ import java.util.List;
 @WebServlet("/storyDetail")
 public class StoryDetail extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public StoryDetail() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
-            int storyId = Integer.parseInt(req.getParameter("id"));
-            Story story = StoryDAO.getById(storyId);
-            List<Chapter> chapters = ChapterDAO.getByStoryId(storyId);
+	public StoryDetail() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
-            List<Category> categories = CategoryDAO.getAll();
-            req.setAttribute("categories", categories);
-
-            req.setAttribute("story", story);
-            req.setAttribute("chapters", chapters);
-            req.getRequestDispatcher("/client/story/storyDetail.jsp").forward(req, resp);
-        } catch (Exception e) {
-            e.printStackTrace();
-            resp.getWriter().println("Lỗi khi load chi tiết truyện: " + e.getMessage());
-        }
-    }
-
-    
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		try {
+			int storyId = Integer.parseInt(req.getParameter("id"));
+			Story story = StoryDAO.getById(storyId);
+			List<Chapter> chapters = ChapterDAO.getByStoryId(storyId);
+			List<Category> categories = CategoryDAO.getAll();
+			List<root.entities.StoryComment> commentList = root.reps.StoryCommentDAO.getByStoryId(storyId);
+
+			root.entities.User user = (root.entities.User) req.getSession().getAttribute("user");
+			boolean isLiked = false;
+			boolean isFollowing = false;
+			if (user != null) {
+				isLiked = root.reps.StoryLikeDAO.isLiked(user.getId(), storyId);
+				isFollowing = root.reps.StoryFollowDAO.isFollowing(user.getId(), storyId);
+			}
+			req.setAttribute("isLiked", isLiked);
+			req.setAttribute("isFollowing", isFollowing);
+			req.setAttribute("categories", categories);
+			req.setAttribute("story", story);
+			req.setAttribute("chapters", chapters);
+			req.setAttribute("commentList", commentList);
+			req.getRequestDispatcher("/client/story/storyDetail.jsp").forward(req, resp);
+		} catch (Exception e) {
+			e.printStackTrace();
+			resp.getWriter().println("Lỗi khi load chi tiết truyện: " + e.getMessage());
+		}
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}

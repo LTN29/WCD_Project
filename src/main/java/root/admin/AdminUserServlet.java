@@ -17,7 +17,6 @@ import java.util.List;
 @WebServlet("/admin/user")
 public class AdminUserServlet extends HttpServlet {
 
-    // Hàm mã hóa mật khẩu SHA-256 (bạn có thể thay bằng bcrypt)
     private String hashPassword(String password) {
         if (password == null || password.isEmpty()) return null;
         try {
@@ -49,7 +48,7 @@ public class AdminUserServlet extends HttpServlet {
                 req.getRequestDispatcher("/admin/user/userForm.jsp").forward(req, resp);
 
             } else if ("add".equals(action)) {
-                // Mở form thêm mới user, không cần load dữ liệu nào
+
                 req.getRequestDispatcher("/admin/user/userForm.jsp").forward(req, resp);
 
             } else if ("delete".equals(action)) {
@@ -98,12 +97,12 @@ public class AdminUserServlet extends HttpServlet {
             try {
                 score = Integer.parseInt(req.getParameter("score"));
             } catch (NumberFormatException e) {
-                // Có thể để mặc định score = 0 hoặc xử lý lỗi cụ thể
+      
             }
             int active = "on".equals(req.getParameter("active")) ? 1 : 0;
-            int levelId = 1; // Mặc định, hoặc lấy từ form nếu có
+            int levelId = 1; 
 
-            // Hash mật khẩu nếu có nhập (chỉ update mật khẩu khi có dữ liệu)
+   
             String hashedPassword = null;
             if (password != null && !password.trim().isEmpty()) {
                 hashedPassword = hashPassword(password.trim());
@@ -135,7 +134,6 @@ public class AdminUserServlet extends HttpServlet {
                 }
             } else {
                 // Cập nhật (ngoại trừ mật khẩu)
-                // Nếu muốn cập nhật mật khẩu thì gọi hàm updatePassword riêng biệt
                 boolean updated = UserDAO.update(user);
                 if (!updated) {
                     req.setAttribute("error", "Cập nhật user thất bại.");

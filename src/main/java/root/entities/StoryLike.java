@@ -4,17 +4,17 @@ import java.sql.Date;
 
 public class StoryLike {
     private long id;           
-    private int userId;       
+    private long userId;       
     private int storyId;       
     private Date dayCreate;    
     private int like;         
 
     public StoryLike() {}
 
-    public StoryLike(long id, int userId, int storyId, Date dayCreate, int like) {
+    public StoryLike(long id, long userId, int storyId2, Date dayCreate, int like) {
         this.id = id;
         this.userId = userId;
-        this.storyId = storyId;
+        this.storyId = storyId2;
         this.dayCreate = dayCreate;
         this.like = like;
     }
@@ -36,7 +36,7 @@ public class StoryLike {
         this.id = id;
     }
 
-    public int getUserId() {
+    public long getUserId() {
         return userId;
     }
 

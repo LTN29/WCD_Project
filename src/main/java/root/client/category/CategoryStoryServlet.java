@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Servlet implementation class CategoryStoryServlet
  */
-@WebServlet("/story")
+@WebServlet("/categoryStory")
 public class CategoryStoryServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -34,20 +34,25 @@ public class CategoryStoryServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            int categoryId = Integer.parseInt(req.getParameter("categoryId"));
-
-            List<Story> stories = StoryDAO.getByCategoryId(categoryId);
-            req.setAttribute("stories", stories);
-
-         
-            String categoryName = CategoryDAO.getNameById(categoryId);
-            req.setAttribute("listTitle", "Thể loại: " + categoryName);
-
+            String categoryIdStr = req.getParameter("categoryId");
+            List<Story> stories;
+            String listTitle = "Tất cả truyện";
             
+            if (categoryIdStr != null && !categoryIdStr.isEmpty()) {
+                int categoryId = Integer.parseInt(categoryIdStr);
+                stories = StoryDAO.getByCategoryId(categoryId);
+                String categoryName = CategoryDAO.getNameById(categoryId);
+                listTitle = "Thể loại: " + categoryName;
+            } else {
+                stories = StoryDAO.getAllWithNames(); // Hoặc StoryDAO.getAll()
+            }
+
+            req.setAttribute("stories", stories);
+            req.setAttribute("listTitle", listTitle);
+
             List<Category> categories = CategoryDAO.getAll(); 
             req.setAttribute("categories", categories);
 
-        
             req.getRequestDispatcher("/client/story/listStory.jsp").forward(req, resp);
 
         } catch (Exception e) {
@@ -55,6 +60,7 @@ public class CategoryStoryServlet extends HttpServlet {
             resp.getWriter().println("Lỗi: " + e.getMessage());
         }
     }
+
 
 
 	/**

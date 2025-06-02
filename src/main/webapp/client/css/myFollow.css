@@ -1,0 +1,31 @@
+@charset "UTF-8";
+.followed-container {
+    max-width: 900px;
+    margin: 32px auto;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+    padding: 36px 24px 24px 24px;
+}
+.stories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 28px;
+    margin-top: 24px;
+}
+.story-card {
+    display: flex;
+    background: #fafbfc;
+    border-radius: 10px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.06);
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+}
+.story-card:hover {
+    box-shadow: 0 8px 20px rgba(80,80,150,0.08);
+}
+.story-img img {
+    width: 110px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 0 10px 10px

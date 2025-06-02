@@ -14,11 +14,13 @@
 		</div>
 
 		<div class="client-header__nav">
-			<a href="#">DISCORD</a> <a href="#">HỎI ĐÁP</a> <a href="#">BẢNG
-				TRUYỆN</a> <a href="#">TIN TỨC</a>
+			<a href="${pageContext.request.contextPath}/discord">DISCORD</a> <a
+				href="${pageContext.request.contextPath}/faq">HỎI ĐÁP</a> <a
+				href="${pageContext.request.contextPath}/story">BẢNG TRUYỆN</a> <a
+				href="${pageContext.request.contextPath}/news">TIN TỨC</a>
 		</div>
 
-		<!-- ✅ Dropdown Category -->
+
 		<div class="header-category-dropdown">
 			<button class="header-dropbtn" type="button">
 				Thể loại <span>&#x25BC;</span>
@@ -49,7 +51,8 @@
 			<c:choose>
 				<c:when test="${not empty sessionScope.user}">
 					<span style="margin-right: 10px; font-weight: bold;"> Xin
-						chào, <a href="${pageContext.request.contextPath}/auth/user_info.jsp">${sessionScope.user.name}</a>
+						chào, <a
+						href="${pageContext.request.contextPath}/auth/user_info.jsp">${sessionScope.user.name}</a>
 					</span>
 					<a href="${pageContext.request.contextPath}/logout">Đăng xuất</a>
 				</c:when>
