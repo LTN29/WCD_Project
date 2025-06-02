@@ -90,7 +90,7 @@ public class ChapterDAO {
     }
 
     // Xóa chapter
-    public static boolean delete(int id) throws SQLException {
+    public static boolean deleteById(int id) throws SQLException {
         String sql = "DELETE FROM tbl_chapter WHERE _id=?";
         try (
             Connection conn = DBUtil.getInstance().getConnect();
@@ -117,6 +117,27 @@ public class ChapterDAO {
             }
         }
         return chapters;
+    }
+    public static List<Chapter> getAll() throws SQLException {
+        List<Chapter> list = new ArrayList<>();
+        String sql = "SELECT * FROM tbl_chapter ORDER BY _id DESC";
+
+        try (Connection conn = DBUtil.getInstance().getConnect();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Chapter c = new Chapter(
+                    rs.getInt("_id"),
+                    rs.getString("_title"),
+                    rs.getString("_content"),
+                    rs.getDate("_day_create"),
+                    rs.getInt("_story_id")
+                );
+                list.add(c);
+            }
+        }
+        return list;
     }
 
 }

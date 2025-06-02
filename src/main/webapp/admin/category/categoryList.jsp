@@ -2,12 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath}/admin/author/authorCSS/style.css" />
+
 <admin:_layoutAdmin>
-
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
-
   <style>
     .container {
       padding: 2rem;
@@ -68,6 +64,16 @@
       vertical-align: middle;
     }
 
+    .status-active {
+      color: #10b981;
+      font-weight: bold;
+    }
+
+    .status-inactive {
+      color: #ef4444;
+      font-weight: bold;
+    }
+
     .action-buttons {
       display: flex;
       gap: 8px;
@@ -81,81 +87,65 @@
     .mt-4 {
       margin-top: 1.5rem !important;
     }
-
-    .avatar-img {
-      width: 60px;
-      height: 60px;
-      object-fit: cover;
-      border-radius: 50%;
-      border: 2px solid #e2e8f0;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-    }
-
-    .author-info {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
   </style>
 
   <div class="container mt-4">
-    <h2><i class="bi bi-person-lines-fill"></i> Danh sách Tác giả</h2>
+    <h2><i class="bi bi-tags"></i> Danh sách Category</h2>
 
     <!-- Tìm kiếm -->
-    <form method="get" action="author" class="search-form mb-3">
-      <input type="text" name="keyword" placeholder="🔍 Tìm theo tên tác giả..." 
+    <form method="get" action="category" class="search-form mb-3">
+      <input type="text" name="keyword" placeholder="🔍 Tìm theo tên..." 
              value="${keyword != null ? keyword : ''}" />
       <button type="submit" class="btn btn-outline-primary"><i class="bi bi-search"></i> Tìm kiếm</button>
-      <a href="author" class="btn btn-outline-secondary"><i class="bi bi-x-circle"></i> Xóa</a>
+      <a href="category" class="btn btn-outline-secondary"><i class="bi bi-x-circle"></i> Xóa</a>
     </form>
 
     <!-- Thêm mới -->
-    <a href="author?action=add" class="btn btn-success mb-3">
-
-      <i class="bi bi-plus-circle"></i> Thêm Tác giả mới
-    </a>
+   <a href="category?action=add" class="btn btn-success mb-3">
+  <i class="bi bi-plus-circle"></i> Thêm Category mới
+</a>
 
     <!-- Bảng -->
     <table class="table table-bordered table-hover">
       <thead>
         <tr>
-          <th style="width: 10%;">STT</th>
-          <th style="width: 60%;">Tác giả</th>
+          <th style="width: 10%;">ID</th>
+          <th style="width: 40%;">Tên</th>
+          <th style="width: 20%;">Trạng thái</th>
           <th style="width: 30%;">Hành động</th>
         </tr>
       </thead>
       <tbody>
-        <c:forEach var="author" items="${authors}" varStatus="status">
+        <c:forEach var="c" items="${categoryList}">
           <tr>
-            <td class="text-center">${status.index + 1}</td>
-            <td>
-              <div class="author-info">
-                <c:choose>
-                  <c:when test="${not empty author.image}">
-                    <img src="${pageContext.request.contextPath}/admin/img/imgAuthor/${author.image}" class="avatar-img" alt="avatar">
-                  </c:when>
-                  <c:otherwise>
-                    <img src="${pageContext.request.contextPath}/admin/img/imgAuthor/default.png" class="avatar-img" alt="default-avatar">
-                  </c:otherwise>
-                </c:choose>
-                <span class="fw-semibold">${author.name}</span>
-              </div>
+            <td class="text-center">${c.id}</td>
+            <td>${c.name}</td>
+            <td class="text-center">
+              <c:choose>
+                <c:when test="${c.active}">
+                  <span class="status-active">Hoạt động</span>
+                </c:when>
+                <c:otherwise>
+                  <span class="status-inactive">Không hoạt động</span>
+                </c:otherwise>
+              </c:choose>
             </td>
-            <td class="action-buttons">
-              <a href="author?action=edit&id=${author.id}" class="btn btn-warning btn-sm">
+             <td class="action-buttons">
+              <a href="category?action=edit&id=${c.id}" class="btn btn-warning btn-sm">
                 <i class="bi bi-pencil-square"></i> Sửa
               </a>
-              <a href="author?action=delete&id=${author.id}" class="btn btn-danger btn-sm"
-                 onclick="return confirm('Xóa tác giả này?')">
+              <a href="category?action=delete&id=${c.id}" class="btn btn-danger btn-sm"
+                 onclick="return confirm('Xóa category này?')">
                 <i class="bi bi-trash"></i> Xóa
               </a>
             </td>
+            
           </tr>
         </c:forEach>
 
-        <c:if test="${empty authors}">
+        <c:if test="${empty categoryList}">
           <tr>
-            <td colspan="3" class="text-center text-muted">Không có tác giả nào được tìm thấy.</td>
+            <td colspan="4" class="text-center text-muted">Không có category nào được tìm thấy.</td>
           </tr>
         </c:if>
       </tbody>
