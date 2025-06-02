@@ -1,23 +1,49 @@
 package root.entities;
 
 public class StoryComment {
-    private int id;
+    private long id;
     private String content;
     private Integer active;
     private int storyId;
-    private int userId;
-
+    private long userId;
+    private String userName;
+    
+    
     public StoryComment() {}
 
-    public StoryComment(int id, String content, Integer active, int storyId, int userId) {
+    public StoryComment(long id, String content, Integer active, int storyId, long userId2) {
         this.id = id;
         this.content = content;
         this.active = active;
         this.storyId = storyId;
-        this.userId = userId;
+        this.userId = userId2;
     }
 
-    public int getId() {
+    
+    
+    public StoryComment(int id, String content, Integer active, int storyId, long userId, String userName) {
+		super();
+		this.id = id;
+		this.content = content;
+		this.active = active;
+		this.storyId = storyId;
+		this.userId = userId;
+		this.userName = userName;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public void setUserId(long userId) {
+		this.userId = userId;
+	}
+
+	public long getId() {
         return id;
     }
 
@@ -49,7 +75,7 @@ public class StoryComment {
         this.storyId = storyId;
     }
 
-    public int getUserId() {
+    public long getUserId() {
         return userId;
     }
 

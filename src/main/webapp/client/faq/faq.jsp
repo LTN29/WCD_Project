@@ -25,7 +25,7 @@
             </div>
             <div class="faq-item">
                 <b>5. Làm sao để liên hệ góp ý cho web?</b>
-                <div>Gửi email về <a href="mailto:ad.cuutruyen@gmail.com">ad.cuutruyen@gmail.com</a> hoặc bình luận tại đây.</div>
+                <div>Gửi email về <a href="mailto:ad.WCD1_Test1@gmail.com">ad.WCD1_Test1@gmail.com</a> hoặc bình luận tại đây.</div>
             </div>
             <div class="faq-item">
                 <b>6. Có giới hạn số chương/truyện đăng không?</b>

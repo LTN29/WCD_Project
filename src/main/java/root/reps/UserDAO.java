@@ -6,6 +6,77 @@ import root.myutils.DBUtil;
 import java.sql.*;
 
 public class UserDAO {
+	
+	public static User findById(long userId) throws SQLException {
+	    String sql = "SELECT u.*, l._level AS levelName FROM tbl_user u " +
+	                 "LEFT JOIN tbl_Level_user l ON u._level_id = l._id " +
+	                 "WHERE u._id = ?";
+	    try (Connection conn = DBUtil.getInstance().getConnect();
+	         PreparedStatement stmt = conn.prepareStatement(sql)) {
+	        stmt.setLong(1, userId);
+	        try (ResultSet rs = stmt.executeQuery()) {
+	            if (rs.next()) {
+	                User user = new User();
+	                user.setId(rs.getLong("_id"));
+	                user.setUserName(rs.getString("_username"));
+	                user.setPassWord(rs.getString("_password"));
+	                user.setRole(rs.getString("_role"));
+	                user.setActive(rs.getInt("_active"));
+	                user.setName(rs.getString("_name"));
+	                user.setImage(rs.getString("_image"));
+	                user.setScore(rs.getInt("_score"));
+	                user.setLevelId(rs.getInt("_level_id"));
+	                user.setLevel(rs.getString("levelName")); 
+	                return user;
+	            }
+	        }
+	    }
+	    return null;
+	}
+
+
+	
+	public static void addScoreAndUpdateLevel(long userId, int addScore) throws SQLException {
+	    // 1. Cộng điểm
+	    String sql = "UPDATE tbl_user SET _score = _score + ? WHERE _id = ?";
+	    try (Connection conn = DBUtil.getInstance().getConnect();
+	         PreparedStatement stmt = conn.prepareStatement(sql)) {
+	        stmt.setInt(1, addScore);
+	        stmt.setLong(2, userId);
+	        stmt.executeUpdate();
+	    }
+	    // 2. Lấy điểm mới
+	    int newScore = 0;
+	    try (Connection conn = DBUtil.getInstance().getConnect();
+	         PreparedStatement stmt = conn.prepareStatement("SELECT _score FROM tbl_user WHERE _id = ?")) {
+	        stmt.setLong(1, userId);
+	        try (ResultSet rs = stmt.executeQuery()) {
+	            if (rs.next()) newScore = rs.getInt("_score");
+	        }
+	    }
+	    // 3. Tìm level mới theo điểm mới
+	    int newLevelId = 0;
+	    try (Connection conn = DBUtil.getInstance().getConnect();
+	         PreparedStatement stmt = conn.prepareStatement(
+	            "SELECT _id FROM tbl_Level_user WHERE ? BETWEEN _score_start AND _score_end")) {
+	        stmt.setInt(1, newScore);
+	        try (ResultSet rs = stmt.executeQuery()) {
+	            if (rs.next()) newLevelId = rs.getInt("_id");
+	        }
+	    }
+	    // 4. Cập nhật level mới cho user
+	    if (newLevelId > 0) {
+	        try (Connection conn = DBUtil.getInstance().getConnect();
+	             PreparedStatement stmt = conn.prepareStatement("UPDATE tbl_user SET _level_id = ? WHERE _id = ?")) {
+	            stmt.setInt(1, newLevelId);
+	            stmt.setLong(2, userId);
+	            stmt.executeUpdate();
+	        }
+	    }
+	}
+
+
+
 
 	// Kiểm tra đăng nhập
 	public static User checkLogin(String username, String hashedPassword) throws SQLException {

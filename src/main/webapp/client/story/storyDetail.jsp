@@ -39,25 +39,35 @@
 					<strong>Introduction:</strong> ${story.introduction}
 				</p>
 				<div class="d-flex align-items-center gap-3 mb-3">
-					<button class="btn btn-outline-danger d-flex align-items-center"
-						id="likeBtn">
-						<i class="fa fa-heart me-1"></i> <span id="likeCount">${story.likeNumber}</span>
-						<span class="ms-1">Like</span>
-					</button>
-					<button class="btn btn-outline-primary d-flex align-items-center"
-						id="followBtn">
-						<i class="fa fa-star me-1"></i> <span id="followCount">${story.followNumber}</span>
-						<span class="ms-1">Follow</span>
-					</button>
-					<div class="d-flex align-items-center">
-						<i class="fa fa-eye text-primary me-1"></i> <span>${story.viewNumber}</span>
-					</div>
-					<div class="d-flex align-items-center">
-						<i class="fa fa-comments text-info me-1"></i> <span
-							id="commentCount"> <c:out
-								value="${not empty commentList ? fn:length(commentList) : 0}" />
-						</span>
-					</div>
+					<form action="${isLiked ? 'StoryUnlike' : 'StoryLike'}"
+						method="post" style="display: inline;">
+						<input type="hidden" name="storyId" value="${story.id}" />
+						<button class="btn btn-outline-danger d-flex align-items-center"
+							type="submit">
+							<i class="fa fa-heart me-1"></i> <span id="likeCount">${story.likeNumber}</span>
+							<span class="ms-1"> <c:choose>
+									<c:when test="${isLiked}">Bỏ Like</c:when>
+									<c:otherwise>Like</c:otherwise>
+								</c:choose>
+							</span>
+						</button>
+					</form>
+
+
+					<form action="${isFollowing ? 'StoryUnfollow' : 'StoryFollow'}"
+						method="post" style="display: inline;">
+						<input type="hidden" name="storyId" value="${story.id}" />
+						<button class="btn btn-outline-primary d-flex align-items-center"
+							type="submit">
+							<i class="fa fa-star me-1"></i> <span id="followCount">${story.followNumber}</span>
+							<span class="ms-1"> <c:choose>
+									<c:when test="${isFollowing}">Bỏ Follow</c:when>
+									<c:otherwise>Follow</c:otherwise>
+								</c:choose>
+							</span>
+						</button>
+					</form>
+
 				</div>
 			</div>
 		</div>
@@ -97,10 +107,15 @@
 					</c:otherwise>
 				</c:choose>
 			</div>
-			<form class="comment-input-row" action="CommentServlet" method="post">
-				<input type="hidden" name="chapterId" value="${chapter.id}" /> <input
+			<form class="comment-input-row" action="StoryComment" method="post">
+				<input type="hidden" name="storyId" value="${story.id}" /> <input
 					type="text" name="content" placeholder="Viết bình luận..." required />
 				<button type="submit">Gửi</button>
 			</form>
+
 		</div>
+		<c:if test="${not empty sessionScope.message}">
+			<div class="alert alert-info">${sessionScope.message}</div>
+			<c:remove var="message" scope="session" />
+		</c:if>
 </client:_layoutClient>

@@ -51,7 +51,7 @@ public class RegisterServlet extends HttpServlet {
             user.setRole("reader");
             user.setActive(1);
             user.setScore(0);
-            user.setName("Người dùng mới");
+            user.setName(username);
             user.setImage("default.png");
             user.setLevelId(1);
 
