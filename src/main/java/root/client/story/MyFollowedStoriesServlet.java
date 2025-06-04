@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Servlet implementation class MyFollowedStoriesServlet
  */
-@WebServlet("/MyFollowedStoriesServlet")
+@WebServlet("/MyFollowedStories")
 public class MyFollowedStoriesServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

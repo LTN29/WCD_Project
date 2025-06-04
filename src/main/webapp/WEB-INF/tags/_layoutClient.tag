@@ -17,7 +17,7 @@
 			<a href="${pageContext.request.contextPath}/discord">DISCORD</a> <a
 				href="${pageContext.request.contextPath}/faq">HỎI ĐÁP</a> <a
 				href="${pageContext.request.contextPath}/story">BẢNG TRUYỆN</a> <a
-				href="${pageContext.request.contextPath}/news">TIN TỨC</a>
+				href="${pageContext.request.contextPath}/MyFollowedStories">THEO DÕI</a>
 		</div>
 
 
