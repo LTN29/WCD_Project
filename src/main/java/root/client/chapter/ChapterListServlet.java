@@ -39,7 +39,7 @@ public class ChapterListServlet extends HttpServlet {
                 req.setAttribute("images", images);
             }
 
-            List<ChapterComment> commentList = ChapterCommentDAO.getChapterComments(chapterId);
+            List<ChapterComment> commentList = ChapterCommentDAO.getApprovedCommentsByChapterId(chapterId);
             req.setAttribute("commentList", commentList);
 
             req.getRequestDispatcher("/client/chapter/chapterDetail.jsp").forward(req, resp);

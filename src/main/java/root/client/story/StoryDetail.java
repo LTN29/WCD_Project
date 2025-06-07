@@ -8,8 +8,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import root.entities.Category;
 import root.entities.Chapter;
 import root.entities.Story;
+import root.entities.StoryComment;
 import root.reps.CategoryDAO;
 import root.reps.ChapterDAO;
+import root.reps.StoryCommentDAO;
 import root.reps.StoryDAO;
 
 import java.io.IOException;
@@ -41,7 +43,8 @@ public class StoryDetail extends HttpServlet {
 			Story story = StoryDAO.getById(storyId);
 			List<Chapter> chapters = ChapterDAO.getByStoryId(storyId);
 			List<Category> categories = CategoryDAO.getAll();
-			List<root.entities.StoryComment> commentList = root.reps.StoryCommentDAO.getByStoryId(storyId);
+			List<StoryComment> commentList = StoryCommentDAO.getApprovedCommentsByStoryId(storyId);
+
 
 			root.entities.User user = (root.entities.User) req.getSession().getAttribute("user");
 			boolean isLiked = false;
@@ -59,6 +62,7 @@ public class StoryDetail extends HttpServlet {
 			req.getRequestDispatcher("/client/story/storyDetail.jsp").forward(req, resp);
 		} catch (Exception e) {
 			e.printStackTrace();
+			
 			resp.getWriter().println("Lỗi khi load chi tiết truyện: " + e.getMessage());
 		}
 	}

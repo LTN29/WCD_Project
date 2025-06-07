@@ -135,3 +135,22 @@
 .comment-input-row button:hover {
     background: #005bbd;
 }
+.alert {
+	padding: 10px;
+	margin-top: 10px;
+	border-radius: 5px;
+	font-size: 15px;
+}
+
+.alert-info {
+	background-color: #e7f3fe;
+	border: 1px solid #b3d7ff;
+	color: #31708f;
+}
+
+.alert-warning {
+	background-color: #fff3cd;
+	border: 1px solid #ffeeba;
+	color: #856404;
+}
+
