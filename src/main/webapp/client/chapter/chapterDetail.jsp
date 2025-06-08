@@ -64,10 +64,7 @@
 						<button type="submit">Gửi</button>
 					</form>
 				</c:when>
-				<c:if test="${not empty sessionScope.message}">
-					<div class="alert alert-info">${sessionScope.message}</div>
-					<c:remove var="message" scope="session" />
-				</c:if>
+
 
 				<c:otherwise>
 					<div class="alert alert-warning">
@@ -77,7 +74,10 @@
 					</div>
 				</c:otherwise>
 			</c:choose>
-
+			<c:if test="${not empty sessionScope.message}">
+				<div class="alert alert-info">${sessionScope.message}</div>
+				<c:remove var="message" scope="session" />
+			</c:if>
 
 		</div>
 	</div>

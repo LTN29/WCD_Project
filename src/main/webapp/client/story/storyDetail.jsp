@@ -79,13 +79,12 @@
 			<c:forEach var="c" items="${chapters}">
 				<li
 					class="list-group-item d-flex justify-content-between align-items-center">
-					<a href="ChapterList?chapterId=${c.id}"> <i
+					<a href="chapterDetail?chapterId=${c.id}"> <i
 						class="fa fa-book-open"></i> ${c.title}
 				</a> <span class="badge badge-info">${c.dayCreate}</span>
 				</li>
 			</c:forEach>
 		</ul>
-
 		<!-- Khu vực comment -->
 		<div class="comment-block">
 			<h5>
@@ -97,9 +96,17 @@
 				<c:choose>
 					<c:when test="${not empty commentList}">
 						<c:forEach var="comment" items="${commentList}">
-							<div>
-								<span><b>${comment.userName}:</b> ${comment.content}</span>
-							</div>
+							<c:if
+								test="${comment.active == 1 || (sessionScope.user != null && sessionScope.user.id == comment.userId)}">
+								<div
+									class="comment-item ${comment.active == 0 ? 'pending-comment' : ''}">
+									<span> <b>${comment.userName}:</b> ${comment.content} <c:if
+											test="${comment.active == 0}">
+											<i> (đang chờ duyệt)</i>
+										</c:if>
+									</span>
+								</div>
+							</c:if>
 						</c:forEach>
 					</c:when>
 					<c:otherwise>
@@ -107,15 +114,9 @@
 					</c:otherwise>
 				</c:choose>
 			</div>
-			<form class="comment-input-row" action="StoryComment" method="post">
-				<input type="hidden" name="storyId" value="${story.id}" /> <input
-					type="text" name="content" placeholder="Viết bình luận..." required />
-				<button type="submit">Gửi</button>
-			</form>
 
-		</div>
-		<c:if test="${not empty sessionScope.message}">
-			<div class="alert alert-info">${sessionScope.message}</div>
-			<c:remove var="message" scope="session" />
-		</c:if>
+			<c:if test="${not empty sessionScope.message}">
+				<div class="alert alert-info">${sessionScope.message}</div>
+				<c:remove var="message" scope="session" />
+			</c:if>
 </client:_layoutClient>

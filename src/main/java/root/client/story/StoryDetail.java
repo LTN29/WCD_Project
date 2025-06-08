@@ -9,6 +9,7 @@ import root.entities.Category;
 import root.entities.Chapter;
 import root.entities.Story;
 import root.entities.StoryComment;
+import root.entities.User;
 import root.reps.CategoryDAO;
 import root.reps.ChapterDAO;
 import root.reps.StoryCommentDAO;
@@ -43,14 +44,16 @@ public class StoryDetail extends HttpServlet {
 			Story story = StoryDAO.getById(storyId);
 			List<Chapter> chapters = ChapterDAO.getByStoryId(storyId);
 			List<Category> categories = CategoryDAO.getAll();
-			List<StoryComment> commentList = StoryCommentDAO.getApprovedCommentsByStoryId(storyId);
+			User user = (User) req.getSession().getAttribute("user");
+			List<StoryComment> commentList = StoryCommentDAO.getCommentsVisibleToUser(storyId, user != null ? user.getId() : -1);
 
 
-			root.entities.User user = (root.entities.User) req.getSession().getAttribute("user");
+
+			root.entities.User useR = (root.entities.User) req.getSession().getAttribute("user");
 			boolean isLiked = false;
 			boolean isFollowing = false;
-			if (user != null) {
-				isLiked = root.reps.StoryLikeDAO.isLiked(user.getId(), storyId);
+			if (useR != null) {
+				isLiked = root.reps.StoryLikeDAO.isLiked(useR.getId(), storyId);
 				isFollowing = root.reps.StoryFollowDAO.isFollowing(user.getId(), storyId);
 			}
 			req.setAttribute("isLiked", isLiked);

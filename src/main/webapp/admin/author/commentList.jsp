@@ -1,7 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="admin" tagdir="/WEB-INF/tags"%>
-
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/admin/author/authorCSS/commentList.css" />
 <admin:_layoutAdmin>
 	<div class="container mt-4">
 		<h3>Duyệt bình luận truyện</h3>
