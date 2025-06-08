@@ -6,6 +6,10 @@
     border-radius: 16px;
     box-shadow: 0 4px 28px rgba(0,0,0,0.07);
 }
+.pending-comment {
+    opacity: 0.5;
+    font-style: italic;
+}
 
 .chapter-title {
     font-size: 2rem;

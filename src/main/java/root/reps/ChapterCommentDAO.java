@@ -9,28 +9,75 @@ import root.myutils.DBUtil;
 
 public class ChapterCommentDAO {
 	public static List<ChapterComment> getApprovedCommentsByChapterId(int chapterId) throws SQLException {
-	    List<ChapterComment> list = new ArrayList<>();
-	    String sql = "SELECT c._id, c._content, c._user_id, u._name AS userName, c._chapter_id " +
-	                 "FROM tbl_chapter_comment c " +
-	                 "JOIN tbl_user u ON c._user_id = u._id " +
-	                 "WHERE c._chapter_id = ? AND c._active = 1 ORDER BY c._id DESC";
-	    try (Connection conn = DBUtil.getInstance().getConnect();
-	         PreparedStatement stmt = conn.prepareStatement(sql)) {
-	        stmt.setInt(1, chapterId);
-	        ResultSet rs = stmt.executeQuery();
-	        while (rs.next()) {
-	            ChapterComment comment = new ChapterComment();
-	            comment.setId(rs.getLong("_id"));
-	            comment.setContent(rs.getString("_content"));
-	            comment.setUserId(rs.getLong("_user_id"));
-	            comment.setUserName(rs.getString("userName"));
-	            comment.setChapterId(rs.getInt("_chapter_id"));
-	            list.add(comment);
-	        }
-	    }
-	    return list;
+		List<ChapterComment> list = new ArrayList<>();
+		String sql = "SELECT c._id, c._content, c._user_id, u._name AS userName, c._chapter_id "
+				+ "FROM tbl_chapter_comment c " + "JOIN tbl_user u ON c._user_id = u._id "
+				+ "WHERE c._chapter_id = ? AND c._active = 1 ORDER BY c._id DESC";
+		try (Connection conn = DBUtil.getInstance().getConnect(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+			stmt.setInt(1, chapterId);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				ChapterComment comment = new ChapterComment();
+				comment.setId(rs.getLong("_id"));
+				comment.setContent(rs.getString("_content"));
+				comment.setUserId(rs.getLong("_user_id"));
+				comment.setUserName(rs.getString("userName"));
+				comment.setChapterId(rs.getInt("_chapter_id"));
+				list.add(comment);
+			}
+		}
+		return list;
 	}
 
+	public static List<ChapterComment> getVisibleComments(int chapterId, long currentUserId) {
+		List<ChapterComment> list = new ArrayList<>();
+		String sql = "SELECT c._id, c._content, c._active, c._user_id, u._name AS userName, c._chapter_id "
+				+ "FROM tbl_chapter_comment c " + "JOIN tbl_user u ON c._user_id = u._id "
+				+ "WHERE c._chapter_id = ? AND (c._active = 1 OR c._user_id = ?) " + "ORDER BY c._id DESC";
+		try (Connection conn = DBUtil.getInstance().getConnect(); PreparedStatement ps = conn.prepareStatement(sql)) {
+			ps.setInt(1, chapterId);
+			ps.setLong(2, currentUserId);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				ChapterComment c = new ChapterComment();
+				c.setId(rs.getLong("_id"));
+				c.setContent(rs.getString("_content"));
+				c.setActive(rs.getInt("_active"));
+				c.setUserId(rs.getLong("_user_id"));
+				c.setUserName(rs.getString("userName"));
+				c.setChapterId(rs.getInt("_chapter_id"));
+				list.add(c);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	public static int countPendingByUser(int chapterId, long userId) throws SQLException {
+		String sql = "SELECT COUNT(*) FROM tbl_chapter_comment WHERE _chapter_id = ? AND _user_id = ? AND _active = 0";
+		try (Connection conn = DBUtil.getInstance().getConnect(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+			stmt.setInt(1, chapterId);
+			stmt.setLong(2, userId);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next())
+				return rs.getInt(1);
+		}
+		return 0;
+	}
+
+	public static int countPendingComments(long userId, int chapterId) throws SQLException {
+		String sql = "SELECT COUNT(*) FROM tbl_chapter_comment WHERE _user_id = ? AND _chapter_id = ? AND _active = 0";
+		try (Connection conn = DBUtil.getInstance().getConnect(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+			stmt.setLong(1, userId);
+			stmt.setInt(2, chapterId);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				return rs.getInt(1);
+			}
+		}
+		return 0;
+	}
 
 	public static List<ChapterComment> getAllPending() throws SQLException {
 		List<ChapterComment> list = new ArrayList<>();
@@ -63,6 +110,29 @@ public class ChapterCommentDAO {
 			}
 		}
 	};
+	public static List<ChapterComment> getCommentsWithPendingByUser(int chapterId, long userId) throws SQLException {
+		String sql = "SELECT c.*, u._name AS userName FROM tbl_chapter_comment c "
+		           + "JOIN tbl_user u ON c._user_id = u._id "
+		           + "WHERE c._chapter_id = ? AND (c._active = 1 OR c._user_id = ?)";
+		List<ChapterComment> list = new ArrayList<>();
+		try (Connection conn = DBUtil.getInstance().getConnect();
+		     PreparedStatement stmt = conn.prepareStatement(sql)) {
+			stmt.setInt(1, chapterId);
+			stmt.setLong(2, userId);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				ChapterComment c = new ChapterComment();
+				c.setId(rs.getInt("_id"));
+				c.setContent(rs.getString("_content"));
+				c.setActive(rs.getInt("_active"));
+				c.setChapterId(rs.getInt("_chapter_id"));
+				c.setUserId(rs.getLong("_user_id"));
+				c.setUserName(rs.getString("userName"));
+				list.add(c);
+			}
+		}
+		return list;
+	}
 
 	// Hàm thêm comment mới cho chương
 	public static boolean addChapterComment(long userId, int chapterId, String content) {

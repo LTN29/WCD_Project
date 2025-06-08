@@ -30,31 +30,41 @@ public class StoryCommentDAO {
 	}
 
 	public static List<StoryComment> getCommentsVisibleToUser(int storyId, long currentUserId) {
-	    List<StoryComment> list = new ArrayList<>();
-	    String sql = "SELECT c._id, c._content, c._active, c._story_id, c._user_id, u._name AS userName " +
-	                 "FROM tbl_story_comment c JOIN tbl_user u ON c._user_id = u._id " +
-	                 "WHERE c._story_id = ? AND (c._active = 1 OR c._user_id = ?) ORDER BY c._id DESC";
-	    try (Connection conn = DBUtil.getInstance().getConnect();
-	         PreparedStatement ps = conn.prepareStatement(sql)) {
-	        ps.setInt(1, storyId);
-	        ps.setLong(2, currentUserId);
-	        ResultSet rs = ps.executeQuery();
-	        while (rs.next()) {
-	            StoryComment comment = new StoryComment();
-	            comment.setId(rs.getLong("_id"));
-	            comment.setContent(rs.getString("_content"));
-	            comment.setActive(rs.getInt("_active"));
-	            comment.setStoryId(rs.getInt("_story_id"));
-	            comment.setUserId(rs.getLong("_user_id"));
-	            comment.setUserName(rs.getString("userName"));
-	            list.add(comment);
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	    return list;
+		List<StoryComment> list = new ArrayList<>();
+		String sql = "SELECT c._id, c._content, c._active, c._story_id, c._user_id, u._name AS userName "
+				+ "FROM tbl_story_comment c JOIN tbl_user u ON c._user_id = u._id "
+				+ "WHERE c._story_id = ? AND (c._active = 1 OR c._user_id = ?) ORDER BY c._id DESC";
+		try (Connection conn = DBUtil.getInstance().getConnect(); PreparedStatement ps = conn.prepareStatement(sql)) {
+			ps.setInt(1, storyId);
+			ps.setLong(2, currentUserId);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				StoryComment comment = new StoryComment();
+				comment.setId(rs.getLong("_id"));
+				comment.setContent(rs.getString("_content"));
+				comment.setActive(rs.getInt("_active"));
+				comment.setStoryId(rs.getInt("_story_id"));
+				comment.setUserId(rs.getLong("_user_id"));
+				comment.setUserName(rs.getString("userName"));
+				list.add(comment);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
 	}
 
+	public static int countPendingComments(long userId, int storyId) throws SQLException {
+		String sql = "SELECT COUNT(*) FROM tbl_story_comment WHERE _user_id = ? AND _story_id = ? AND _active = 0";
+		try (Connection conn = DBUtil.getInstance().getConnect(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+			stmt.setLong(1, userId);
+			stmt.setInt(2, storyId);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next())
+				return rs.getInt(1);
+		}
+		return 0;
+	}
 
 	public static List<StoryComment> getApprovedCommentsByStoryId(int storyId) throws SQLException {
 		List<StoryComment> list = new ArrayList<>();

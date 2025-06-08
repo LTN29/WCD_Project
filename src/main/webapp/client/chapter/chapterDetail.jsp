@@ -42,12 +42,22 @@
 			<div class="comment-list mb-2">
 				<c:choose>
 					<c:when test="${not empty commentList}">
-						<c:forEach var="comment" items="${commentList}">
-							<div class="comment-item">
-								<span class="comment-author"><b>${comment.userName}:</b></span>
-								<span class="comment-content">${comment.content}</span>
-							</div>
-						</c:forEach>
+						<div class="comment-list">
+							<c:forEach var="comment" items="${commentList}">
+								<c:if
+									test="${comment.active == 1 || (sessionScope.user != null && sessionScope.user.id == comment.userId)}">
+									<div
+										class="comment-item ${comment.active == 0 ? 'pending-comment' : ''}">
+										<b>${comment.userName}:</b> ${comment.content}
+										<c:if test="${comment.active == 0}">
+											<i>(đang chờ duyệt)</i>
+										</c:if>
+									</div>
+								</c:if>
+
+							</c:forEach>
+						</div>
+
 					</c:when>
 					<c:otherwise>
 						<div class="comment-empty">Chưa có bình luận nào.</div>
@@ -56,16 +66,22 @@
 			</div>
 			<c:choose>
 				<c:when test="${not empty sessionScope.user}">
-					<form action="ChapterComment" method="post"
-						class="comment-input-row">
-						<input type="hidden" name="chapterId" value="${chapter.id}" /> <input
-							type="text" name="content" placeholder="Viết bình luận..."
-							required />
-						<button type="submit">Gửi</button>
-					</form>
+					<c:choose>
+						<c:when test="${pendingCount lt 1}">
+							<form action="ChapterComment" method="post"
+								class="comment-input-row">
+								<input type="hidden" name="chapterId" value="${chapter.id}" />
+								<input type="text" name="content"
+									placeholder="Viết bình luận..." required />
+								<button type="submit">Gửi</button>
+							</form>
+						</c:when>
+						<c:otherwise>
+							<div class="alert alert-warning">Bạn đã có một bình luận
+								đang chờ duyệt. Vui lòng chờ duyệt trước khi gửi tiếp.</div>
+						</c:otherwise>
+					</c:choose>
 				</c:when>
-
-
 				<c:otherwise>
 					<div class="alert alert-warning">
 						<b>Hãy <a href="${pageContext.request.contextPath}/login">đăng
@@ -74,6 +90,7 @@
 					</div>
 				</c:otherwise>
 			</c:choose>
+
 			<c:if test="${not empty sessionScope.message}">
 				<div class="alert alert-info">${sessionScope.message}</div>
 				<c:remove var="message" scope="session" />

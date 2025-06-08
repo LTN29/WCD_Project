@@ -45,14 +45,15 @@ public class StoryDetail extends HttpServlet {
 			List<Chapter> chapters = ChapterDAO.getByStoryId(storyId);
 			List<Category> categories = CategoryDAO.getAll();
 			User user = (User) req.getSession().getAttribute("user");
-			List<StoryComment> commentList = StoryCommentDAO.getCommentsVisibleToUser(storyId, user != null ? user.getId() : -1);
-
-
+			List<StoryComment> commentList = StoryCommentDAO.getCommentsVisibleToUser(storyId,
+					user != null ? user.getId() : -1);
 
 			root.entities.User useR = (root.entities.User) req.getSession().getAttribute("user");
 			boolean isLiked = false;
 			boolean isFollowing = false;
 			if (useR != null) {
+				int pendingCount = StoryCommentDAO.countPendingComments(user.getId(), storyId);
+				req.setAttribute("pendingCount", pendingCount);
 				isLiked = root.reps.StoryLikeDAO.isLiked(useR.getId(), storyId);
 				isFollowing = root.reps.StoryFollowDAO.isFollowing(user.getId(), storyId);
 			}
@@ -65,7 +66,7 @@ public class StoryDetail extends HttpServlet {
 			req.getRequestDispatcher("/client/story/storyDetail.jsp").forward(req, resp);
 		} catch (Exception e) {
 			e.printStackTrace();
-			
+
 			resp.getWriter().println("Lỗi khi load chi tiết truyện: " + e.getMessage());
 		}
 	}

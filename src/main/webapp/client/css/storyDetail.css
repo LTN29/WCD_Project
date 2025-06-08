@@ -209,68 +209,111 @@
 	font-size: 0.97em;
 }
 
-/* Block comment ở cuối */
-.detail-container .comment-block {
-	margin-top: 32px;
-	padding: 23px 14px 16px 14px;
-	background: #f8fafb;
-	border: 1px solid #e4eaf1;
-	border-radius: 10px;
-	box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.02);
+/.comment-block, .chapter-comments {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 30px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.03);
 }
 
-.detail-container .comment-block h5 {
-	color: #222;
-	margin-bottom: 13px;
-	font-weight: 600;
-	font-size: 1.1rem;
-	display: flex;
-	align-items: center;
+.comment-list {
+    margin-top: 15px;
 }
 
-.detail-container .comment-block h5 .fa {
-	color: #27ae60;
-	margin-right: 8px;
-	font-size: 1.18em;
+.comment-item {
+    display: flex;
+    flex-direction: column;
+    background: #f8f9fa;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border-left: 5px solid #3b82f6;
+    transition: all 0.3s;
 }
 
-.detail-container .comment-list {
-	margin-bottom: 16px;
+.comment-item b {
+    font-weight: 600;
+    color: #333;
 }
 
-.detail-container .comment-empty {
-	color: #888;
-	margin-bottom: 8px;
+.comment-item i {
+    font-size: 13px;
+    color: #666;
+    margin-left: 5px;
 }
 
-.detail-container .comment-input-row {
-	display: flex;
-	gap: 7px;
-	margin-top: 7px;
+.comment-item .text-muted {
+    font-size: 12px;
+    color: #999;
+    margin-top: 4px;
 }
 
-.detail-container .comment-input-row input[type="text"] {
-	flex: 1;
-	border-radius: 7px;
-	border: 1px solid #ddd;
-	padding: 8px 12px;
-	font-size: 1em;
+/* Comment chờ duyệt */
+.pending-comment {
+    background: #fff8e1;
+    border-left-color: #ffc107;
+    opacity: 0.85;
 }
 
-.detail-container .comment-input-row button {
-	border-radius: 7px;
-	border: none;
-	padding: 8px 16px;
-	background: #007bff;
-	color: #fff;
-	font-weight: 600;
-	cursor: pointer;
-	transition: background 0.14s;
+/* Form nhập bình luận */
+.comment-input-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
 }
 
-.detail-container .comment-input-row button:hover {
-	background: #0056b3;
+.comment-input-row input[type="text"] {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
 }
+
+.comment-input-row button {
+    padding: 10px 20px;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.comment-input-row button:hover {
+    background-color: #2563eb;
+}
+
+/* Thông báo trạng thái */
+.alert {
+    margin-top: 10px;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.alert-warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+
+.alert-info {
+    background-color: #e1f3fc;
+    color: #055160;
+    border: 1px solid #b6effb;
+}
+
+/* Không có comment */
+.comment-empty {
+    color: #888;
+    font-style: italic;
+    margin-top: 8px;
+}
+
 
 @media ( max-width : 900px) {
 	.detail-container {

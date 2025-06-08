@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import root.entities.Chapter;
 import root.entities.ChapterImage;
 import root.entities.Story;
+import root.entities.User;
 import root.entities.ChapterComment;
 import root.reps.ChapterDAO;
 import root.reps.ChapterImageDAO;
@@ -18,38 +19,51 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet("/ChapterList")
+@WebServlet("/ChapterDetail")
 public class ChapterListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    public ChapterListServlet() {
-        super();
-    }
+	public ChapterListServlet() {
+		super();
+	}
 
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
-            int chapterId = Integer.parseInt(req.getParameter("chapterId"));
-            Chapter chapter = ChapterDAO.getById(chapterId);
-            Story story = StoryDAO.getById(chapter.getStoryId());
-            req.setAttribute("chapter", chapter);
-            req.setAttribute("story", story);
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		try {
+			int chapterId = Integer.parseInt(req.getParameter("chapterId"));
+			Chapter chapter = ChapterDAO.getById(chapterId);
+			Story story = StoryDAO.getById(chapter.getStoryId());
+			req.setAttribute("chapter", chapter);
+			req.setAttribute("story", story);
 
-            if (story.getStoryTypeId() == 2) {
-                List<ChapterImage> images = ChapterImageDAO.getImagesByChapterId(chapterId);
-                req.setAttribute("images", images);
-            }
+			if (story.getStoryTypeId() == 2) {
+				List<ChapterImage> images = ChapterImageDAO.getImagesByChapterId(chapterId);
+				req.setAttribute("images", images);
+			}
 
-            List<ChapterComment> commentList = ChapterCommentDAO.getApprovedCommentsByChapterId(chapterId);
-            req.setAttribute("commentList", commentList);
+			List<ChapterComment> commentList;
+			User user = (User) req.getSession().getAttribute("user");
+			if (user != null) {
+				commentList = ChapterCommentDAO.getCommentsWithPendingByUser(chapterId, user.getId());
+			} else {
+				commentList = ChapterCommentDAO.getApprovedCommentsByChapterId(chapterId);
+			}
 
-            req.getRequestDispatcher("/client/chapter/chapterDetail.jsp").forward(req, resp);
-        } catch (SQLException e) {
-            throw new ServletException(e);
-        }
-    }
+			req.setAttribute("commentList", commentList);
 
+			root.entities.User useR = (root.entities.User) req.getSession().getAttribute("user");
+			if (useR != null) {
+				int pendingCount = ChapterCommentDAO.countPendingComments(user.getId(), chapterId);
+				req.setAttribute("pendingCount", pendingCount);
+			}
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
-    }
+			req.getRequestDispatcher("/client/chapter/chapterDetail.jsp").forward(req, resp);
+		} catch (SQLException e) {
+			throw new ServletException(e);
+		}
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
+	}
 }
