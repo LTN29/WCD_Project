@@ -1,93 +1,166 @@
-@charset "UTF-8";
+/* Container */
 .container {
-  max-width: 1000px;
-  margin: 30px auto;
-  padding: 0 20px;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #1a252f; /* Darker background */
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    color: #e0e6ed; /* Lighter text for contrast */
 }
 
-h3 {
-  margin-bottom: 20px;
-  color: #333;
-  font-size: 24px;
+/* Header */
+.container h3 {
+    font-size: 1.8rem !important;
+    color: #ffffff !important; /* White text for dark theme */
+    font-weight: 600 !important;
+    margin-bottom: 20px !important; /* Increased spacing to avoid overlap */
+    text-align: left !important;
 }
 
+/* Add Story Button */
+.container .d-flex {
+    margin-bottom: 20px !important; /* Ensure space below header */
+}
+
+.container .btn-success {
+    background: #1abc9c !important; /* Darker green shade */
+    border: none !important;
+    padding: 10px 20px !important;
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    border-radius: 8px !important;
+    transition: background 0.3s ease, transform 0.2s ease !important;
+    margin-left: 10px !important; /* Add margin to separate from text */
+}
+
+.container .btn-success:hover {
+    background: #16a085 !important; /* Even darker green on hover */
+    transform: scale(1.05) !important;
+}
+
+.container .btn-success:active {
+    transform: scale(0.95) !important;
+}
+
+/* Story Table */
 .story-table {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: #fff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  border-radius: 8px;
-  overflow: hidden;
+    width: 100% !important;
+    border-collapse: collapse !important;
+    margin-top: 20px !important;
+    font-size: 0.95rem !important;
+    color: #e0e6ed !important; /* Lighter text for readability */
 }
 
 .story-table thead {
-  background-color: #1e1e2f;
-  color: #fff;
+    background: #2c3e50 !important; /* Darker blue header */
+    color: #ffffff !important;
 }
 
-.story-table thead th {
-  padding: 12px 16px;
-  text-align: left;
-  font-weight: 600;
+.story-table th {
+    padding: 12px 15px !important;
+    text-align: left !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
 }
 
-.story-table tbody td {
-  padding: 12px 16px;
-  border-bottom: 1px solid #eee;
-  font-size: 15px;
-  color: #333;
+.story-table tbody tr {
+    border-bottom: 1px solid #34495e !important; /* Darker border */
+    transition: background 0.2s ease !important;
 }
 
 .story-table tbody tr:hover {
-  background-color: #f5f7fa;
-}
-.story-table .table-actions {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-.story-table .table-actions form {
-  margin: 0;
-  display: inline;
-}
-.story-table .btn-sm {
-  padding: 6px 12px;
-  font-size: 13px;
+    background: #233240 !important; /* Darker hover effect */
 }
 
-.btn {
-  display: inline-block;
-  padding: 8px 14px;
-  font-size: 14px;
-  font-weight: 500;
-  border-radius: 6px;
-  text-decoration: none;
-  border: none;
-  cursor: pointer;
-  transition: background 0.3s ease;
+.story-table td {
+    padding: 12px 15px !important;
+    vertical-align: middle !important;
 }
 
-.btn-success {
-  background-color: #28a745;
-  color: white;
+/* Table Actions */
+.table-actions {
+    display: flex !important;
+    gap: 10px !important;
 }
-.btn-success:hover { background-color: #218838; }
 
-.btn-primary {
-  background-color: #007bff;
-  color: white;
+.table-actions .btn-primary, .table-actions .btn-danger {
+    padding: 8px 15px !important;
+    font-size: 0.9rem !important;
+    border-radius: 6px !important;
+    border: none !important;
+    transition: background 0.3s ease, transform 0.2s ease !important;
 }
-.btn-primary:hover { background-color: #0069d9; }
 
-.btn-danger {
-  background-color: #dc3545;
-  color: white;
+.table-actions .btn-primary {
+    background: #3498db !important; /* Keep blue for edit */
 }
-.btn-danger:hover { background-color: #c82333; }
 
-.btn-secondary {
-  background-color: #6c757d;
-  color: white;
+.table-actions .btn-primary:hover {
+    background: #2980b9 !important;
+    transform: scale(1.05) !important;
 }
-.btn-secondary:hover { background-color: #5a6268; }
 
+.table-actions .btn-danger {
+    background: #e74c3c !important; /* Keep red for delete */
+}
+
+.table-actions .btn-danger:hover {
+    background: #c0392b !important;
+    transform: scale(1.05) !important;
+}
+
+.table-actions .btn-primary:active, .table-actions .btn-danger:active {
+    transform: scale(0.95) !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        margin: 20px !important;
+        padding: 15px !important;
+    }
+
+    .container h3 {
+        font-size: 1.5rem !important;
+    }
+
+    .story-table {
+        font-size: 0.85rem !important;
+    }
+
+    .story-table th, .story-table td {
+        padding: 10px !important;
+    }
+
+    .table-actions {
+        flex-direction: column !important;
+        gap: 8px !important;
+    }
+
+    .table-actions .btn-primary, .table-actions .btn-danger {
+        padding: 8px 12px !important;
+        font-size: 0.85rem !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .story-table {
+        display: block !important;
+        overflow-x: auto !important;
+        white-space: nowrap !important;
+    }
+
+    .container .d-flex {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 10px !important;
+    }
+
+    .container .btn-success {
+        width: 100% !important;
+        text-align: center !important;
+        margin-left: 0 !important; /* Reset margin on small screens */
+    }
+}

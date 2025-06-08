@@ -6,27 +6,6 @@
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/client/css/storyList.css" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-$(function() {
-    $('#searchBtn').on('click', function(e) {
-        e.preventDefault();
-        filterStories();
-    });
-});
-function filterStories() {
-    $.get('story', {
-        keyword : $('#keyword').val(),
-        categoryId : $('#categoryId').val(),
-        type : $('#type').val(),
-        ajax : '1'
-    }, function(res) {
-        $('#storyGrid').html(res);
-    });
-}
-
-</script>
-
-
 
 <client:_layoutClient>
 	<div class="story-list-container">
@@ -54,7 +33,8 @@ function filterStories() {
 				<option value="2" <c:if test="${param.type == '2'}">selected</c:if>>Truyện
 					chữ</option>
 			</select>
-			<button type="button" id="searchBtn" class="btn btn-primary">Tìm kiếm</button>
+			<button type="button" id="searchBtn" class="btn btn-primary">Tìm
+				kiếm</button>
 		</form>
 
 		<div id="storyGrid">
@@ -89,7 +69,24 @@ function filterStories() {
 				<button type="submit">Gửi</button>
 			</form>
 		</div>
-
-
 	</div>
+	
+	<script>
+		$(function() {
+			$('#searchBtn').on('click', function(e) {
+				e.preventDefault();
+				filterStories();
+			});
+		});
+		function filterStories() {
+			$.get('story', {
+				keyword : $('#keyword').val(),
+				categoryId : $('#categoryId').val(),
+				type : $('#type').val(),
+				ajax : '1'
+			}, function(res) {
+				$('#storyGrid').html(res);
+			});
+		}
+	</script>
 </client:_layoutClient>

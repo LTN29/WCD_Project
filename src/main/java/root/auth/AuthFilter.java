@@ -9,7 +9,7 @@ import root.entities.User;
 
 import java.io.IOException;
 
-@WebFilter(urlPatterns = {"/admin/*", "/home/*"})
+@WebFilter(urlPatterns = {"/admin/*","/Admin/*", "/home/*"})
 public class AuthFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
@@ -25,7 +25,7 @@ public class AuthFilter implements Filter {
         }
 
         // Nếu là admin route mà user không phải admin
-        if (req.getRequestURI().contains("/admin") && !"admin".equalsIgnoreCase(user.getRole())) {
+        if (req.getRequestURI().contains("/Admin") && !"admin".equalsIgnoreCase(user.getRole())) {
             resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Bạn không có quyền truy cập.");
             return;
         }

@@ -11,7 +11,7 @@ public class LevelUserDAO {
 
     // Lấy cấp độ theo điểm người dùng
     public static LevelUser getByScore(int score) throws SQLException {
-        String sql = "SELECT * FROM tbl_level_user WHERE ? BETWEEN _score_start AND _score_end";
+        String sql = "SELECT * FROM tbl_Level_user WHERE ? BETWEEN _score_start AND _score_end";
         try (
             Connection conn = DBUtil.getInstance().getConnect();
             PreparedStatement stmt = conn.prepareStatement(sql)
