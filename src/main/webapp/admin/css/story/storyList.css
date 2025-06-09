@@ -1,166 +1,233 @@
-/* Container */
+/* Container Styling */
 .container {
     max-width: 1200px;
     margin: 40px auto;
     padding: 20px;
     background: #1a252f; /* Darker background */
     border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 0 8px rgba(241, 196, 15, 0.2); /* Gold glow */
     color: #e0e6ed; /* Lighter text for contrast */
 }
 
-/* Header */
+/* Header and Add Button Styling */
 .container h3 {
-    font-size: 1.8rem !important;
-    color: #ffffff !important; /* White text for dark theme */
-    font-weight: 600 !important;
-    margin-bottom: 20px !important; /* Increased spacing to avoid overlap */
-    text-align: left !important;
+    font-size: 1.8rem;
+    color: #ffffff; /* White text for dark theme */
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-align: left;
 }
 
-/* Add Story Button */
 .container .d-flex {
-    margin-bottom: 20px !important; /* Ensure space below header */
+    margin-bottom: 20px;
 }
 
 .container .btn-success {
-    background: #1abc9c !important; /* Darker green shade */
-    border: none !important;
-    padding: 10px 20px !important;
-    font-size: 1rem !important;
-    font-weight: 500 !important;
-    border-radius: 8px !important;
-    transition: background 0.3s ease, transform 0.2s ease !important;
-    margin-left: 10px !important; /* Add margin to separate from text */
+    background: #1abc9c; /* Darker green shade */
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: background 0.3s ease, transform 0.2s ease;
+    margin-left: 10px;
 }
 
 .container .btn-success:hover {
-    background: #16a085 !important; /* Even darker green on hover */
-    transform: scale(1.05) !important;
+    background: #16a085; /* Even darker green on hover */
+    transform: scale(1.05);
 }
 
 .container .btn-success:active {
-    transform: scale(0.95) !important;
+    transform: scale(0.95);
 }
 
-/* Story Table */
-.story-table {
-    width: 100% !important;
-    border-collapse: collapse !important;
-    margin-top: 20px !important;
-    font-size: 0.95rem !important;
-    color: #e0e6ed !important; /* Lighter text for readability */
+/* Search Form Styling */
+.container .search-form-story {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    background: #222222; /* Slightly lighter than container */
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-.story-table thead {
-    background: #2c3e50 !important; /* Darker blue header */
-    color: #ffffff !important;
+.container .search-form-story input[type="text"],
+.container .search-form-story select {
+    flex: 1 1 200px;
+    padding: 10px;
+    font-size: 1rem;
+    color: #d4af37; /* Gold text */
+    background: #2c3e50; /* Darker input background */
+    border: 2px solid #34495e;
+    border-radius: 6px;
+    outline: none;
+    transition: all 0.3s ease;
 }
 
-.story-table th {
-    padding: 12px 15px !important;
-    text-align: left !important;
-    font-weight: 600 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.5px !important;
+.container .search-form-story input[type="text"]:focus,
+.container .search-form-story select:focus {
+    border-color: #f1c40f; /* Bright gold focus */
+    box-shadow: 0 0 8px rgba(241, 196, 15, 0.3);
 }
 
-.story-table tbody tr {
-    border-bottom: 1px solid #34495e !important; /* Darker border */
-    transition: background 0.2s ease !important;
+.container .search-form-story .btn-primary {
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #1a1a1a;
+    background: linear-gradient(45deg, #1abc9c, #16a085);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
 }
 
-.story-table tbody tr:hover {
-    background: #233240 !important; /* Darker hover effect */
+.container .search-form-story .btn-primary:hover {
+    background: linear-gradient(45deg, #16a085, #138d75);
+    transform: translateY(-2px);
 }
 
-.story-table td {
-    padding: 12px 15px !important;
-    vertical-align: middle !important;
+.container .search-form-story .btn-primary:active {
+    transform: scale(0.95);
 }
 
-/* Table Actions */
-.table-actions {
-    display: flex !important;
-    gap: 10px !important;
+/* Story Table Styling */
+.container .story-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 0.95rem;
+    color: #e0e6ed;
 }
 
-.table-actions .btn-primary, .table-actions .btn-danger {
-    padding: 8px 15px !important;
-    font-size: 0.9rem !important;
-    border-radius: 6px !important;
-    border: none !important;
-    transition: background 0.3s ease, transform 0.2s ease !important;
+.container .story-table thead {
+    background: #2c3e50; /* Darker blue header */
 }
 
-.table-actions .btn-primary {
-    background: #3498db !important; /* Keep blue for edit */
+.container .story-table thead th {
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #ffffff;
 }
 
-.table-actions .btn-primary:hover {
-    background: #2980b9 !important;
-    transform: scale(1.05) !important;
+.container .story-table tbody tr {
+    border-bottom: 1px solid #34495e; /* Darker border */
+    transition: background 0.2s ease;
 }
 
-.table-actions .btn-danger {
-    background: #e74c3c !important; /* Keep red for delete */
+.container .story-table tbody tr:hover {
+    background: #233240; /* Darker hover effect */
 }
 
-.table-actions .btn-danger:hover {
-    background: #c0392b !important;
-    transform: scale(1.05) !important;
+.container .story-table td {
+    padding: 12px 15px;
+    vertical-align: middle;
 }
 
-.table-actions .btn-primary:active, .table-actions .btn-danger:active {
-    transform: scale(0.95) !important;
+/* Table Actions Styling */
+.container .table-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.container .table-actions .btn-primary,
+.container .table-actions .btn-danger {
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    border-radius: 6px;
+    border: none;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.container .table-actions .btn-primary {
+    background: #3498db; /* Blue for edit */
+}
+
+.container .table-actions .btn-primary:hover {
+    background: #2980b9;
+    transform: scale(1.05);
+}
+
+.container .table-actions .btn-danger {
+    background: #e74c3c; /* Red for delete */
+}
+
+.container .table-actions .btn-danger:hover {
+    background: #c0392b;
+    transform: scale(1.05);
+}
+
+.container .table-actions .btn-primary:active,
+.container .table-actions .btn-danger:active {
+    transform: scale(0.95);
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
     .container {
-        margin: 20px !important;
-        padding: 15px !important;
+        margin: 20px;
+        padding: 15px;
     }
 
     .container h3 {
-        font-size: 1.5rem !important;
+        font-size: 1.5rem;
     }
 
-    .story-table {
-        font-size: 0.85rem !important;
+    .container .search-form-story {
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px;
     }
 
-    .story-table th, .story-table td {
-        padding: 10px !important;
+    .container .search-form-story input[type="text"],
+    .container .search-form-story select,
+    .container .search-form-story .btn-primary {
+        width: 100%;
     }
 
-    .table-actions {
-        flex-direction: column !important;
-        gap: 8px !important;
+    .container .story-table {
+        font-size: 0.85rem;
     }
 
-    .table-actions .btn-primary, .table-actions .btn-danger {
-        padding: 8px 12px !important;
-        font-size: 0.85rem !important;
+    .container .story-table th,
+    .container .story-table td {
+        padding: 10px;
+    }
+
+    .container .table-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .container .table-actions .btn-primary,
+    .container .table-actions .btn-danger {
+        padding: 8px 12px;
+        font-size: 0.85rem;
     }
 }
 
 @media (max-width: 576px) {
-    .story-table {
-        display: block !important;
-        overflow-x: auto !important;
-        white-space: nowrap !important;
+    .container .story-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
     }
 
     .container .d-flex {
-        flex-direction: column !important;
-        align-items: flex-start !important;
-        gap: 10px !important;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
     }
 
     .container .btn-success {
-        width: 100% !important;
-        text-align: center !important;
-        margin-left: 0 !important; /* Reset margin on small screens */
+        width: 100%;
+        text-align: center;
+        margin-left: 0;
     }
 }
