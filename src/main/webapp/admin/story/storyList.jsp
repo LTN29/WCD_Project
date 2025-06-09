@@ -33,7 +33,6 @@
 		<table class="story-table">
 			<thead>
 				<tr>
-					<th>ID</th>
 					<th>Tiêu đề</th>
 					<th>Chương</th>
 					<th>Tác giả</th>
@@ -47,7 +46,6 @@
 			<tbody>
 				<c:forEach var="s" items="${stories}">
 					<tr>
-						<td>${s.id}</td>
 						<td>${s.title}</td>
 						<td>${s.chapterNumber}</td>
 						<td>${s.authorName}</td>

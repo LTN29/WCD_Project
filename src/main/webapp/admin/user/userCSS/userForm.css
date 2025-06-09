@@ -1,0 +1,161 @@
+/* Container Styling */
+.container {
+    max-width: 800px; /* Adjusted for form content */
+    margin: 40px auto;
+    padding: 20px;
+    background: #1a252f; /* Darker background */
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 0 8px rgba(241, 196, 15, 0.2); /* Gold glow */
+    color: #e0e6ed; /* Lighter text for contrast */
+}
+
+/* Form Container Styling */
+.form-container {
+    padding: 20px;
+    background: #222222; /* Slightly lighter than container */
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.form-container h3 {
+    font-size: 1.8rem;
+    color: #ffffff; /* White text for dark theme */
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-container h3 i {
+    margin-right: 10px;
+    color: #d4af37; /* Gold icon */
+}
+
+/* Alert Styling */
+.form-container .alert-danger {
+    background: #e74c3c; /* Red for errors */
+    color: #fff;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Form Group Styling */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #e0e6ed;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.form-group .form-control {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    color: #d4af37; /* Gold text */
+    background: #2c3e50; /* Darker input background */
+    border: 2px solid #34495e;
+    border-radius: 6px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.form-group .form-control:focus {
+    border-color: #f1c40f; /* Bright gold focus */
+    box-shadow: 0 0 8px rgba(241, 196, 15, 0.3);
+}
+
+.form-group .form-control[readonly] {
+    background: #34495e; /* Darker for readonly fields */
+    color: #a3b7c0; /* Muted text for readonly */
+}
+
+.form-group .form-text {
+    font-size: 0.8rem;
+    color: #a3b7c0; /* Muted text */
+    margin-top: 0.25rem;
+}
+
+/* Checkbox Styling */
+.form-group input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    vertical-align: middle;
+    accent-color: #1abc9c; /* Green checkbox */
+}
+
+.form-group input[type="checkbox"]:checked {
+    background-color: #16a085;
+}
+
+/* Button Styling */
+.form-container .btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 6px;
+    border: none;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.form-container .btn-success {
+    background: #1abc9c; /* Green for save */
+    color: #1a1a1a;
+}
+
+.form-container .btn-success:hover {
+    background: #16a085;
+    transform: scale(1.05);
+}
+
+.form-container .btn-success:active {
+    transform: scale(0.95);
+}
+
+.form-container .btn-secondary {
+    background: #7f8c8d; /* Gray for back */
+    color: #fff;
+}
+
+.form-container .btn-secondary:hover {
+    background: #6c757d;
+    transform: scale(1.05);
+}
+
+.form-container .btn-secondary:active {
+    transform: scale(0.95);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        margin: 20px;
+        padding: 15px;
+    }
+
+    .form-container {
+        padding: 15px;
+    }
+
+    .form-container h3 {
+        font-size: 1.5rem;
+    }
+
+    .form-group .form-control {
+        font-size: 0.95rem;
+    }
+
+    .form-container .btn {
+        width: 100%;
+        margin-bottom: 10px;
+        margin-right: 0;
+    }
+}

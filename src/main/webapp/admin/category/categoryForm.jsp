@@ -1,6 +1,6 @@
 <%@ taglib prefix="admin" tagdir="/WEB-INF/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/admin/category/categoryCSS/categoryForm.css" />
 <admin:_layoutAdmin>
     <h2>${category != null && category.id != 0 ? "Chỉnh sửa Category" : "Thêm Category mới"}</h2>
     <form method="post" action="category">
