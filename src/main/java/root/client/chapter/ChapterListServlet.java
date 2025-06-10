@@ -32,6 +32,10 @@ public class ChapterListServlet extends HttpServlet {
 			int chapterId = Integer.parseInt(req.getParameter("chapterId"));
 			Chapter chapter = ChapterDAO.getById(chapterId);
 			Story story = StoryDAO.getById(chapter.getStoryId());
+			int prevChapterId = ChapterDAO.getPreviousChapterId(chapterId);
+			int nextChapterId = ChapterDAO.getNextChapterId(chapterId);
+			req.setAttribute("prevChapterId", prevChapterId);
+			req.setAttribute("nextChapterId", nextChapterId);
 			req.setAttribute("chapter", chapter);
 			req.setAttribute("story", story);
 

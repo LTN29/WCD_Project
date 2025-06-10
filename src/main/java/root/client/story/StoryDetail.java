@@ -42,7 +42,7 @@ public class StoryDetail extends HttpServlet {
 		try {
 			int storyId = Integer.parseInt(req.getParameter("id"));
 			Story story = StoryDAO.getById(storyId);
-			List<Chapter> chapters = ChapterDAO.getByStoryId(storyId);
+			List<Chapter> chapters = ChapterDAO.getByStory(storyId);
 			List<Category> categories = CategoryDAO.getAll();
 			User user = (User) req.getSession().getAttribute("user");
 			List<StoryComment> commentList = StoryCommentDAO.getCommentsVisibleToUser(storyId,

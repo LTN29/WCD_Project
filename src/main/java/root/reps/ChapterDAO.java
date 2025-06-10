@@ -24,6 +24,22 @@ public class ChapterDAO {
 		return list;
 	}
 
+	public static List<Chapter> getByStory(int storyId) throws SQLException {
+		List<Chapter> list = new ArrayList<>();
+		String sql = "SELECT * FROM tbl_chapter WHERE _story_id = ? ORDER BY _id ASC";
+		try (Connection conn = DBUtil.getInstance().getConnect(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+			stmt.setInt(1, storyId);
+			try (ResultSet rs = stmt.executeQuery()) {
+				while (rs.next()) {
+					Chapter c = new Chapter(rs.getInt("_id"), rs.getString("_title"), rs.getString("_content"),
+							rs.getDate("_day_create"), rs.getInt("_story_id"));
+					list.add(c);
+				}
+			}
+		}
+		return list;
+	}
+
 	public static Chapter getById(int id) throws SQLException {
 		String sql = "SELECT c.*, s._title AS storyTitle FROM tbl_chapter c "
 				+ "LEFT JOIN tbl_story s ON c._story_id = s._id " + "WHERE c._id = ?";
@@ -108,13 +124,36 @@ public class ChapterDAO {
 				ResultSet rs = stmt.executeQuery()) {
 			while (rs.next()) {
 				Chapter ch = new Chapter(rs.getInt("_id"), rs.getString("_title"), rs.getString("_content"),
-						rs.getDate("_day_create"), rs.getInt("_story_id"), rs.getString("storyTitle") 
-				);
+						rs.getDate("_day_create"), rs.getInt("_story_id"), rs.getString("storyTitle"));
 
 				list.add(ch);
 			}
 		}
 		return list;
+	}
+
+	public static int getPreviousChapterId(int currentId) throws SQLException {
+		String sql = "SELECT TOP 1 _id FROM tbl_chapter WHERE _id < ? AND _story_id = (SELECT _story_id FROM tbl_chapter WHERE _id = ?) ORDER BY _id DESC";
+		try (Connection conn = DBUtil.getInstance().getConnect(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+			stmt.setInt(1, currentId);
+			stmt.setInt(2, currentId);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next())
+				return rs.getInt("_id");
+		}
+		return -1;
+	}
+
+	public static int getNextChapterId(int currentId) throws SQLException {
+		String sql = "SELECT TOP 1 _id FROM tbl_chapter WHERE _id > ? AND _story_id = (SELECT _story_id FROM tbl_chapter WHERE _id = ?) ORDER BY _id ASC";
+		try (Connection conn = DBUtil.getInstance().getConnect(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+			stmt.setInt(1, currentId);
+			stmt.setInt(2, currentId);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next())
+				return rs.getInt("_id");
+		}
+		return -1;
 	}
 
 }

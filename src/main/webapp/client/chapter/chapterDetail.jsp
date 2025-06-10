@@ -97,5 +97,18 @@
 			</c:if>
 
 		</div>
+		<div class="chapter-nav">
+			<c:if test="${prevChapterId > 0}">
+				<a
+					href="${pageContext.request.contextPath}/ChapterDetail?chapterId=${prevChapterId}"
+					class="btn btn-outline-primary">← Chương trước</a>
+			</c:if>
+			<c:if test="${nextChapterId > 0}">
+				<a
+					href="${pageContext.request.contextPath}/ChapterDetail?chapterId=${nextChapterId}"
+					class="btn btn-outline-primary">Chương sau →</a>
+			</c:if>
+		</div>
+
 	</div>
 </client:_layoutClient>
