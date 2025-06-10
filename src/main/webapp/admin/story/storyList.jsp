@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	<link rel="stylesheet" type="text/css"
+<link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/admin/css/story/storyList.css" />
 <admin:_layoutAdmin>
 	<div class="container mt-4">
@@ -10,11 +10,29 @@
 			<h3>Danh sách truyện</h3>
 			<a href="story?action=add" class="btn btn-success">+ Thêm truyện</a>
 		</div>
+		<form method="get" action="story" class="search-form-story">
+			<input type="hidden" name="action" value="list" /> <input
+				type="text" name="keyword" class="form-control"
+				placeholder="Tìm kiếm theo tiêu đề..."
+				value="${keyword != null ? keyword : ''}" /> <select
+				name="categoryId" class="form-select">
+				<option value="">-- Thể loại --</option>
+				<c:forEach var="c" items="${categories}">
+					<option value="${c.id}" ${c.id == categoryId ? 'selected' : ''}>${c.name}</option>
+				</c:forEach>
+			</select> <select name="type" class="form-select">
+				<option value="">-- Loại truyện --</option>
+				<c:forEach var="t" items="${storyTypes}">
+					<option value="${t.id}" ${t.id == type ? 'selected' : ''}>${t.title}</option>
+				</c:forEach>
+			</select>
+
+			<button type="submit" class="btn btn-primary">Tìm kiếm</button>
+		</form>
 
 		<table class="story-table">
 			<thead>
 				<tr>
-					<th>ID</th>
 					<th>Tiêu đề</th>
 					<th>Chương</th>
 					<th>Tác giả</th>
@@ -28,7 +46,6 @@
 			<tbody>
 				<c:forEach var="s" items="${stories}">
 					<tr>
-						<td>${s.id}</td>
 						<td>${s.title}</td>
 						<td>${s.chapterNumber}</td>
 						<td>${s.authorName}</td>

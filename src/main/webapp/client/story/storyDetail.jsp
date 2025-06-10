@@ -79,41 +79,67 @@
 			<c:forEach var="c" items="${chapters}">
 				<li
 					class="list-group-item d-flex justify-content-between align-items-center">
-					<a href="ChapterList?chapterId=${c.id}"> <i
-						class="fa fa-book-open"></i> ${c.title}
-				</a> <span class="badge badge-info">${c.dayCreate}</span>
+					<a
+					href="${pageContext.request.contextPath}/ChapterDetail?chapterId=${c.id}">
+						<i class="fa fa-book-open"></i> ${c.title}
+				</a>
 				</li>
 			</c:forEach>
 		</ul>
+		<div class="comment-list">
+			<c:choose>
+				<c:when test="${not empty commentList}">
+					<c:forEach var="comment" items="${commentList}">
+						<c:if
+							test="${comment.active == 1 || (sessionScope.user != null && sessionScope.user.id == comment.userId)}">
+							<div
+								class="comment-item ${comment.active == 0 ? 'pending-comment' : ''}">
+								<p>
+									<b>${comment.userName}</b>: ${comment.content}
+									<c:if test="${comment.active == 0}">
+										<i>(đang chờ duyệt)</i>
+									</c:if>
+								</p>
 
-		<!-- Khu vực comment -->
-		<div class="comment-block">
-			<h5>
-				<i class="fa fa-comments"></i> Comments (
-				<c:out value="${fn:length(commentList)}" />
-				)
-			</h5>
-			<div class="comment-list">
-				<c:choose>
-					<c:when test="${not empty commentList}">
-						<c:forEach var="comment" items="${commentList}">
-							<div>
-								<span><b>${comment.userName}:</b> ${comment.content}</span>
 							</div>
-						</c:forEach>
-					</c:when>
-					<c:otherwise>
-						<div class="comment-empty">Chưa có bình luận nào.</div>
-					</c:otherwise>
-				</c:choose>
-			</div>
-			<form class="comment-input-row" action="StoryComment" method="post">
-				<input type="hidden" name="storyId" value="${story.id}" /> <input
-					type="text" name="content" placeholder="Viết bình luận..." required />
-				<button type="submit">Gửi</button>
-			</form>
+						</c:if>
+					</c:forEach>
+				</c:when>
+				<c:otherwise>
+					<div class="comment-empty">Chưa có bình luận nào.</div>
+				</c:otherwise>
+			</c:choose>
 
+			<!-- KHU VỰC FORM COMMENT -->
+			<c:choose>
+				<c:when test="${not empty sessionScope.user}">
+					<c:choose>
+						<c:when test="${pendingCount lt 1}">
+							<form class="comment-input-row" action="StoryComment"
+								method="post">
+								<input type="hidden" name="storyId" value="${story.id}" /> <input
+									type="text" name="content" placeholder="Viết bình luận..."
+									required />
+								<button type="submit">Gửi</button>
+							</form>
+						</c:when>
+						<c:otherwise>
+							<div class="alert alert-warning">Bạn đã có một bình luận
+								đang chờ duyệt. Vui lòng chờ xét duyệt trước khi gửi tiếp.</div>
+						</c:otherwise>
+					</c:choose>
+				</c:when>
+				<c:otherwise>
+					<div class="alert alert-warning">
+						<b>Hãy <a href="${pageContext.request.contextPath}/login">đăng
+								nhập</a> để bình luận!
+						</b>
+					</div>
+				</c:otherwise>
+			</c:choose>
 		</div>
+
+</div>
 		<c:if test="${not empty sessionScope.message}">
 			<div class="alert alert-info">${sessionScope.message}</div>
 			<c:remove var="message" scope="session" />

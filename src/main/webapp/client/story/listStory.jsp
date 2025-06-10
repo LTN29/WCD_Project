@@ -1,8 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="client" tagdir="/WEB-INF/tags" %>
+<link rel="stylesheet"
+		href="${pageContext.request.contextPath}/client/css/topStory.css">
 <client:_layoutClient>
-    <h3>${listTitle}</h3>
+    <h3>TOP Truyện</h3>
     <div class="comics-list">
         <c:forEach var="s" items="${stories}">
             <jsp:include page="comicCard.jsp">

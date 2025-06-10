@@ -2,6 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="client" tagdir="/WEB-INF/tags"%>
 
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/auth/css/userInfo.css">
 <client:_layoutClient>
 
 	<main class="client-main"
@@ -29,9 +31,8 @@
 				</div>
 
 				<div style="margin-bottom: 20px;">
-					<label><b>Cấp độ:</b></label> <input type="text"
-						value="${sessionScope.user.level}" readonly
-						class="form-control" />
+					<label><b>Cấp độ:</b></label><input type="text" value="${levelName != null ? levelName : sessionScope.user.level}" readonly class="form-control" />
+
 				</div>
 
 				<div style="margin-bottom: 40px;">

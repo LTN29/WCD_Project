@@ -1,10 +1,12 @@
 package root.admin;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import root.entities.Story;
 import root.reps.StoryDAO;
 import root.reps.StoryScheduleDAO;
@@ -13,9 +15,11 @@ import root.reps.AuthorDAO;
 import root.reps.CategoryDAO;
 import root.reps.StatusDAO;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.List;
-
+@MultipartConfig
 @WebServlet("/admin/story")
 public class AdminStoryServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -30,27 +34,52 @@ public class AdminStoryServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String action = req.getParameter("action");
-		try {
-			if ("edit".equals(action)) {
-				int id = Integer.parseInt(req.getParameter("id"));
-				Story story = StoryDAO.getById(id);
-				req.setAttribute("story", story);
-				setDropdowns(req);
-				req.getRequestDispatcher("/admin/story/storyForm.jsp").forward(req, resp);
-			} else if ("add".equals(action)) {
-				setDropdowns(req);
-				req.getRequestDispatcher("/admin/story/storyForm.jsp").forward(req, resp);
-			} else {
-				List<Story> stories = StoryDAO.getAllWithNames();
-				req.setAttribute("stories", stories);
-				req.getRequestDispatcher("/admin/story/storyList.jsp").forward(req, resp);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			resp.getWriter().println("ERROR: " + e.getMessage());
-		}
+	    String action = req.getParameter("action");
+	    try {
+	        if ("edit".equals(action)) {
+	            int id = Integer.parseInt(req.getParameter("id"));
+	            Story story = StoryDAO.getById(id);
+	            req.setAttribute("story", story);
+	            setDropdowns(req);
+	            req.getRequestDispatcher("/admin/story/storyForm.jsp").forward(req, resp);
+	        } else if ("add".equals(action)) {
+	            setDropdowns(req);
+	            req.getRequestDispatcher("/admin/story/storyForm.jsp").forward(req, resp);
+	        } else {
+	            String keyword = req.getParameter("keyword");
+	            Integer categoryId = null;
+	            Integer type = null;
+
+	            try {
+	                String catParam = req.getParameter("categoryId");
+	                if (catParam != null && !catParam.isEmpty()) {
+	                    categoryId = Integer.parseInt(catParam);
+	                }
+	                String typeParam = req.getParameter("type");
+	                if (typeParam != null && !typeParam.isEmpty()) {
+	                    type = Integer.parseInt(typeParam);
+	                }
+	            } catch (NumberFormatException e) {
+	                // Có thể log lỗi hoặc bỏ qua nếu tham số không hợp lệ
+	            }
+
+	            List<Story> stories = StoryDAO.searchStories(keyword, categoryId, type);
+	            req.setAttribute("stories", stories);
+	            req.setAttribute("keyword", keyword);
+	            req.setAttribute("categoryId", categoryId);
+	            req.setAttribute("type", type);
+
+	            // Đưa dữ liệu dropdown để giữ trạng thái lọc
+	            setDropdowns(req);
+
+	            req.getRequestDispatcher("/admin/story/storyList.jsp").forward(req, resp);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        resp.getWriter().println("ERROR: " + e.getMessage());
+	    }
 	}
+
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -62,7 +91,20 @@ public class AdminStoryServlet extends HttpServlet {
 				s.setTitle(req.getParameter("title"));
 				s.setChapterNumber(Integer.parseInt(req.getParameter("chapterNumber")));
 				s.setIntroduction(req.getParameter("introduction"));
-				s.setImage(req.getParameter("image"));
+				
+				Part filePart =req.getPart("imageFile");
+				String fileName = System.currentTimeMillis() + "_" + Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+				String uploadPath = req.getServletContext().getRealPath("/client/img/imgStory");
+				File uploadDir = new File(uploadPath);
+				if (!uploadDir.exists()) uploadDir.mkdirs();
+
+				if (fileName != null && !fileName.isEmpty()) {
+				    filePart.write(uploadPath + File.separator + fileName);
+				    s.setImage(fileName);
+				} else {
+				    s.setImage("default.png");
+				}
+				
 				s.setAuthorId(Integer.parseInt(req.getParameter("authorId")));
 				s.setStatusId(Integer.parseInt(req.getParameter("statusId")));
 				s.setCategoryId(Integer.parseInt(req.getParameter("categoryId")));
@@ -81,7 +123,20 @@ public class AdminStoryServlet extends HttpServlet {
 				s.setTitle(req.getParameter("title"));
 				s.setChapterNumber(Integer.parseInt(req.getParameter("chapterNumber")));
 				s.setIntroduction(req.getParameter("introduction"));
-				s.setImage(req.getParameter("image"));
+				
+				Part filePart =req.getPart("imageFile");
+				String fileName = System.currentTimeMillis() + "_" + Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+				String uploadPath = req.getServletContext().getRealPath("/client/img/imgStory");
+				File uploadDir = new File(uploadPath);
+				if (!uploadDir.exists()) uploadDir.mkdirs();
+
+				if (fileName != null && !fileName.isEmpty()) {
+				    filePart.write(uploadPath + File.separator + fileName);
+				    s.setImage(fileName);
+				} else {
+				    s.setImage("default.png");
+				}
+				
 				s.setAuthorId(Integer.parseInt(req.getParameter("authorId")));
 				s.setStatusId(Integer.parseInt(req.getParameter("statusId")));
 				s.setCategoryId(Integer.parseInt(req.getParameter("categoryId")));

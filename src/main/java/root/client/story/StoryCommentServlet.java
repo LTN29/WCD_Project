@@ -38,44 +38,39 @@ public class StoryCommentServlet extends HttpServlet {
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		root.entities.User user = (root.entities.User) request.getSession().getAttribute("user");
-		if (user == null) {
-			response.sendRedirect("login");
-			return;
-		}
+	        throws ServletException, IOException {
+	    root.entities.User user = (root.entities.User) request.getSession().getAttribute("user");
+	    if (user == null) {
+	        response.sendRedirect("login");
+	        return;
+	    }
 
-		long userId = user.getId();
-		int storyId = Integer.parseInt(request.getParameter("storyId"));
-		String content = request.getParameter("content");
+	    long userId = user.getId();
+	    int storyId = Integer.parseInt(request.getParameter("storyId"));
+	    String content = request.getParameter("content");
 
-		// Kiểm tra nội dung không rỗng
-		if (content == null || content.trim().isEmpty()) {
-			request.getSession().setAttribute("message", "Nội dung bình luận không được để trống!");
-			response.sendRedirect("StoryDetail?storyId=" + storyId);
-			return;
-		}
+	    if (content == null || content.trim().isEmpty()) {
+	        request.getSession().setAttribute("message", "Nội dung bình luận không được để trống!");
+	        response.sendRedirect("storyDetail?id=" + storyId);
+	        return;
+	    }
 
-		root.entities.StoryComment comment = new root.entities.StoryComment(0, content, 1, storyId, userId);
+	    root.entities.StoryComment comment = new root.entities.StoryComment(0, content, 0, storyId, userId);
 
-		try {
-			int commentId = root.reps.StoryCommentDAO.insert(comment);
-			if (commentId > 0) {
-				// Bình luận thành công, cập nhật lại user trên session (điểm, level mới)
-				root.reps.UserDAO.addScoreAndUpdateLevel(userId, 2);
-				root.entities.User newUser = root.reps.UserDAO.findById(userId);
-				request.getSession().setAttribute("user", newUser);
-				request.getSession().setAttribute("message",
-						"Bình luận thành công! +3 điểm nếu đây là bình luận đầu tiên của bạn trên truyện này.");
-			} else {
-				request.getSession().setAttribute("message", "Bạn đã bình luận truyện này rồi!");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			request.getSession().setAttribute("message", "Có lỗi xảy ra khi bình luận!");
-		}
+	    try {
+	        int commentId = root.reps.StoryCommentDAO.insert(comment);
+	        if (commentId > 0) {
+	            request.getSession().setAttribute("message", "Bình luận của bạn đã được gửi và đang chờ duyệt!");
+	        } else {
+	            request.getSession().setAttribute("message", "Bạn đã bình luận truyện này rồi!");
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        request.getSession().setAttribute("message", "Có lỗi xảy ra khi bình luận!");
+	    }
 
-		response.sendRedirect("storyDetail?id=" + storyId);
+	    response.sendRedirect("storyDetail?id=" + storyId);
 	}
+
 
 }

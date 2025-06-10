@@ -35,10 +35,9 @@
 			<div class="input-box">
 				<i class="fas fa-lock"></i> <input type="password" id="password"
 					name="password" placeholder="Mật khẩu" required />
-			</div>
-			<div class="eye-container">
-				<i class="fas fa-eye toggle-password"
-					onclick="togglePassword('password')"></i>
+				<div class="eye-container">
+					<i class="fas fa-eye toggle-password" onclick="togglePassword()"></i>
+				</div>
 			</div>
 
 
@@ -55,8 +54,8 @@
 
 			<div class="footer-note">
 				<p>
-					Bạn chưa có tài khoản? <a href="register"
-						style="color: lightgreen">Đăng ký</a>
+					Bạn chưa có tài khoản? <a href="register" style="color: lightgreen">Đăng
+						ký</a>
 				</p>
 			</div>
 		</form>

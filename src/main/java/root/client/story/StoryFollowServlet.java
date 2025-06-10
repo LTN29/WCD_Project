@@ -34,10 +34,9 @@ public class StoryFollowServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	    // Lấy user từ session (đảm bảo đã đăng nhập)
 	    root.entities.User user = (root.entities.User) request.getSession().getAttribute("user");
 	    if (user == null) {
-	        response.sendRedirect("login"); // hoặc trang login bạn muốn
+	        response.sendRedirect("login"); 
 	        return;
 	    }
 
@@ -49,7 +48,6 @@ public class StoryFollowServlet extends HttpServlet {
 	    try {
 	        long followId = root.reps.StoryFollowDAO.insert(follow);
 	        if (followId > 0) {
-	            // Thành công, update lại user trên session (điểm, level mới nhất)
 	        	root.reps.UserDAO.addScoreAndUpdateLevel(userId, 3);
 	        	root.reps.StoryFollowDAO.updateFollowNumber(storyId);
 	            root.entities.User newUser = root.reps.UserDAO.findById(userId);
@@ -63,7 +61,6 @@ public class StoryFollowServlet extends HttpServlet {
 	        request.getSession().setAttribute("message", "Có lỗi xảy ra khi theo dõi truyện!");
 	    }
 
-	    // Quay lại trang chi tiết truyện (hoặc trang bạn mong muốn)
 	    response.sendRedirect("storyDetail?id=" + storyId);
 	}
 

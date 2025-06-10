@@ -1,103 +1,258 @@
+/* General Reset and Body */
 body.login-page {
-  background-color: #f4f4f4;
-  font-family: 'Segoe UI', sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a1a1a, #222222); /* Elegant dark gradient */
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
 }
 
+body.login-page::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(241, 196, 15, 0.1) 0%, transparent 70%);
+    animation: rotate 15s linear infinite;
+    z-index: 0;
+}
+
+@keyframes rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Login Container */
 .login-container {
-  background-color: #555;
-  padding: 30px 40px;
-  border-radius: 10px;
-  width: 100%;
-  max-width: 400px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.2);
-  text-align: center;
-  color: #fff;
+    width: 400px;
+    padding: 40px;
+    background: #1a1a1a; /* Dark background */
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(241, 196, 15, 0.2); /* Enhanced shadow with gold glow */
+    border: 1px solid #3c2f2f; /* Subtle dark border */
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
 }
 
+/* Headers */
 .login-container h1 {
-  font-size: 26px;
-  font-weight: bold;
-  margin-bottom: 20px;
+    font-size: 2.5rem;
+    color: #f1c40f; /* Bright gold */
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
 .login-container h3 {
-  margin-bottom: 25px;
-  font-size: 18px;
-  color: #f2f2f2;
+    font-size: 1.2rem;
+    color: #e0e6ed; /* Lighter gold */
+    margin-bottom: 30px;
+    font-weight: 500;
 }
 
+/* Input Boxes */
 .input-box {
-  position: relative;
-  margin-bottom: 20px;
+    position: relative;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center; /* Vertically center all elements */
+}
+
+.input-box i {
+    position: absolute;
+    left: 15px;
+    color: #d4af37; /* Gold icons */
+    font-size: 1.2rem;
+    z-index: 1;
 }
 
 .input-box input {
-  width: 100%;
-  padding: 12px 40px 12px 35px;
-  border: none;
-  border-radius: 5px;
-  background-color: #fff;
-  color: #333;
-  font-size: 15px;
+    width: 100%;
+    padding: 12px 40px 12px 40px; /* Increased right padding to accommodate eye icon */
+    font-size: 1rem;
+    color: #d4af37;
+    background: #222222; /* Darker input background */
+    border: 2px solid #3c2f2f;
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.3s ease;
+    box-sizing: border-box; /* Ensure padding doesn't affect width */
+    flex: 1; /* Allow input to take available space */
 }
 
-.input-box i.fa-user,
-.input-box i.fa-lock {
-  position: absolute;
-  top: 50%;
-  left: 10px;
-  transform: translateY(-50%);
-  color: #999;
-  font-size: 16px;
+.input-box input:focus {
+    border-color: #f1c40f;
+    box-shadow: 0 0 10px rgba(241, 196, 15, 0.4);
+    transform: translateY(-2px);
 }
 
-.input-box i.toggle-icon {
-  position: absolute;
-  top: 50%;
-  right: 12px;
-  transform: translateY(-50%);
-  cursor: pointer;
-  color: #666;
-  font-size: 16px;
+/* Eye Container */
+.input-box {
+    position: relative;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
 }
 
-.input-box i.toggle-icon:hover {
-  color: #000;
+.input-box input {
+    width: 100%;
+    padding: 12px 42px 12px 40px; /* padding right tăng lên đủ rộng cho eye */
+    font-size: 1rem;
+    color: #d4af37;
+    background: #222222;
+    border: 2px solid #3c2f2f;
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
 }
 
-.btn-login {
-  width: 100%;
-  background-color: #28a745;
-  color: #fff;
-  padding: 12px;
-  border: none;
-  border-radius: 5px;
-  font-weight: bold;
-  font-size: 16px;
-  cursor: pointer;
+.input-box i.fa-lock, .input-box i.fa-user {
+    position: absolute;
+    left: 15px;
+    color: #d4af37;
+    font-size: 1.2rem;
+    z-index: 1;
 }
 
-.btn-login:hover {
-  background-color: #218838;
+.input-box .eye-container {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    z-index: 2;
+    height: 24px; /* fix chiều cao nếu muốn */
+    width: 24px;  /* fix chiều rộng nếu muốn */
+    padding: 0;
+    background: none; /* Xóa nền nếu có */
+    border: none;
+    outline: none;
+}
+
+.input-box .eye-container i {
+    color: #d4af37;
+    font-size: 1.25rem;
+    transition: color 0.25s;
+    pointer-events: none; /* icon không nhận sự kiện, chỉ container nhận */
+}
+
+.input-box .eye-container:hover i {
+    color: #f1c40f;
+}
+
+
+/* Error and Success Messages */
+.error, .success {
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    text-align: left;
 }
 
 .error {
-  color: #ff4d4d;
-  margin-top: 10px;
-  font-size: 14px;
+    color: #e74c3c; /* Red for errors */
 }
 
 .success {
-  color: #9fffa5;
-  margin-top: 10px;
-  font-size: 14px;
+    color: #1abc9c; /* Green for success */
 }
 
+/* Register Button */
+.btn-login {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.2rem;
+    color: #1a1a1a; /* Dark text */
+    background: linear-gradient(45deg, #1abc9c, #16a085); /* Gradient green */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-login::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+    z-index: -1;
+}
+
+.btn-login:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn-login:hover {
+    background: linear-gradient(45deg, #16a085, #138d75);
+    transform: translateY(-2px);
+}
+
+.btn-login:active {
+    transform: scale(0.95);
+}
+
+/* Footer Note */
 .footer-note {
-  margin-top: 20px;
-  font-size: 14px;
+    margin-top: 20px;
+}
+
+.footer-note p {
+    font-size: 0.9rem;
+    color: #e0e6ed;
+}
+
+.footer-note a {
+    color: #1abc9c; /* Green for login link */
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.footer-note a:hover {
+    color: #16a085;
+    text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .login-container {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .login-container h1 {
+        font-size: 2rem;
+    }
+
+    .input-box input {
+        font-size: 0.9rem;
+        padding: 10px 35px 10px 35px;
+    }
+
+    .btn-login {
+        font-size: 1.1rem;
+    }
 }

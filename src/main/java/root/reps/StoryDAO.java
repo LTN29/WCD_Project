@@ -212,93 +212,85 @@ public class StoryDAO {
 	}
 
 	public static List<Story> searchStories(String keyword, Integer categoryId, Integer type) throws SQLException {
-	    List<Story> list = new ArrayList<>();
-	    StringBuilder sql = new StringBuilder("SELECT s.*, " +
-	            "a._name AS authorName, c._name AS categoryName, st._title AS statusTitle, " +
-	            "ty._title AS storyTypeTitle, sch._day AS scheduleDay " +
-	            "FROM tbl_story s " +
-	            "LEFT JOIN tbl_author a ON s._author_id = a._id " +
-	            "LEFT JOIN tbl_category c ON s._category_id = c._id " +
-	            "LEFT JOIN tbl_status st ON s._status_id = st._id " +
-	            "LEFT JOIN tbl_story_type ty ON s._story_type_id = ty._id " +
-	            "LEFT JOIN tbl_story_schedule sch ON s._schedule_id = sch._id " +
-	            "WHERE 1=1");
+		List<Story> list = new ArrayList<>();
+		StringBuilder sql = new StringBuilder(
+				"SELECT s.*, " + "a._name AS authorName, c._name AS categoryName, st._title AS statusTitle, "
+						+ "ty._title AS storyTypeTitle, sch._day AS scheduleDay " + "FROM tbl_story s "
+						+ "LEFT JOIN tbl_author a ON s._author_id = a._id "
+						+ "LEFT JOIN tbl_category c ON s._category_id = c._id "
+						+ "LEFT JOIN tbl_status st ON s._status_id = st._id "
+						+ "LEFT JOIN tbl_story_type ty ON s._story_type_id = ty._id "
+						+ "LEFT JOIN tbl_story_schedule sch ON s._schedule_id = sch._id " + "WHERE 1=1");
 
-	    List<Object> params = new ArrayList<>();
+		List<Object> params = new ArrayList<>();
 
-	    if (keyword != null && !keyword.trim().isEmpty()) {
-	        sql.append(" AND s._title LIKE ?");
-	        params.add("%" + keyword.trim() + "%");
-	    }
-	    if (categoryId != null) {
-	        sql.append(" AND s._category_id = ?");
-	        params.add(categoryId);
-	    }
-	    if (type != null) {
-	        sql.append(" AND s._story_type_id = ?");
-	        params.add(type);
-	    }
-
-	    try (Connection conn = DBUtil.getInstance().getConnect();
-	         PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
-	        for (int i = 0; i < params.size(); i++) {
-	            stmt.setObject(i + 1, params.get(i));
-	        }
-	        ResultSet rs = stmt.executeQuery();
-	        while (rs.next()) {
-	            Story s = new Story(rs.getInt("_id"), rs.getString("_title"), rs.getInt("_chapter_number"),
-	                    rs.getString("_introduction"), rs.getString("_image"), rs.getInt("_like_number"),
-	                    rs.getInt("_follow_number"), rs.getInt("_view_number"), rs.getInt("_author_id"),
-	                    rs.getInt("_status_id"), rs.getInt("_category_id"), rs.getInt("_story_type_id"),
-	                    rs.getInt("_schedule_id"));
-	            s.setAuthorName(rs.getString("authorName"));
-	            s.setCategoryName(rs.getString("categoryName"));
-	            s.setStatusTitle(rs.getString("statusTitle"));
-	            s.setStoryTypeTitle(rs.getString("storyTypeTitle"));
-	            s.setScheduleDay(rs.getString("scheduleDay"));
-	            list.add(s);
-	        }
-	    }
-	    return list;
+		if (keyword != null && !keyword.trim().isEmpty()) {
+			sql.append(" AND s._title LIKE ?");
+			params.add("%" + keyword.trim() + "%");
+		}
+		if (categoryId != null) {
+			sql.append(" AND s._category_id = ?");
+			params.add(categoryId);
+		}
+		if (type != null) {
+			sql.append(" AND s._story_type_id = ?");
+			params.add(type);
+		}
+		sql.append(" ORDER BY s._id DESC");
+		try (Connection conn = DBUtil.getInstance().getConnect();
+				PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
+			for (int i = 0; i < params.size(); i++) {
+				stmt.setObject(i + 1, params.get(i));
+			}
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				Story s = new Story(rs.getInt("_id"), rs.getString("_title"), rs.getInt("_chapter_number"),
+						rs.getString("_introduction"), rs.getString("_image"), rs.getInt("_like_number"),
+						rs.getInt("_follow_number"), rs.getInt("_view_number"), rs.getInt("_author_id"),
+						rs.getInt("_status_id"), rs.getInt("_category_id"), rs.getInt("_story_type_id"),
+						rs.getInt("_schedule_id"));
+				s.setAuthorName(rs.getString("authorName"));
+				s.setCategoryName(rs.getString("categoryName"));
+				s.setStatusTitle(rs.getString("statusTitle"));
+				s.setStoryTypeTitle(rs.getString("storyTypeTitle"));
+				s.setScheduleDay(rs.getString("scheduleDay"));
+				list.add(s);
+			}
+		}
+		return list;
 	}
 
 	public static List<Story> getStoriesFollowedByUser(long userId) throws SQLException {
-	    List<Story> list = new ArrayList<>();
-	    String sql = "SELECT s.*, " +
-	    	    "a._name AS authorName, " +
-	    	    "c._name AS categoryName, " +
-	    	    "st._title AS statusTitle, " +
-	    	    "ty._title AS storyTypeTitle, " +
-	    	    "sch._day AS scheduleDay " +
-	    	    "FROM tbl_story s " +
-	    	    "JOIN tbl_story_follow f ON s._id = f._story_id " +
-	    	    "LEFT JOIN tbl_author a ON s._author_id = a._id " +
-	    	    "LEFT JOIN tbl_category c ON s._category_id = c._id " +
-	    	    "LEFT JOIN tbl_status st ON s._status_id = st._id " +
-	    	    "LEFT JOIN tbl_story_type ty ON s._story_type_id = ty._id " +
-	    	    "LEFT JOIN tbl_story_schedule sch ON s._schedule_id = sch._id " +
-	    	    "WHERE f._user_id = ? AND f._folow = 1";
+		List<Story> list = new ArrayList<>();
+		String sql = "SELECT s.*, " + "a._name AS authorName, " + "c._name AS categoryName, "
+				+ "st._title AS statusTitle, " + "ty._title AS storyTypeTitle, " + "sch._day AS scheduleDay "
+				+ "FROM tbl_story s " + "JOIN tbl_story_follow f ON s._id = f._story_id "
+				+ "LEFT JOIN tbl_author a ON s._author_id = a._id "
+				+ "LEFT JOIN tbl_category c ON s._category_id = c._id "
+				+ "LEFT JOIN tbl_status st ON s._status_id = st._id "
+				+ "LEFT JOIN tbl_story_type ty ON s._story_type_id = ty._id "
+				+ "LEFT JOIN tbl_story_schedule sch ON s._schedule_id = sch._id "
+				+ "WHERE f._user_id = ? AND f._folow = 1";
 
-	    try (Connection conn = DBUtil.getInstance().getConnect();
-	         PreparedStatement stmt = conn.prepareStatement(sql)) {
-	        stmt.setLong(1, userId);
-	        try (ResultSet rs = stmt.executeQuery()) {
-	            while (rs.next()) {
-	                Story s = new Story(rs.getInt("_id"), rs.getString("_title"), rs.getInt("_chapter_number"),
-		                    rs.getString("_introduction"), rs.getString("_image"), rs.getInt("_like_number"),
-		                    rs.getInt("_follow_number"), rs.getInt("_view_number"), rs.getInt("_author_id"),
-		                    rs.getInt("_status_id"), rs.getInt("_category_id"), rs.getInt("_story_type_id"),
-		                    rs.getInt("_schedule_id"));
-		            s.setAuthorName(rs.getString("authorName"));
-		            s.setCategoryName(rs.getString("categoryName"));
-		            s.setStatusTitle(rs.getString("statusTitle"));
-		            s.setStoryTypeTitle(rs.getString("storyTypeTitle"));
-		            s.setScheduleDay(rs.getString("scheduleDay"));
-	                list.add(s);
-	            }
-	        }
-	    }
-	    return list;
+		try (Connection conn = DBUtil.getInstance().getConnect(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+			stmt.setLong(1, userId);
+			try (ResultSet rs = stmt.executeQuery()) {
+				while (rs.next()) {
+					Story s = new Story(rs.getInt("_id"), rs.getString("_title"), rs.getInt("_chapter_number"),
+							rs.getString("_introduction"), rs.getString("_image"), rs.getInt("_like_number"),
+							rs.getInt("_follow_number"), rs.getInt("_view_number"), rs.getInt("_author_id"),
+							rs.getInt("_status_id"), rs.getInt("_category_id"), rs.getInt("_story_type_id"),
+							rs.getInt("_schedule_id"));
+					s.setAuthorName(rs.getString("authorName"));
+					s.setCategoryName(rs.getString("categoryName"));
+					s.setStatusTitle(rs.getString("statusTitle"));
+					s.setStoryTypeTitle(rs.getString("storyTypeTitle"));
+					s.setScheduleDay(rs.getString("scheduleDay"));
+					list.add(s);
+				}
+			}
+		}
+		return list;
 	}
 
 }

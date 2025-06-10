@@ -52,31 +52,37 @@
 <body class="login-page">
 	<div class="login-container">
 		<h1>TRANG ĐĂNG KÝ</h1>
-		<form method="post" action="${pageContext.request.contextPath}/register" onsubmit="return validateForm()">
+		<form method="post"
+			action="${pageContext.request.contextPath}/register"
+			onsubmit="return validateForm()">
 			<input type="hidden" name="action" value="register" />
 
 			<h3>Vui lòng điền thông tin</h3>
 
 			<div class="input-box">
-				<i class="fas fa-user"></i>
-				<input type="text" name="username" placeholder="Tên đăng nhập" required />
+				<i class="fas fa-user"></i> <input type="text" name="username"
+					placeholder="Tên đăng nhập" required />
 			</div>
 
-			<div class="input-box" style="position: relative;">
-				<i class="fas fa-lock"></i>
-				<input type="password" name="password" id="password"
-					placeholder="Mật khẩu (tối thiểu 6 ký tự, 1 chữ hoa)" required />
-				<i class="fas fa-eye toggle-icon" id="toggleIcon1"
-					onclick="togglePassword('password', 'toggleIcon1')"></i>
+			<div class="input-box">
+				<i class="fas fa-lock"></i> <input type="password" name="password"
+					id="password" placeholder="Mật khẩu (tối thiểu 6 ký tự, 1 chữ hoa)"
+					required /> <span class="eye-container"
+					onclick="togglePassword('password', 'toggleIcon1')"> <i
+					class="fas fa-eye" id="toggleIcon1"></i>
+				</span>
 			</div>
 
-			<div class="input-box" style="position: relative;">
-				<i class="fas fa-lock"></i>
-				<input type="password" name="confirmPassword" id="confirmPassword"
-					placeholder="Nhập lại mật khẩu" required />
-				<i class="fas fa-eye toggle-icon" id="toggleIcon2"
-					onclick="togglePassword('confirmPassword', 'toggleIcon2')"></i>
+			<div class="input-box">
+				<i class="fas fa-lock"></i> <input type="password"
+					name="confirmPassword" id="confirmPassword"
+					placeholder="Nhập lại mật khẩu" required /> <span
+					class="eye-container"
+					onclick="togglePassword('confirmPassword', 'toggleIcon2')">
+					<i class="fas fa-eye" id="toggleIcon2"></i>
+				</span>
 			</div>
+
 
 			<button type="submit" class="btn-login">Đăng ký</button>
 
@@ -88,7 +94,10 @@
 			<p class="error" id="jsError"></p>
 
 			<div class="footer-note">
-				<p>Đã có tài khoản? <a href="login.jsp" style="color: lightgreen">Đăng nhập</a></p>
+				<p>
+					Đã có tài khoản? <a href="/WCD1_Test1/login"
+						style="color: lightgreen">Đăng nhập</a>
+				</p>
 			</div>
 		</form>
 	</div>

@@ -1,93 +1,233 @@
-@charset "UTF-8";
+/* Container Styling */
 .container {
-  max-width: 1000px;
-  margin: 30px auto;
-  padding: 0 20px;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #1a252f; /* Darker background */
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 0 8px rgba(241, 196, 15, 0.2); /* Gold glow */
+    color: #e0e6ed; /* Lighter text for contrast */
 }
 
-h3 {
-  margin-bottom: 20px;
-  color: #333;
-  font-size: 24px;
+/* Header and Add Button Styling */
+.container h3 {
+    font-size: 1.8rem;
+    color: #ffffff; /* White text for dark theme */
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-align: left;
 }
 
-.story-table {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: #fff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  border-radius: 8px;
-  overflow: hidden;
+.container .d-flex {
+    margin-bottom: 20px;
 }
 
-.story-table thead {
-  background-color: #1e1e2f;
-  color: #fff;
+.container .btn-success {
+    background: #1abc9c; /* Darker green shade */
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: background 0.3s ease, transform 0.2s ease;
+    margin-left: 10px;
 }
 
-.story-table thead th {
-  padding: 12px 16px;
-  text-align: left;
-  font-weight: 600;
+.container .btn-success:hover {
+    background: #16a085; /* Even darker green on hover */
+    transform: scale(1.05);
 }
 
-.story-table tbody td {
-  padding: 12px 16px;
-  border-bottom: 1px solid #eee;
-  font-size: 15px;
-  color: #333;
+.container .btn-success:active {
+    transform: scale(0.95);
 }
 
-.story-table tbody tr:hover {
-  background-color: #f5f7fa;
-}
-.story-table .table-actions {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-.story-table .table-actions form {
-  margin: 0;
-  display: inline;
-}
-.story-table .btn-sm {
-  padding: 6px 12px;
-  font-size: 13px;
+/* Search Form Styling */
+.container .search-form-story {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    background: #222222; /* Slightly lighter than container */
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-.btn {
-  display: inline-block;
-  padding: 8px 14px;
-  font-size: 14px;
-  font-weight: 500;
-  border-radius: 6px;
-  text-decoration: none;
-  border: none;
-  cursor: pointer;
-  transition: background 0.3s ease;
+.container .search-form-story input[type="text"],
+.container .search-form-story select {
+    flex: 1 1 200px;
+    padding: 10px;
+    font-size: 1rem;
+    color: #d4af37; /* Gold text */
+    background: #2c3e50; /* Darker input background */
+    border: 2px solid #34495e;
+    border-radius: 6px;
+    outline: none;
+    transition: all 0.3s ease;
 }
 
-.btn-success {
-  background-color: #28a745;
-  color: white;
+.container .search-form-story input[type="text"]:focus,
+.container .search-form-story select:focus {
+    border-color: #f1c40f; /* Bright gold focus */
+    box-shadow: 0 0 8px rgba(241, 196, 15, 0.3);
 }
-.btn-success:hover { background-color: #218838; }
 
-.btn-primary {
-  background-color: #007bff;
-  color: white;
+.container .search-form-story .btn-primary {
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #1a1a1a;
+    background: linear-gradient(45deg, #1abc9c, #16a085);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
 }
-.btn-primary:hover { background-color: #0069d9; }
 
-.btn-danger {
-  background-color: #dc3545;
-  color: white;
+.container .search-form-story .btn-primary:hover {
+    background: linear-gradient(45deg, #16a085, #138d75);
+    transform: translateY(-2px);
 }
-.btn-danger:hover { background-color: #c82333; }
 
-.btn-secondary {
-  background-color: #6c757d;
-  color: white;
+.container .search-form-story .btn-primary:active {
+    transform: scale(0.95);
 }
-.btn-secondary:hover { background-color: #5a6268; }
 
+/* Story Table Styling */
+.container .story-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 0.95rem;
+    color: #e0e6ed;
+}
+
+.container .story-table thead {
+    background: #2c3e50; /* Darker blue header */
+}
+
+.container .story-table thead th {
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #ffffff;
+}
+
+.container .story-table tbody tr {
+    border-bottom: 1px solid #34495e; /* Darker border */
+    transition: background 0.2s ease;
+}
+
+.container .story-table tbody tr:hover {
+    background: #233240; /* Darker hover effect */
+}
+
+.container .story-table td {
+    padding: 12px 15px;
+    vertical-align: middle;
+}
+
+/* Table Actions Styling */
+.container .table-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.container .table-actions .btn-primary,
+.container .table-actions .btn-danger {
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    border-radius: 6px;
+    border: none;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.container .table-actions .btn-primary {
+    background: #3498db; /* Blue for edit */
+}
+
+.container .table-actions .btn-primary:hover {
+    background: #2980b9;
+    transform: scale(1.05);
+}
+
+.container .table-actions .btn-danger {
+    background: #e74c3c; /* Red for delete */
+}
+
+.container .table-actions .btn-danger:hover {
+    background: #c0392b;
+    transform: scale(1.05);
+}
+
+.container .table-actions .btn-primary:active,
+.container .table-actions .btn-danger:active {
+    transform: scale(0.95);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        margin: 20px;
+        padding: 15px;
+    }
+
+    .container h3 {
+        font-size: 1.5rem;
+    }
+
+    .container .search-form-story {
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px;
+    }
+
+    .container .search-form-story input[type="text"],
+    .container .search-form-story select,
+    .container .search-form-story .btn-primary {
+        width: 100%;
+    }
+
+    .container .story-table {
+        font-size: 0.85rem;
+    }
+
+    .container .story-table th,
+    .container .story-table td {
+        padding: 10px;
+    }
+
+    .container .table-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .container .table-actions .btn-primary,
+    .container .table-actions .btn-danger {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .container .story-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .container .d-flex {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .container .btn-success {
+        width: 100%;
+        text-align: center;
+        margin-left: 0;
+    }
+}

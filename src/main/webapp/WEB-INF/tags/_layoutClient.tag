@@ -17,7 +17,7 @@
 			<a href="${pageContext.request.contextPath}/discord">DISCORD</a> <a
 				href="${pageContext.request.contextPath}/faq">HỎI ĐÁP</a> <a
 				href="${pageContext.request.contextPath}/story">BẢNG TRUYỆN</a> <a
-				href="${pageContext.request.contextPath}/news">TIN TỨC</a>
+				href="${pageContext.request.contextPath}/MyFollowedStories">THEO DÕI</a>
 		</div>
 
 
@@ -74,7 +74,7 @@
 	<div class="client-footer__container">
 		<div class="client-footer__contact">
 			<b>Contact for work, copyright and more:</b><br /> <a
-				href="mailto:ad.cuutruyen@gmail.com">ad.cuutruyen@gmail.com</a>
+				href="mailto:ad.LTN&BN@gmail.com">ad.LTN&BN@gmail.com</a>
 		</div>
 		<div class="client-footer__policy">
 			<a href="#">Điều khoản dịch vụ</a> | <a href="#">Chính sách bảo
